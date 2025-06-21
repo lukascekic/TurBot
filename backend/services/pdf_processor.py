@@ -113,19 +113,23 @@ class PDFProcessor:
         """Extract metadata from chunk text"""
         text_lower = text.lower()
         
-        # Category detection
+        # Category detection - PRIORITY-BASED for MVP (preparing for Query Expansion)
         category = None
-        if any(word in text_lower for word in ['hotel', 'smeštaj', 'apartman', 'vila']):
-            category = "hotel"
-        elif any(word in text_lower for word in ['restoran', 'kafana', 'bar', 'restoran']):
-            category = "restaurant"
-        elif any(word in text_lower for word in ['muzej', 'crkva', 'tvrđava', 'spomenik', 'galerija']):
-            category = "attraction"
-        elif any(word in text_lower for word in ['tura', 'izlet', 'putovanje', 'aranžman']):
+        
+        # Priority triggers - if mentioned, automatically assign category
+        if any(word in text_lower for word in ['aranžman', 'tura', 'program putovanja', 'itinerar']):
             category = "tour"
+        elif any(word in text_lower for word in ['menu', 'karta', 'specijaliteti', 'kuhinja']):
+            category = "restaurant"
+        elif any(word in text_lower for word in ['ulaznica', 'radno vreme', 'poseta', 'obilazak']):
+            category = "attraction"
+        else:
+            # Fallback to simple detection for hotel (most common)
+            if any(word in text_lower for word in ['hotel', 'smeštaj', 'apartman', 'vila']):
+                category = "hotel"
         
         # Location detection
-        location = self._extract_location(text_lower)
+        location = self._extract_location(text_lower, filename)
         
         # Price range detection
         price_range = self._extract_price_range(text)
@@ -147,8 +151,8 @@ class PDFProcessor:
             source_file=filename
         )
     
-    def _extract_location(self, text: str) -> str:
-        """Extract location from text"""
+    def _extract_location(self, text: str, filename: str = "") -> str:
+        """Extract location from text with filename-based priority"""
         # Major cities and regions
         locations = {
             'beograd': 'Beograd',
@@ -177,6 +181,26 @@ class PDFProcessor:
             'fruška gora': 'Fruška Gora'
         }
         
+        # Priority 1: Check filename for destination (more reliable)
+        filename_lower = filename.lower()
+        for key, value in locations.items():
+            if key in filename_lower and key != 'beograd':  # Skip Beograd (usually departure city)
+                return value
+        
+        # Priority 2: Count frequency of locations in text (excluding common departure cities)
+        location_counts = {}
+        for key, value in locations.items():
+            if key in text:
+                # Skip common departure cities that appear in travel documents
+                if key in ['beograd', 'novi sad', 'niš']:
+                    continue
+                location_counts[value] = text.count(key)
+        
+        # Return most frequent location
+        if location_counts:
+            return max(location_counts, key=location_counts.get)
+        
+        # Fallback: Check all locations including departure cities
         for key, value in locations.items():
             if key in text:
                 return value
