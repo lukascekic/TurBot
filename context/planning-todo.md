@@ -11,7 +11,7 @@
 - [x] **Cursor AI workspace config** - optimizacija za Python+RAG ✅
 
 #### Dependencies & APIs
-- [ ] **OpenAI API key setup** - GPT-4o-mini + embeddings (potrebno od korisnika)
+- [x] **OpenAI API key setup** - GPT-4o-mini + embeddings (potrebno od korisnika)
 - [x] **Python dependencies install:** ✅
   ```
   fastapi, uvicorn, python-dotenv

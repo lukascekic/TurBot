@@ -5,6 +5,8 @@ import os
 from dotenv import load_dotenv
 import logging
 
+from routers.documents import router as documents_router
+
 # Load environment variables
 load_dotenv()
 
@@ -15,8 +17,8 @@ logger = logging.getLogger(__name__)
 # Create FastAPI app
 app = FastAPI(
     title="TurBot API",
-    description="AI Agent za turističke agencije",
-    version="1.0.0",
+    description="AI Agent za turističke agencije - Core RAG Implementation",
+    version="2.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -30,6 +32,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include document processing router
+app.include_router(documents_router)
 
 # Health check endpoint
 @app.get("/health")
