@@ -185,7 +185,59 @@ context/
 - **Demo Failures:** Backup plans + fallback scenarios
 - **Time Constraints:** MVP-first approach
 
+## 📝 Chat 1 - Environment Setup (ZAVRŠENO)
+
+### Ključne Odluke i Implementacije:
+
+#### Environment Setup ✅
+- **Git Repository:** Kreiran local + GitHub setup
+- **Python Backend:** FastAPI sa venv, svi dependencies instalirani
+- **Next.js Frontend:** Kreiran sa TypeScript, Tailwind, Lucide icons
+- **Project Structure:** app/{backend, frontend, shared} + context/
+
+#### Secret Branch Strategy ✅
+- **local-dev branch:** Čuva context/ fajlove lokalno
+- **master branch:** Samo kod, ide na GitHub (bez context fajlova)
+- **Workflow:** 
+  - Radi na local-dev za development
+  - Switch na master za GitHub push
+  - Context fajlovi ostaju privatni
+
+#### Environment Configuration ✅
+- **.env-copy fajlovi:** Template fajlovi za korisnika
+- **.gitignore:** Ažuriran da ne čuva .env-copy i environment fajlove
+- **OpenAI API:** Setup guide kreiran, korisnik dodao svoj API key
+
+#### Basic Architecture ✅
+- **Backend:** FastAPI app sa health check i basic chat endpoint
+- **Frontend:** Funkcionalni chat interface sa real-time porukama
+- **CORS:** Konfigurisan za komunikaciju frontend-backend
+- **Error Handling:** Basic error handling implementiran
+
+#### ML Explanations Framework ✅
+- **explanations/** folder kreiran (lokalno, ne ide na git)
+- **01-rag-basic-concepts.md:** Objašnjeni RAG osnovi za nekoga bez ML iskustva
+
+#### Deployment Strategy ✅
+- **Timing:** Nakon Phase 2, pre mentorske sesije
+- **Railway:** Backend deployment setup guide
+- **Vercel:** Frontend deployment setup guide
+- **Monitoring:** Performance targets i troubleshooting guide
+
+### Sledeći Koraci (Phase 2):
+1. PDF document ingestion i processing
+2. ChromaDB vector database setup
+3. OpenAI embeddings integration
+4. Basic RAG retrieval implementation
+5. Query expansion za srpski jezik
+
+### Tehnički Stack Konfirmovan:
+- **Backend:** FastAPI + ChromaDB + OpenAI + pdfplumber
+- **Frontend:** Next.js + TypeScript + Tailwind + Axios
+- **Deployment:** Railway (backend) + Vercel (frontend)
+- **Cost Target:** < $15 ukupno
+
 ---
 
-*Poslednja izmena: [Trenutni datum/vreme]*
-*Status: Aktivan razvoj* 
+*Poslednja izmena: Jun 21, 2025 - Chat 1*
+*Status: Phase 1 ZAVRŠENA ✅ - Spreman za Phase 2* 
