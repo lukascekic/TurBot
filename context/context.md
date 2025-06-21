@@ -198,10 +198,43 @@ context/
 #### Secret Branch Strategy ✅
 - **local-dev branch:** Čuva context/ fajlove lokalno
 - **master branch:** Samo kod, ide na GitHub (bez context fajlova)
-- **Workflow:** 
-  - Radi na local-dev za development
-  - Switch na master za GitHub push
-  - Context fajlovi ostaju privatni
+
+#### Git Workflow (KRITIČNO - UVEK PRATITI):
+
+**Development Workflow:**
+```bash
+# 1. Radi na local-dev branch-u
+git checkout local-dev
+
+# 2. Napravi izmene (kod + context fajlovi)
+# ... rad na kodu ...
+
+# 3. Commit na local-dev
+git add .
+git commit -m "Feature: implementirana nova funkcionalnost"
+
+# 4. Switch na master za GitHub
+git checkout master
+
+# 5. Merge SAMO kod izmene (bez context/ foldera)
+git merge local-dev
+
+# 6. Push na GitHub (javno)
+git push origin master
+
+# 7. Vratiti se na local-dev za dalji rad
+git checkout local-dev
+```
+
+**⚠️ NIKAD NE RADI:**
+- `git push origin local-dev` - Context fajlovi bi postali javni!
+- Development direktno na master branch-u
+- Commit context fajlova na master
+
+**✅ UVEK RADI:**
+- Development na local-dev
+- Context fajlovi ostaju na local-dev
+- Samo clean kod ide na GitHub
 
 #### Environment Configuration ✅
 - **.env-copy fajlovi:** Template fajlovi za korisnika
