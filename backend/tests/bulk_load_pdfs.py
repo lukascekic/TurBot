@@ -23,7 +23,29 @@ def main():
     start_time = time.time()
     
     doc_service = DocumentService()
-    pdf_dir = '../../data/Ulazni podaci-20250621T091254Z-1-001/Ulazni podaci'
+    
+    # Check multiple possible directories for PDF files
+    possible_dirs = [
+        '../ulazni-podaci',  # From app/ to ulazni-podaci/
+        '../../ulazni-podaci',  # Correct path according to user
+        '../../data/Ulazni podaci-20250621T091254Z-1-001/Ulazni podaci',
+        '../../../ulazni-podaci',
+    ]
+    
+    pdf_dir = None
+    for dir_path in possible_dirs:
+        if os.path.exists(dir_path):
+            pdf_files = [f for f in os.listdir(dir_path) if f.endswith('.pdf')]
+            if pdf_files:
+                pdf_dir = dir_path
+                print(f'✅ Found PDF directory: {pdf_dir} with {len(pdf_files)} files')
+                break
+    
+    if pdf_dir is None:
+        print('❌ PDF directory not found in any of these locations:')
+        for dir_path in possible_dirs:
+            print(f'   - {dir_path}')
+        return False
     
     if os.path.exists(pdf_dir):
         print(f'📁 Processing PDFs from: {pdf_dir}')

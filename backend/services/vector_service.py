@@ -15,8 +15,8 @@ class VectorService:
     def __init__(self):
         self.openai_client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         
-        # Initialize ChromaDB with persistent storage
-        db_path = Path("./chroma_db")
+        # Initialize ChromaDB with persistent storage - NEW CLEAN DATABASE
+        db_path = Path("./chroma_db_new")
         db_path.mkdir(exist_ok=True)
         
         self.chroma_client = chromadb.PersistentClient(
