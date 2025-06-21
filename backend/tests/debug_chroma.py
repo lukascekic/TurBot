@@ -3,7 +3,13 @@
 Debug ChromaDB connectivity and content
 """
 
+import sys
 import os
+from pathlib import Path
+
+# Add parent directory to path for imports
+sys.path.append(str(Path(__file__).parent.parent))
+
 from dotenv import load_dotenv
 load_dotenv()
 

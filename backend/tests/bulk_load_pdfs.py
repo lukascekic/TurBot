@@ -3,7 +3,13 @@
 Bulk load PDF documents script
 """
 
+import sys
 import os
+from pathlib import Path
+
+# Add parent directory to path for imports
+sys.path.append(str(Path(__file__).parent.parent))
+
 import time
 from dotenv import load_dotenv
 
