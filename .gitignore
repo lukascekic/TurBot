@@ -22,6 +22,11 @@ backend/env/
 backend/.env
 frontend/.env.local
 
+# Template files (korisnik pravi svoje kopije)
+.env-copy
+*/.env-copy
+**/.env-copy
+
 # IDE and OS
 .vscode/
 .idea/
