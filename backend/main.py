@@ -5,10 +5,10 @@ import os
 from dotenv import load_dotenv
 import logging
 
-from routers.documents import router as documents_router
-
-# Load environment variables
+# Load environment variables FIRST!
 load_dotenv()
+
+from routers.documents import router as documents_router
 
 # Configure logging
 logging.basicConfig(level=getattr(logging, os.getenv("LOG_LEVEL", "INFO")))

@@ -8,6 +8,7 @@ import os
 import sys
 from pathlib import Path
 from dotenv import load_dotenv
+load_dotenv()
 
 # Add current directory to path for imports
 sys.path.append(str(Path(__file__).parent))
@@ -16,8 +17,6 @@ from services.document_service import DocumentService
 from services.pdf_processor import PDFProcessor
 from services.vector_service import VectorService
 
-# Load environment variables
-load_dotenv()
 
 def test_pdf_processing():
     """Test PDF processing functionality"""

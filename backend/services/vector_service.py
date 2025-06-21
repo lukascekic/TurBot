@@ -79,10 +79,13 @@ class VectorService:
                 # Convert metadata to dict, handling None values
                 metadata_dict = chunk.metadata.model_dump()
                 # ChromaDB doesn't handle None values well, so convert to empty strings
-                cleaned_metadata = {
-                    k: v if v is not None else "" 
-                    for k, v in metadata_dict.items()
-                }
+                # Special handling for page_number which should be int or None
+                cleaned_metadata = {}
+                for k, v in metadata_dict.items():
+                    if k == "page_number":
+                        cleaned_metadata[k] = v if v is not None else 0
+                    else:
+                        cleaned_metadata[k] = v if v is not None else ""
                 metadatas.append(cleaned_metadata)
                 chunk_embeddings.append(embeddings[i])
             
@@ -138,14 +141,24 @@ class VectorService:
                     metadata_dict = results["metadatas"][0][i]
                     distance = results["distances"][0][i] if "distances" in results else 0
                     
-                    # Convert distance to similarity score (1 - distance)
-                    similarity_score = 1 - distance
+                    # Convert distance to similarity score
+                    # For cosine distance, use: 1 - (distance / 2) to normalize to 0-1 range
+                    # Or use inverse distance: 1 / (1 + distance)
+                    similarity_score = 1 / (1 + distance)
                     
                     # Skip results below threshold
                     if similarity_score < query.threshold:
                         continue
                     
                     # Convert metadata dict back to DocumentMetadata
+                    # Handle page_number conversion properly 
+                    if "page_number" in metadata_dict:
+                        page_num = metadata_dict["page_number"]
+                        if page_num == 0 or page_num == "" or page_num == "0":
+                            metadata_dict["page_number"] = None
+                        elif isinstance(page_num, str) and page_num.isdigit():
+                            metadata_dict["page_number"] = int(page_num)
+                    
                     metadata = DocumentMetadata(**metadata_dict)
                     
                     result = SearchResult(
