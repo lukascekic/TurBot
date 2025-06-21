@@ -83,16 +83,20 @@
 
 ---
 
-### Phase 3: Advanced RAG Features (Sati 11-16) 🔄 SLEDEĆI
+### Phase 3: Advanced RAG Features (Sati 11-16) 🔄 TRENUTNO
 
-#### Query Expansion za Srpski
-- [ ] **Query expansion service:**
-  - [ ] Sinonimi: restoran → kafana, gostionica, mehana
-  - [ ] Regionalni termini: Belgrade → Beograd → prestonica
-  - [ ] Morfološke varijante: najbolji → naj + superlativi
-- [ ] **GPT-4o-mini query expander** - prompt engineering
-- [ ] **Multi-query generation** - 3-5 varijanti originalnog upita
-- [ ] **Query validation** - filter nonsense expansions
+#### Phase 3a: Foundation (4 sata) - Query Expansion & Metadata Enhancement
+- [ ] **LLM-Powered Query Expansion Service:**
+  - [ ] Semantic expansion na srpskom ("romantičan" → "spa, lux, za parove")
+  - [ ] Tourism vocabulary enhancement (comprehensive)
+  - [ ] Geographic variants (Rim → Roma, Rome, Italija)
+  - [ ] Caching za performance optimization
+- [ ] **Comprehensive Metadata Enhancement:**
+  - [ ] Full NER extraction (locations, dates, prices, amenities)
+  - [ ] Advanced categorization + subcategories
+  - [ ] Price analysis with ranges and currencies
+  - [ ] Family-friendly + accessibility detection
+- [ ] **Phase 3a Testing** - Comprehensive test suite
 
 #### Metadata-Rich Indexing
 - [ ] **Automatic metadata extraction:**
