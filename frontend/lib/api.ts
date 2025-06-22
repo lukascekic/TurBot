@@ -56,6 +56,21 @@ export interface DocumentInfo {
   chunks: number;
 }
 
+// ==================== STREAMING FUNCTIONALITY ====================
+// Added for real-time chat experience - does not modify existing methods
+
+export interface StreamingCallbacks {
+  onChunk: (chunk: string) => void;
+  onComplete: (metadata: {
+    sources: string[];
+    suggestions: string[];
+    confidence: number;
+    total_chunks: number;
+    response_length: number;
+  }) => void;
+  onError: (error: string) => void;
+}
+
 class TurBotAPI {
   private api = axios.create({
     baseURL: API_BASE_URL,
@@ -248,6 +263,84 @@ class TurBotAPI {
     } catch (error) {
       console.error('Get user sessions error:', error);
       return [];
+    }
+  }
+
+  // ==================== STREAMING METHOD ====================
+  // New streaming chat method - does not replace existing chat method
+  async chatStream(
+    message: string,
+    sessionId: string,
+    userType: 'client' | 'agent' = 'client',
+    callbacks: StreamingCallbacks
+  ): Promise<void> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/documents/chat/stream?session_id=${sessionId}&user_type=${userType}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content: message
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('No response body reader available');
+      }
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        
+        if (done) {
+          break;
+        }
+
+        // Decode chunk and add to buffer
+        buffer += decoder.decode(value, { stream: true });
+        
+        // Process complete lines
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || ''; // Keep incomplete line in buffer
+        
+        for (const line of lines) {
+          if (line.trim() === '') continue;
+          
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              
+              if (data.type === 'content') {
+                callbacks.onChunk(data.content);
+              } else if (data.type === 'complete') {
+                callbacks.onComplete({
+                  sources: data.sources,
+                  suggestions: data.suggestions,
+                  confidence: data.confidence,
+                  total_chunks: data.total_chunks,
+                  response_length: data.response_length
+                });
+              } else if (data.type === 'error') {
+                callbacks.onError(data.error);
+                return;
+              }
+            } catch (parseError) {
+              console.error('Error parsing streaming data:', parseError);
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Streaming error:', error);
+      callbacks.onError(error instanceof Error ? error.message : 'Unknown streaming error');
     }
   }
 }

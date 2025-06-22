@@ -34,6 +34,11 @@ export default function ChatBubble({
   const [isTyping, setIsTyping] = useState(false)
   const [isConnected, setIsConnected] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  
+  // ==================== STREAMING STATE ====================
+  // Added for real-time streaming - does not affect existing functionality
+  const [isStreaming, setIsStreaming] = useState(false)
+  const [streamingContent, setStreamingContent] = useState("")
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -57,8 +62,19 @@ export default function ChatBubble({
   }, [])
 
   const handleSendMessage = async () => {
-    if (!inputValue.trim() || isTyping) return
+    if (!inputValue.trim() || isTyping || isStreaming) return
 
+    // Try streaming first, fallback to regular chat
+    if (sessionId) {
+      await handleSendMessageStreaming()
+    } else {
+      await handleSendMessageRegular()
+    }
+  }
+
+  // ==================== STREAMING MESSAGE HANDLER ====================
+  // New streaming functionality - does not replace existing method
+  const handleSendMessageStreaming = async () => {
     const userMessage: ChatMessage = {
       role: 'user',
       content: inputValue,
@@ -66,12 +82,85 @@ export default function ChatBubble({
     }
 
     setMessages((prev) => [...prev, userMessage])
+    const messageText = inputValue
     setInputValue("")
+    setIsStreaming(true)
+    setStreamingContent("")
+
+    // Store the complete response content
+    let completeResponse = ""
+
+    try {
+      await turBotAPI.chatStream(messageText, sessionId!, userType, {
+        onChunk: (chunk: string) => {
+          completeResponse += chunk
+          setStreamingContent(completeResponse)
+        },
+        onComplete: (metadata) => {
+          const assistantMessage: ChatMessage = {
+            role: 'assistant',
+            content: completeResponse || "Izvinjavam se, odgovor nije generisan.",
+            timestamp: new Date(),
+            sources: metadata.sources.map(source => ({
+              document_name: source,
+              similarity: 0.9,
+              content_preview: "",
+              metadata: {}
+            })),
+            suggested_questions: metadata.suggestions,
+          }
+
+          setMessages((prev) => [...prev, assistantMessage])
+          setStreamingContent("")
+          setIsConnected(true)
+        },
+        onError: (error: string) => {
+          console.error('Streaming error:', error)
+          setIsConnected(false)
+          
+          const errorMessage: ChatMessage = {
+            role: 'assistant',
+            content: "Izvinjavam se, došlo je do greške sa streaming-om. Pokušavam standardni način...",
+            timestamp: new Date(),
+          }
+          setMessages((prev) => [...prev, errorMessage])
+          
+          // Fallback to regular chat
+          handleSendMessageRegular()
+        }
+      })
+    } catch (error) {
+      console.error('Streaming setup error:', error)
+      // Fallback to regular chat
+      await handleSendMessageRegular()
+    } finally {
+      setIsStreaming(false)
+      setStreamingContent("")
+    }
+  }
+
+  // ==================== REGULAR MESSAGE HANDLER ====================
+  // Original functionality preserved as fallback
+  const handleSendMessageRegular = async () => {
+    if (!inputValue.trim() && !isStreaming) return
+
+    const messageText = inputValue || "Ponovi poslednji odgovor"
+    
+    if (!isStreaming) {
+      const userMessage: ChatMessage = {
+        role: 'user',
+        content: messageText,
+        timestamp: new Date(),
+      }
+      setMessages((prev) => [...prev, userMessage])
+      setInputValue("")
+    }
+    
     setIsTyping(true)
 
     try {
       const response: ChatResponse = await turBotAPI.chat(
-        inputValue, 
+        messageText, 
         sessionId, 
         userType
       )
@@ -157,7 +246,26 @@ export default function ChatBubble({
               <MessageBubble key={index} message={message} />
             ))}
 
-            {isTyping && (
+            {/* ==================== STREAMING DISPLAY ==================== */}
+            {/* Real-time streaming content display */}
+            {isStreaming && streamingContent && (
+              <div className="flex justify-start">
+                <div className="flex items-start space-x-2">
+                  <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center">
+                    <Bot className="h-3 w-3 text-white" />
+                  </div>
+                  <div className="bg-gray-100 p-3 rounded-lg max-w-[280px]">
+                    <div className="text-sm text-gray-800 whitespace-pre-wrap">
+                      {streamingContent}
+                      <span className="inline-block w-2 h-4 bg-red-600 ml-1 animate-pulse"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Regular typing indicator (fallback) */}
+            {(isTyping || (isStreaming && !streamingContent)) && (
               <div className="flex justify-start">
                 <div className="flex items-start space-x-2">
                   <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center">
@@ -175,6 +283,9 @@ export default function ChatBubble({
                         style={{ animationDelay: "0.2s" }}
                       ></div>
                     </div>
+                    {isStreaming && (
+                      <div className="text-xs text-gray-500 mt-1">Kucam...</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -190,11 +301,11 @@ export default function ChatBubble({
                 onKeyPress={handleKeyPress}
                 placeholder="Kucajte poruku..."
                 className="flex-1 text-sm"
-                disabled={isTyping || !isConnected}
+                disabled={isTyping || isStreaming || !isConnected}
               />
               <button
                 onClick={handleSendMessage}
-                disabled={!inputValue.trim() || isTyping || !isConnected}
+                disabled={!inputValue.trim() || isTyping || isStreaming || !isConnected}
                 className="bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2 rounded-md transition-colors"
               >
                 <Send className="h-4 w-4" />

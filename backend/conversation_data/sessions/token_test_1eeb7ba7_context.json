@@ -1,0 +1,184 @@
+{
+  "session_id": "token_test_1eeb7ba7",
+  "total_messages": 22,
+  "recent_messages": [
+    {
+      "message_id": "41c04a5a-4d51-4266-a472-a65521a73b23",
+      "session_id": "token_test_1eeb7ba7",
+      "role": "assistant",
+      "content": "Izvinjavam se, došlo je do greške pri pristupu detaljnim informacijama.",
+      "timestamp": "2025-06-22T06:49:24.674083",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Maroko",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:49:22.175249",
+          "last_mentioned": "2025-06-22T06:49:22.175249",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [],
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:49:23.584898",
+          "last_mentioned": "2025-06-22T06:49:23.584898",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [],
+      "confidence": 0.1,
+      "metadata": {}
+    },
+    {
+      "message_id": "471e878d-a7ae-4d2d-821b-5018b1503016",
+      "session_id": "token_test_1eeb7ba7",
+      "role": "user",
+      "content": "Koliko košta?",
+      "timestamp": "2025-06-22T06:49:27.234613",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "c8b5fcc9-dcb7-4011-8faa-51de0f150b90",
+      "session_id": "token_test_1eeb7ba7",
+      "role": "assistant",
+      "content": "Maroko je fascinantna destinacija koja nudi bogatu kulturu, istoriju, prelepu prirodu i raznovrsne aktivnosti. U nastavku su detalji o dostupnim putovanjima i aranžmanima za Maroko.\n\n### Aranžman 1: Carski gradovi\n- **Period putovanja**: 30. april 2025. - 7. maj 2025.\n- **Trajanje**: 8 dana / 7 noćenja\n- **Polazak**: Beograd\n- **Prevoz**: Avion i autobus\n- **Cena**: Nije navedena u dostupnim dokumentima, ali se može očekivati da će biti konkurentna za ovakve aranžmane.\n\n**Program putovanja**:\n- Obilazak znamenitosti kao što su džamija Kutubija, palata Bahija, trg Džemaa el-Fna i mnogi drugi.\n- Upoznajte se sa bogatom kulturom i tradicijom Maroka, istražujući njegove gradske i prirodne lepote.\n\n### Aranžman 2: Carski gradovi uz talase Atlantika i Mediterana\n- **Period putovanja**: 28. april 2025. - 6. maj 2025.\n- **Trajanje**: 9 dana / 8 noćenja\n- **Polazak**: Beograd\n- **Prevoz**: Avion\n\n**Program putovanja**:\n- Početak u Beogradu, sa presedanjem u Beču, zatim putovanje do Marakeša i Kazablanke.\n- Uključuje posetu raznim kulturnim i prirodnim atrakcijama.\n\n### Praktične informacije:\n1. **Viza**: Državljanima Republike Srbije je potrebna viza za ulazak u Maroko. Vizu možete izvaditi u Ambasadi Kraljevine Maroko u Beogradu (izvor: Maroko_Prvi_maj_2025_avionom_cenovnik_2701flt.pdf).\n2. **Preporuka za putovanje**: Preporučuje se da se putnici informišu o lokalnim običajima, kao i o potrebnim vakcinama pre putovanja.\n\n### Zaključak\nMaroko je idealna destinacija za avanturiste i ljubitelje kulture. Preporučujem da razmotrite jedan od ponuđenih aranžmana kako biste iskusili sve čari ove prelepe zemlje. Ako imate dodatnih pitanja ili želite da rezervišete putovanje, slobodno se obratite!",
+      "timestamp": "2025-06-22T06:49:37.861331",
+      "entities_extracted": {},
+      "sources_used": [
+        "Maroko_Prvi_maj_2025_avionom_cenovnik_2701flt.pdf",
+        "Maroko_Prvi_maj_2025_avionom_cenovnik_2701flt.pdf",
+        "Maroko_Prazik_rada_30_april_cenovnik_2901bb.pdf",
+        "Maroko_Prvi_maj_2025_avionom_cenovnik_2701flt.pdf",
+        "Maroko_Prvi_maj_2025_avionom_cenovnik_2701flt.pdf"
+      ],
+      "confidence": 0.8404493057967594,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {
+    "destination": {
+      "entity_type": "destination",
+      "entity_value": {
+        "entity_type": "destination",
+        "entity_value": "Rim",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T06:47:19.038302",
+        "last_mentioned": "2025-06-22T06:47:19.038302",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T06:47:26.652275",
+      "last_mentioned": "2025-06-22T06:49:16.489700",
+      "frequency": 9,
+      "source_messages": [
+        "715c9cac-2120-468c-8a47-aec2025b643b",
+        "d930212d-e252-49b1-bf3d-54b6194cf27d",
+        "93113d8f-bf7a-40a2-8e54-5e6052e5a8b2",
+        "54b34c6d-dd50-403b-84eb-0a2488bb234b",
+        "cda32014-218f-4122-bfb3-35158224a4af",
+        "f67585c0-2a8a-42e3-bc20-fbd5825c6504",
+        "2cb8111c-42ca-4123-a2e5-fcad3b966ea2",
+        "e35ab342-b2ee-4090-aa8e-0adb0671f342",
+        "2c6ea58b-771b-4602-a0e0-8cc0fd958c36"
+      ]
+    },
+    "category": {
+      "entity_type": "category",
+      "entity_value": {
+        "entity_type": "category",
+        "entity_value": "hotel",
+        "confidence": 0.9,
+        "first_mentioned": "2025-06-22T06:47:19.039095",
+        "last_mentioned": "2025-06-22T06:47:19.039095",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T06:47:26.652275",
+      "last_mentioned": "2025-06-22T06:47:26.652275",
+      "frequency": 1,
+      "source_messages": [
+        "715c9cac-2120-468c-8a47-aec2025b643b"
+      ]
+    },
+    "amenities": {
+      "entity_type": "amenities",
+      "entity_value": {
+        "entity_type": "amenities",
+        "entity_value": [],
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T06:47:20.345805",
+        "last_mentioned": "2025-06-22T06:47:20.345805",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T06:47:26.652275",
+      "last_mentioned": "2025-06-22T06:49:02.559836",
+      "frequency": 5,
+      "source_messages": [
+        "715c9cac-2120-468c-8a47-aec2025b643b",
+        "93113d8f-bf7a-40a2-8e54-5e6052e5a8b2",
+        "54b34c6d-dd50-403b-84eb-0a2488bb234b",
+        "2cb8111c-42ca-4123-a2e5-fcad3b966ea2",
+        "e35ab342-b2ee-4090-aa8e-0adb0671f342"
+      ]
+    },
+    "travel_season": {
+      "entity_type": "travel_season",
+      "entity_value": {
+        "entity_type": "travel_season",
+        "entity_value": "leto",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T06:48:08.264280",
+        "last_mentioned": "2025-06-22T06:48:08.264280",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T06:48:16.122386",
+      "last_mentioned": "2025-06-22T06:48:16.122386",
+      "frequency": 1,
+      "source_messages": [
+        "cda32014-218f-4122-bfb3-35158224a4af"
+      ]
+    },
+    "transport_type": {
+      "entity_type": "transport_type",
+      "entity_value": {
+        "entity_type": "transport_type",
+        "entity_value": "plane",
+        "confidence": 0.9,
+        "first_mentioned": "2025-06-22T06:48:08.264321",
+        "last_mentioned": "2025-06-22T06:48:08.264321",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T06:48:16.122386",
+      "last_mentioned": "2025-06-22T06:48:16.122386",
+      "frequency": 1,
+      "source_messages": [
+        "cda32014-218f-4122-bfb3-35158224a4af"
+      ]
+    }
+  },
+  "active_entities": {
+    "destination": "Maroko",
+    "category": "hotel",
+    "amenities": [],
+    "travel_season": "leto",
+    "transport_type": "plane"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T06:49:37.861331",
+  "context_switch_detected": false
+}

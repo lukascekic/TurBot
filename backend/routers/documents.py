@@ -1,8 +1,12 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, Query
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from typing import List, Dict, Any, Optional
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
+import json
+import openai
+import os
+from pydantic import BaseModel
 
 from services.document_service import DocumentService
 from models.document import SearchQuery, SearchResponse
@@ -317,4 +321,137 @@ async def test_detailed_response(request: dict):
         
     except Exception as e:
         logger.error(f"Error testing detailed response: {e}")
-        raise HTTPException(status_code=500, detail=str(e)) 
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ==================== STREAMING FUNCTIONALITY ====================
+# Added for real-time chat experience - does not modify existing endpoints
+
+class ChatMessage(BaseModel):
+    """Simple chat message for streaming endpoint"""
+    content: str
+
+# Initialize OpenAI client for streaming (separate from existing services)
+streaming_openai_client = openai.AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+@router.post("/chat/stream")
+async def chat_stream(
+    message: ChatMessage,
+    session_id: str = Query(..., description="Session ID for conversation tracking"),
+    user_type: str = Query("client", description="User type: client or agent")
+):
+    """
+    Stream chat response in real-time for better UX
+    Uses existing document_service for search, adds streaming response
+    """
+    print(f"🎬 STREAMING CHAT: '{message.content[:50]}...' [Session: {session_id[:8]}]")
+    
+    async def generate_stream():
+        try:
+            # 1. Use existing document search (no modification to existing services)
+            search_query = SearchQuery(query=message.content, limit=5)
+            search_results = document_service.search_documents(message.content, None, 5)
+            
+            # 2. Prepare context from search results
+            context_content = ""
+            sources = []
+            if hasattr(search_results, 'results') and search_results.results:
+                for result in search_results.results[:3]:  # Top 3 results
+                    if hasattr(result, 'text') and hasattr(result, 'metadata'):
+                        context_content += f"\n## Source: {result.metadata.source_file}\n{result.text[:400]}...\n"
+                        sources.append(result.metadata.source_file)
+            
+            # 3. Create system prompt for tourism assistant
+            system_prompt = f"""Ti si TurBot, AI asistent za turističke agencije. Odgovori na srpskom jeziku koristeći dostupne informacije.
+
+DOSTUPNI SADRŽAJ:
+{context_content}
+
+INSTRUKCIJE:
+- Odgovori prirodno i prijateljski na srpskom jeziku
+- Koristi informacije iz dostupnih dokumenata
+- Ako nemaš tačne informacije, budi iskren
+- Fokusiraj se na korisne detalje (cene, datumi, lokacije)
+- Budi kratak i precizan"""
+
+            # 4. OpenAI streaming call
+            messages = [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": message.content}
+            ]
+            
+            response = await streaming_openai_client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=messages,
+                stream=True,
+                temperature=0.1,
+                max_tokens=400
+            )
+            
+            # 5. Stream chunks to frontend
+            full_response = ""
+            chunk_count = 0
+            
+            async for chunk in response:
+                if chunk.choices[0].delta.content:
+                    content = chunk.choices[0].delta.content
+                    full_response += content
+                    chunk_count += 1
+                    
+                    # Send content chunk
+                    data = {
+                        "type": "content",
+                        "content": content,
+                        "chunk_id": chunk_count
+                    }
+                    yield f"data: {json.dumps(data)}\n\n"
+                    
+                    # Small delay for natural typing feel
+                    await asyncio.sleep(0.02)
+            
+            print(f"🎬 STREAMING COMPLETED: {len(full_response)} chars, {chunk_count} chunks")
+            
+            # 6. Generate suggested questions based on content
+            suggested_questions = []
+            content_lower = message.content.lower()
+            if "hotel" in content_lower or "smeštaj" in content_lower:
+                suggested_questions = ["Koliko košta?", "Ima li spa centar?", "Kada je dostupno?"]
+            elif "cena" in content_lower or "košta" in content_lower:
+                suggested_questions = ["Šta je uključeno?", "Ima li popusta?", "Kako se plaća?"]
+            elif "putovanje" in content_lower or "aranžman" in content_lower:
+                suggested_questions = ["Koliko traje?", "Šta je uključeno?", "Kada su termini?"]
+            else:
+                suggested_questions = ["Recite mi više", "Koliko košta?", "Ima li alternativa?"]
+            
+            # 7. Send final metadata
+            final_data = {
+                "type": "complete",
+                "sources": sources[:5],
+                "suggestions": suggested_questions,
+                "confidence": 0.90,
+                "total_chunks": chunk_count,
+                "response_length": len(full_response)
+            }
+            yield f"data: {json.dumps(final_data)}\n\n"
+            
+            print(f"🎉 STREAMING CHAT COMPLETED: {len(full_response)} chars")
+            
+        except Exception as e:
+            print(f"❌ STREAMING ERROR: {str(e)}")
+            error_data = {
+                "type": "error",
+                "error": str(e),
+                "fallback_message": "Izvinjavam se, došlo je do greške. Molim pokušajte ponovo."
+            }
+            yield f"data: {json.dumps(error_data)}\n\n"
+    
+    return StreamingResponse(
+        generate_stream(),
+        media_type="text/plain",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type"
+        }
+    ) 

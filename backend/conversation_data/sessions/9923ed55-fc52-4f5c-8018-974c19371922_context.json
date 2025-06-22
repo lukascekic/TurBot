@@ -1,0 +1,52 @@
+{
+  "session_id": "9923ed55-fc52-4f5c-8018-974c19371922",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "635e661a-c8b3-411a-889a-6646015d1500",
+      "session_id": "9923ed55-fc52-4f5c-8018-974c19371922",
+      "role": "user",
+      "content": "Jel ima neko putovanje u Amsterdam?",
+      "timestamp": "2025-06-22T07:42:02.460868",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "54aad61a-41af-4033-9be5-d9bf3586ae44",
+      "session_id": "9923ed55-fc52-4f5c-8018-974c19371922",
+      "role": "assistant",
+      "content": "Dragi korisniče,\n\nImam odlične informacije o putovanju u Amsterdam koje bi Vas mogle zanimati! \n\n### Aranžman: Amsterdam – Prvi maj 2025\n- **Datumi putovanja:** 30. april 2025. - 4. maj 2025. (5 dana / 4 noćenja)\n- **Tip putovanja:** Direktan let\n- **Uključeno:** \n  - Panoramsko razgledanje grada\n  - 4 noćenja\n- **Agencija:** Dream Land\n- **Cena:** Nažalost, konkretna cena nije navedena, ali se preporučuje da se obratite agenciji za detaljne informacije.\n\n### Dodatni sadržaji:\n- **Fakultativni izleti:** \n  - Postoji mogućnost dodatnih fakultativnih izleta kao što je mala holandska tura.\n  - Cena fakultativnog izleta iznosi oko 90€ po osobi, uz prisustvo vodiča na srpskom jeziku.\n\n### Napomene:\n- Putnici koji imaju strani pasoš treba da se raspitaju o eventualnom viznom režimu.\n- Prijavljivanje i plaćanje izleta se vrši prilikom rezervacije putovanja.\n\nZa više informacija, možete posetiti zvaničnu stranicu agencije Dream Land: [www.dreamland.travel](http://www.dreamland.travel).\n\nAko imate dodatnih pitanja ili želite da rezervišete putovanje, slobodno se javite!\n\nSrdačan pozdrav!",
+      "timestamp": "2025-06-22T07:42:15.487282",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Amsterdam",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T07:42:05.361639",
+          "last_mentioned": "2025-06-22T07:42:05.361639",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf"
+      ],
+      "confidence": 1.0,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "destination": "Amsterdam"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T07:42:15.487282",
+  "context_switch_detected": false
+}

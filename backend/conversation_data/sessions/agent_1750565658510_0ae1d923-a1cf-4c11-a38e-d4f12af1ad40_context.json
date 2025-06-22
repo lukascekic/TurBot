@@ -1,0 +1,137 @@
+{
+  "session_id": "agent_1750565658510_0ae1d923-a1cf-4c11-a38e-d4f12af1ad40",
+  "total_messages": 6,
+  "recent_messages": [
+    {
+      "message_id": "11646227-7cfe-44f0-9a7a-a1355814961f",
+      "session_id": "agent_1750565658510_0ae1d923-a1cf-4c11-a38e-d4f12af1ad40",
+      "role": "assistant",
+      "content": "Izvinjavam se, trenutno nemamo dostupne aranžmane koji odgovaraju vašem upitu. Možete li precizirati vašu pretragu ili probati sa drugačijim kriterijumima?",
+      "timestamp": "2025-06-22T06:41:32.707652",
+      "entities_extracted": {
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "jul",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:41:29.689839",
+          "last_mentioned": "2025-06-22T06:41:29.689839",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [],
+      "confidence": 0.3,
+      "metadata": {}
+    },
+    {
+      "message_id": "2fe2fe22-cce2-4a49-9c26-0ffe5af4f8fb",
+      "session_id": "agent_1750565658510_0ae1d923-a1cf-4c11-a38e-d4f12af1ad40",
+      "role": "user",
+      "content": "Ne mora avionom, moze autobusom",
+      "timestamp": "2025-06-22T06:42:08.176131",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "8afecb7b-f300-49bc-b7a2-51546ac22b46",
+      "session_id": "agent_1750565658510_0ae1d923-a1cf-4c11-a38e-d4f12af1ad40",
+      "role": "assistant",
+      "content": "Izvinjavam se, trenutno nemamo dostupne aranžmane koji odgovaraju vašem upitu. Možete li precizirati vašu pretragu ili probati sa drugačijim kriterijumima?",
+      "timestamp": "2025-06-22T06:42:13.091104",
+      "entities_extracted": {
+        "transport_type": {
+          "entity_type": "transport_type",
+          "entity_value": "plane",
+          "confidence": 0.9,
+          "first_mentioned": "2025-06-22T06:42:10.221005",
+          "last_mentioned": "2025-06-22T06:42:10.221005",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [],
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:42:11.803271",
+          "last_mentioned": "2025-06-22T06:42:11.803271",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [],
+      "confidence": 0.3,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {
+    "travel_month": {
+      "entity_type": "travel_month",
+      "entity_value": {
+        "entity_type": "travel_month",
+        "entity_value": "jul",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T06:41:07.506110",
+        "last_mentioned": "2025-06-22T06:41:07.506110",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T06:41:10.908411",
+      "last_mentioned": "2025-06-22T06:41:10.908411",
+      "frequency": 1,
+      "source_messages": [
+        "f296cda0-dede-4d3c-8f78-eadedfbc473d"
+      ]
+    },
+    "travel_season": {
+      "entity_type": "travel_season",
+      "entity_value": {
+        "entity_type": "travel_season",
+        "entity_value": "leto",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T06:41:07.506110",
+        "last_mentioned": "2025-06-22T06:41:07.506110",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T06:41:10.908411",
+      "last_mentioned": "2025-06-22T06:41:10.908411",
+      "frequency": 1,
+      "source_messages": [
+        "f296cda0-dede-4d3c-8f78-eadedfbc473d"
+      ]
+    },
+    "transport_type": {
+      "entity_type": "transport_type",
+      "entity_value": {
+        "entity_type": "transport_type",
+        "entity_value": "plane",
+        "confidence": 0.9,
+        "first_mentioned": "2025-06-22T06:41:07.506532",
+        "last_mentioned": "2025-06-22T06:41:07.506532",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T06:41:10.908411",
+      "last_mentioned": "2025-06-22T06:41:10.908411",
+      "frequency": 1,
+      "source_messages": [
+        "f296cda0-dede-4d3c-8f78-eadedfbc473d"
+      ]
+    }
+  },
+  "active_entities": {
+    "travel_month": "jul",
+    "travel_season": "leto",
+    "transport_type": "plane",
+    "amenities": []
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T06:42:13.091104",
+  "context_switch_detected": false
+}

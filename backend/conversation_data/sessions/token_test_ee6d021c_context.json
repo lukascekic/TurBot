@@ -1,0 +1,99 @@
+{
+  "session_id": "token_test_ee6d021c",
+  "total_messages": 4,
+  "recent_messages": [
+    {
+      "message_id": "1b97edae-ebae-4b93-9a3e-89acf47d5b1b",
+      "session_id": "token_test_ee6d021c",
+      "role": "assistant",
+      "content": "Za Vaše putovanje u Rim, preporučujem nekoliko opcija hotela koji su deo lanca Raeli. Ovi hoteli su kategorije 3* ili 4* i nalaze se u centralnoj gradskoj zoni, blizu stanice Termini. \n\n### Detalji o hotelima:\n- **Lokacija**: Hoteli su smešteni na oko 3 km od glavnih znamenitosti Rima, što omogućava lak pristup javnom prevozu.\n- **Sadržaji**: Sve sobe su opremljene telefonom, TV-om, klima uređajem i kupatilom. Dostupan je kontinentalni doručak koji se služi na bazi samoposluživanja.\n- **Cene**: Cene za smeštaj variraju, a detalje o cenama i slobodnim terminima možete pronaći u dokumenatima o aranžmanima (npr. \"Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf\").\n\n### Preporučeni hoteli:\n1. **Hotel Roma San Lorenzo**\n2. **Hotel Villa Rosa**\n3. **Hotel Center I, II, III**\n\n### Dodatne informacije:\n- Organizator putovanja zadržava pravo promene hotela u slučaju nepredviđenih okolnosti, a konačan hotel će biti poznat 5 dana pre putovanja.\n- Za više informacija o specifičnim terminima i cenama, preporučujem da pogledate detaljnije aranžmane na zvaničnim stranicama ili kontaktirate turističku agenciju.\n\nAko imate dodatnih pitanja ili specifične zahteve, slobodno ih podelite! Rado ću pomoći.",
+      "timestamp": "2025-06-22T06:57:36.482702",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Rim",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:57:29.191689",
+          "last_mentioned": "2025-06-22T06:57:29.191689",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "category": {
+          "entity_type": "category",
+          "entity_value": "hotel",
+          "confidence": 0.9,
+          "first_mentioned": "2025-06-22T06:57:29.192478",
+          "last_mentioned": "2025-06-22T06:57:29.192478",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [],
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:57:30.229155",
+          "last_mentioned": "2025-06-22T06:57:30.229155",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf",
+        "Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf",
+        "Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf",
+        "Rim_Praznik_rada_avionom_01.05._cenovnik_2901bb.pdf",
+        "Rim_Avio_Uskrs_i_Prvi_Maj_4_nocenja_cenovnik_1401vvt.pdf"
+      ],
+      "confidence": 0.953935772722704,
+      "metadata": {}
+    },
+    {
+      "message_id": "84c01f16-b7e3-4404-ad9c-ba2d29b3dee3",
+      "session_id": "token_test_ee6d021c",
+      "role": "user",
+      "content": "Ima li nešto za Amsterdam?",
+      "timestamp": "2025-06-22T06:57:39.046925",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "b15bd348-5c3a-4bd8-aa06-483706fd5bfa",
+      "session_id": "token_test_ee6d021c",
+      "role": "assistant",
+      "content": "Za Vaše putovanje u Amsterdam, preporučujem sledeće informacije i opcije smeštaja:\n\n### Opšti podaci o aranžmanu:\n- **Destinacija**: Amsterdam\n- **Datumi putovanja**: 30. april - 4. maj 2025. (5 dana / 4 noćenja)\n- **Tip putovanja**: Direktan let\n\n### Sadržaji i aktivnosti:\n- Uključeno panoramsko razgledanje grada\n- Mogućnost fakultativnih izleta, kao što su posete znamenitostima i lokalnim atrakcijama\n\n### Preporučeni hoteli:\nIako konkretni hoteli nisu navedeni u dostupnim dokumentima, obično se preporučuju hoteli u centralnim delovima Amsterdama, blizu glavnih atrakcija. Preporučujem da tražite smeštaj u sledećim oblastima:\n1. **Centar Amsterdama** - blizu Trga Dam i glavnih muzeja\n2. **De Pijp** - poznat po \"Albert Cuyp\" tržnici i živahnoj atmosferi\n3. **Jordaan** - slikovita četvrt sa mnogo restorana i kafića\n\n### Cene:\nCene variraju u zavisnosti od hotela i tipa sobe. Za konkretne cene i dostupnost, preporučujem da proverite zvanične turističke agencije ili platforme za rezervaciju hotela.\n\n### Dodatne informacije:\n- **Fakultativni izleti**: U ponudi su različiti izleti, uključujući posete okolnim mestima kao što su Zaanse Schans, gde možete videti vetrenjače i tradicionalne holandske kuće.\n- **Plaćanje**: Preporučuje se korišćenje kartica zbog ograničenja u prihvatanju gotovine u mnogim mestima (izvori: Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf).\n\nZa više informacija o specifičnim hotelima i dodatnim sadržajima, slobodno se obratite ili proverite zvanične stranice turističkih agencija. Ako imate dodatna pitanja ili specifične zahteve, slobodno ih podelite! Rado ću pomoći.",
+      "timestamp": "2025-06-22T06:57:49.198698",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Amsterdam",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:57:41.751666",
+          "last_mentioned": "2025-06-22T06:57:41.751666",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf"
+      ],
+      "confidence": 0.9935206736554802,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "destination": "Amsterdam",
+    "category": "hotel",
+    "amenities": []
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T06:57:49.198698",
+  "context_switch_detected": false
+}

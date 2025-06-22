@@ -1,0 +1,45 @@
+{
+  "session_id": "test123",
+  "total_messages": 6,
+  "recent_messages": [
+    {
+      "message_id": "336a5b8c-385f-4175-8976-b9c7063d44a2",
+      "session_id": "test123",
+      "role": "user",
+      "content": "Hotel u Rimu",
+      "timestamp": "2025-06-22T07:22:19.890029",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "fda4f668-337d-4f29-a955-6bf144331db3",
+      "session_id": "test123",
+      "role": "user",
+      "content": "Hotel u Rimu",
+      "timestamp": "2025-06-22T07:22:55.931693",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "3f2af89a-fab5-4c7d-8f9b-0d5678bd908f",
+      "session_id": "test123",
+      "role": "user",
+      "content": "Hotel u Rimu",
+      "timestamp": "2025-06-22T07:23:20.330074",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {},
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T07:23:20.330074",
+  "context_switch_detected": false
+}

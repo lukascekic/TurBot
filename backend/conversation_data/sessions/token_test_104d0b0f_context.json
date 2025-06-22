@@ -1,0 +1,148 @@
+{
+  "session_id": "token_test_104d0b0f",
+  "total_messages": 6,
+  "recent_messages": [
+    {
+      "message_id": "676b030b-cb0e-4d71-90ec-a393ed76b43c",
+      "session_id": "token_test_104d0b0f",
+      "role": "assistant",
+      "content": "U Amsterdamu možete izabrati različite opcije za smeštaj koje su prilagođene vašim potrebama i budžetu. Evo nekoliko informacija o hotelima i aranžmanima koji su dostupni za putovanje u Amsterdam u periodu od 30. aprila do 4. maja 2025. godine:\n\n### Aranžman:\n- **Destinacija**: Amsterdam\n- **Datumi putovanja**: 30. april - 4. maj 2025. (5 dana / 4 noćenja)\n- **Tip putovanja**: Direktan let\n\n### Uključeno u cenu:\n- **Smeštaj**: 4 noćenja u hotelu sa uključenim doručkom\n- **Panoramsko razgledanje grada**: Uključeno u aranžman\n- **Direktan let**: Iz Beograda do Amsterdama\n\n### Cene:\n- Cene aranžmana i hotela variraju u zavisnosti od tipa smeštaja i trenutne dostupnosti. Preporučujem da se obratite turističkoj agenciji koja nudi ovu specijalnu ponudu kako biste dobili tačne informacije o cenama i mogućim promocijama.\n\n### Preporučeni hoteli:\n- **Hoteli u centru Amsterdama**: Preporučujem da razmotrite hotele koji se nalaze u blizini glavnih atrakcija, kao što su Rijksmuseum, Van Gogh Museum i kanali Amsterdama. Ovi hoteli su popularni među turistima zbog svoje blizine i dostupnosti javnog prevoza.\n\n### Dodatne aktivnosti:\n- **Fakultativni izleti**: Postoje opcije za dodatne izlete, kao što je \"Mala holandska tura\", koja uključuje posetu tradicionalnim mestima, vetrenjačama i lokalnim tržištima. Cena ovih izleta je obično oko 90€ po osobi.\n\n### Rezervacije:\n- Preporučujem da rezervišete svoj smeštaj što je pre moguće zbog velike potražnje tokom praznika. Možete posetiti zvaničnu stranicu agencije koja nudi aranžman (npr. www.dreamland.travel) ili se direktno obratiti turističkoj agenciji.\n\nAko imate dodatnih pitanja ili vam je potrebna pomoć oko rezervacija, slobodno se javite!",
+      "timestamp": "2025-06-22T06:53:05.960171",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Amsterdam",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:52:56.825724",
+          "last_mentioned": "2025-06-22T06:52:56.825724",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf"
+      ],
+      "confidence": 0.9935989662904747,
+      "metadata": {}
+    },
+    {
+      "message_id": "d4c7243d-66da-495c-9830-f2f6b9b8359c",
+      "session_id": "token_test_104d0b0f",
+      "role": "user",
+      "content": "Šta imate za Istanbul?",
+      "timestamp": "2025-06-22T06:53:08.560198",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "594c2aa0-215d-4d40-85da-fb1cc790cb89",
+      "session_id": "token_test_104d0b0f",
+      "role": "assistant",
+      "content": "Istanbul je fascinantan grad koji nudi bogatu kulturnu baštinu, prelepe znamenitosti i raznovrsne aktivnosti. Evo detaljnih informacija o smeštaju i aktivnostima koje možete razmotriti tokom putovanja:\n\n### Smeštaj:\nZa putovanje u Istanbul, preporučujem da razmotrite sledeće opcije smeštaja:\n\n1. **Hoteli u centru**:\n   - **Hotel Grand Media** (3*** superior): Ovaj hotel se nalazi u četvrti Laleli, blizu tramvajske stanice i železničke stanice Aksaray. Sobe su renovirane i opremljene savremenim sadržajima. \n   - **Cene**: Cene se kreću od oko 50€ po noćenju, zavisno od datuma i dostupnosti (izvor: Istanbul_uskrs_i_prvi_maj_avionom_4_noci_cenovnik_1303fnt.pdf).\n\n2. **Dodatni hoteli**: Postoje i drugi hoteli sa 3* i 4*, koji su idealni za turiste zbog svoje blizine glavnim atrakcijama, kao što su Aja Sofija, Plava džamija i trg Sultanahmet.\n\n### Aktivnosti:\nTokom boravka u Istanbulu, preporučujem sledeće aktivnosti:\n\n1. **Razgledanje znamenitosti**:\n   - **Aja Sofija**: Nekadašnja katedrala, zatim džamija, a sada muzej. Obavezno je posetiti.\n   - **Plava džamija**: Poznata po prelepim plavim pločicama i impresivnoj arhitekturi.\n\n2. **Fakultativni izleti**:\n   - **Večera u orijentalnom restoranu** sa trbušnim plesom: Cene su oko 35€ po osobi (izvor: Istanbul_uskrs_i_prvi_maj_avionom_4_noci_cenovnik_1303fnt.pdf).\n   - **Poseta Dolmabahče palate**: Ulaznica i usluge lokalnog vodiča koštaju oko 45€ (izvor: Istanbul_uskrs_i_prvi_maj_avionom_4_noci_cenovnik_1303fnt.pdf).\n\n3. **Tržnice i bazari**:\n   - **Grand Bazaar**: Jedan od najvećih i najstarijih pokrivenih tržišta na svetu, savršeno mesto za kupovinu suvenira.\n   - **Spice Bazaar**: Idealno mesto za kupovinu začina, slatkiša i lokalnih delikatesa.\n\n### Preporučeni datumi:\n- **Putovanje**: Planirajte putovanje od 29. aprila do 3. maja 2025. godine, što je idealno vreme zbog praznika i lepog vremena.\n\n### Rezervacije:\nPreporučujem da rezervišete smeštaj i aktivnosti što je pre moguće zbog velike potražnje tokom praznika. Možete se obratiti turističkoj agenciji ili posetiti njihove zvanične stranice za više informacija i konkretne ponude.\n\nAko imate dodatnih pitanja ili vam je potrebna pomoć oko rezervacija, slobodno se javite!",
+      "timestamp": "2025-06-22T06:53:21.661562",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Istanbul",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:53:11.110336",
+          "last_mentioned": "2025-06-22T06:53:11.110336",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [],
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:53:12.004089",
+          "last_mentioned": "2025-06-22T06:53:12.004089",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Istanbul_uskrs_i_prvi_maj_avionom_4_noci_cenovnik_1303fnt.pdf",
+        "Istanbul_uskrs_i_prvi_maj_avionom_4_noci_cenovnik_1303fnt.pdf",
+        "Istanbul_Avio_Uskrs_i_Prvi_Maj_4_nocenja_cenovnik_1401vvt.pdf",
+        "Istanbul_uskrs_i_prvi_maj_avionom_4_noci_cenovnik_1303fnt.pdf",
+        "Istanbul_uskrs_i_prvi_maj_avionom_4_noci_cenovnik_1303fnt.pdf"
+      ],
+      "confidence": 0.9609740816372097,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {
+    "destination": {
+      "entity_type": "destination",
+      "entity_value": {
+        "entity_type": "destination",
+        "entity_value": "Rim",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T06:52:44.104558",
+        "last_mentioned": "2025-06-22T06:52:44.104558",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T06:52:51.345567",
+      "last_mentioned": "2025-06-22T06:52:51.345567",
+      "frequency": 1,
+      "source_messages": [
+        "2ef377fa-a8dc-45f8-a594-3db18a0f1a84"
+      ]
+    },
+    "category": {
+      "entity_type": "category",
+      "entity_value": {
+        "entity_type": "category",
+        "entity_value": "hotel",
+        "confidence": 0.9,
+        "first_mentioned": "2025-06-22T06:52:44.105341",
+        "last_mentioned": "2025-06-22T06:52:44.105341",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T06:52:51.345567",
+      "last_mentioned": "2025-06-22T06:52:51.345567",
+      "frequency": 1,
+      "source_messages": [
+        "2ef377fa-a8dc-45f8-a594-3db18a0f1a84"
+      ]
+    },
+    "amenities": {
+      "entity_type": "amenities",
+      "entity_value": {
+        "entity_type": "amenities",
+        "entity_value": [],
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T06:52:45.582900",
+        "last_mentioned": "2025-06-22T06:52:45.582900",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T06:52:51.345567",
+      "last_mentioned": "2025-06-22T06:52:51.345567",
+      "frequency": 1,
+      "source_messages": [
+        "2ef377fa-a8dc-45f8-a594-3db18a0f1a84"
+      ]
+    }
+  },
+  "active_entities": {
+    "destination": "Istanbul",
+    "category": "hotel",
+    "amenities": []
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T06:53:21.661562",
+  "context_switch_detected": false
+}
