@@ -188,6 +188,17 @@ VAŽNO - SRPSKI PADEŽI:
 - travel_month ima PRIORITET nad season - ako vidiš specifičan mesec koristi travel_month
 - Primeri: "u avgustu" -> travel_month: "august", "tokom maja" -> travel_month: "may"
 
+KRITIČNO - UVEK EKSTRAKTUJ AKO JE MOGUĆE:
+- category: UVEK pokušaj da odredis category na osnovu konteksta:
+  * "letovanje", "more", "plaža", "odmor" -> category: "tour"
+  * "hotel", "smestaj", "apartman" -> category: "hotel"  
+  * "restoran", "hrana", "jelo" -> category: "restaurant"
+  * "muzej", "crkva", "spomenik" -> category: "attraction"
+- price_range: UVEK pokušaj da procenis na osnovu konteksta:
+  * "jeftino", "budžet", "povoljno" -> price_range: "budget"
+  * "skup", "luksuz", "premium" -> price_range: "luxury"
+  * "srednji", "normalno" -> price_range: "moderate"
+
 PRAVILA:
 - semantic_query treba da bude kratak i fokusiran na suštinu
 - Koristi null za nepoznate vrednosti
@@ -195,6 +206,7 @@ PRAVILA:
 - price_range automatski na osnovu price_max: <100=budget, 100-300=moderate, 300-600=expensive, >600=luxury
 - travel_month ima prioritet nad season
 - confidence visok (>0.8) samo ako si siguran u većinu filtera
+- PRIORITET: category i price_range su kritični za queries bez location
 
 ODGOVORI SAMO JSON:
 """

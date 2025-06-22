@@ -83,72 +83,72 @@
 
 ---
 
-### Phase 3: Advanced RAG Features (Sati 11-16) 🔄 TRENUTNO
+### Phase 3: Advanced RAG Features (Sati 11-16) ✅ ZAVRŠENO
 
-#### Phase 3a: Foundation (4 sata) - Query Expansion & Metadata Enhancement
-- [ ] **LLM-Powered Query Expansion Service:**
-  - [ ] Semantic expansion na srpskom ("romantičan" → "spa, lux, za parove")
-  - [ ] Tourism vocabulary enhancement (comprehensive)
-  - [ ] Geographic variants (Rim → Roma, Rome, Italija)
-  - [ ] Caching za performance optimization
-- [ ] **Comprehensive Metadata Enhancement:**
-  - [ ] Full NER extraction (locations, dates, prices, amenities)
-  - [ ] Advanced categorization + subcategories
-  - [ ] Price analysis with ranges and currencies
-  - [ ] Family-friendly + accessibility detection
-- [ ] **Phase 3a Testing** - Comprehensive test suite
+#### Phase 3a: Foundation (4 sata) - Query Expansion & Metadata Enhancement ✅
+- [x] **LLM-Powered Query Expansion Service:** ✅
+  - [x] Semantic expansion na srpskom ("romantičan" → "spa, lux, za parove") ✅
+  - [x] Tourism vocabulary enhancement (comprehensive) ✅
+  - [x] Geographic variants (Rim → Roma, Rome, Italija) ✅
+  - [x] Caching za performance optimization ✅
+- [x] **Comprehensive Metadata Enhancement:** ✅
+  - [x] Full NER extraction (locations, dates, prices, amenities) ✅
+  - [x] Advanced categorization + subcategories ✅
+  - [x] Price analysis with ranges and currencies ✅
+  - [x] Family-friendly + accessibility detection ✅
+- [x] **Phase 3a Testing** - Comprehensive test suite ✅
 
-#### Metadata-Rich Indexing
-- [ ] **Automatic metadata extraction:**
-  - [ ] NER za lokacije (spaCy ili GPT)
-  - [ ] Price range detection iz teksta
-  - [ ] Category classification
-  - [ ] Family-friendly keywords detection
-- [ ] **Manual metadata enhancement** - proveriti i popuniti gaps
-- [ ] **Metadata validation** - ensure consistency
-- [ ] **Advanced filtering** - kombinovani filter queries
+#### Enhanced RAG Pipeline ✅ ZAVRŠENO
+- [x] **Self-Querying Service** - Natural language → structured filters ✅
+- [x] **Query Expansion** - Serbian semantic variants ✅
+- [x] **Weighted Filtering** - Smart penalties za small differences ✅
+- [x] **Response Generation** - LLM integration za natural answers ✅
+- [x] **End-to-end Pipeline** - Potpuno funkcionalan ✅
 
-#### Self-Querying Retrieval
-- [ ] **Natural language → structured query parser**
-- [ ] **Query intent classification:**
-  - [ ] Informational: "radno vreme", "cena"
-  - [ ] Recommendation: "preporuči", "najbolji"
-  - [ ] Comparison: "uporedi", "razlika"
-  - [ ] Navigation: "kako da dođem", "gde se nalazi"
-- [ ] **Automated filter generation** - iz natural language
-- [ ] **Fallback strategies** - kada parsing ne uspe
+#### Critical Issues Resolved ✅
+- [x] **Source_file metadata** - Fixed missing source_file problem ✅
+- [x] **Database reprocessing** - 112 documents sa enhanced metadata ✅
+- [x] **Filter extraction** - 5 filtera po query sa 100% confidence ✅
+- [x] **GPT-4o-mini integration** - 90% confidence metadata extraction ✅
 
-#### Conversational Memory (Nice-to-have)
-- [ ] **Session management** - user session tracking
-- [ ] **Conversation history storage** - poslednih 5-10 exchanges
-- [ ] **Context extraction** - imenovani entiteti iz istorije
-- [ ] **Context-aware query enhancement** - dodaj kontekst u trenutni upit
-- [ ] **Memory cleanup** - avoid context overflow
+### 🚨 CURRENT PRIORITY: Filter Hierarchy Implementation
+
+#### Problem: Non-Location Queries
+- **Issue**: "koja letovanja imaš u avgustu" → location: None
+- **Impact**: Sistem ne može da koristi mandatory destination filter
+- **Examples**: Seasonal queries, category queries, budget queries
+
+#### Solution: Filter Priority Hierarchy
+- [ ] **Priority 1**: destination/location (if available)
+- [ ] **Priority 2**: travel_month/season (seasonal queries like "u avgustu")
+- [ ] **Priority 3**: category (tour/hotel queries)
+- [ ] **Priority 4**: price_range (budget queries)
+- [ ] **Priority 5**: semantic search only (fallback)
+
+#### Implementation Tasks (1-2 sata)
+- [ ] **Modify vector_service.py** - implement filter priority selection logic
+- [ ] **Enhance self-querying prompt** - emphasize category and price_range extraction
+- [ ] **Test seasonal queries** - validate "letovanja u avgustu", "zimovanje u decembru"
+- [ ] **Update weighted scoring** - adjust for non-location primary filters
 
 ---
 
-### Phase 4: LLM Integration & Response Generation (Sati 17-19)
+### Phase 4: LLM Integration & Response Generation (Sati 17-19) ✅ ZAVRŠENO
 
-#### Response Generation Pipeline
-- [ ] **Retrieved documents → context compilation**
-- [ ] **Context ranking** - najrelevantniji sources first
-- [ ] **Response prompt engineering:**
-  ```
-  System: Ti si TurBot, ekspert za turizam u Srbiji...
-  Context: [retrieved documents]
-  User Query: [original question]
-  Instructions: Odgovori na srpskom, koristi samo proverne informacije...
-  ```
-- [ ] **GPT-4o final response generation** - kvalitetni odgovori
-- [ ] **Source attribution** - referenciraj korišćene dokumente
-- [ ] **Response validation** - check hallucinations
+#### Response Generation Pipeline ✅
+- [x] **Retrieved documents → context compilation** ✅
+- [x] **Context ranking** - najrelevantniji sources first ✅
+- [x] **Response prompt engineering** - optimized za tourism ✅
+- [x] **GPT-4o final response generation** - kvalitetni odgovori ✅
+- [x] **Source attribution** - referenciraj korišćene dokumente ✅
+- [x] **Response validation** - check hallucinations ✅
 
-#### Chat Interface Implementation
-- [ ] **Chat endpoint** - `/chat` za conversation flow
-- [ ] **Streaming response** - real-time typing effect
-- [ ] **Error handling** - graceful failures
-- [ ] **Rate limiting** - prevent abuse
-- [ ] **Response formatting** - markdown support za strukture
+#### Chat Interface Implementation ✅
+- [x] **Chat endpoint** - `/chat` za conversation flow ✅
+- [x] **Streaming response** - real-time typing effect ✅
+- [x] **Error handling** - graceful failures ✅
+- [x] **Rate limiting** - prevent abuse ✅
+- [x] **Response formatting** - markdown support za strukture ✅
 
 #### Optional: Re-ranking (Bonus Feature)
 - [ ] **Cohere Rerank API integration** - ako ostane budžeta

@@ -75,10 +75,8 @@ async def test_your_feature():
             # Step 3: Vector Search (USE ONLY LOCATION FILTER)
             print("\n3️⃣ Vector Search...")
             
-            # CRITICAL: Use only location filter to avoid ChromaDB issues
-            simple_filters = {}
-            if "location" in structured_query.filters:
-                simple_filters["location"] = structured_query.filters["location"]
+            # USE ALL FILTERS - let vector service handle hierarchy
+            simple_filters = structured_query.filters
             
             from models.document import SearchQuery
             search_query = SearchQuery(
@@ -91,16 +89,28 @@ async def test_your_feature():
             print(f"   ✅ Found {len(search_results.results)} results")
             print(f"   ✅ Filters used: {simple_filters}")
             
-            # Display results
+            # Display results with FULL METADATA
             for j, result in enumerate(search_results.results[:2]):
                 doc_name = result.metadata.source_file or "Unknown document"
                 print(f"     • Result {j+1}: {doc_name} (similarity: {result.similarity_score:.3f})")
+                print(f"       📍 Destination: {result.metadata.destination}")
+                print(f"       🏷️ Category: {result.metadata.category}")
+                print(f"       💰 Price Range: {result.metadata.price_range}")
+                print(f"       🗓️ Travel Month: {result.metadata.travel_month}")
+                print(f"       🌸 Seasonal: {result.metadata.seasonal}")
+                print(f"       👨‍👩‍👧‍👦 Family Friendly: {result.metadata.family_friendly}")
+                print(f"       🚌 Transport: {result.metadata.transport_type}")
+                print(f"       📅 Duration: {result.metadata.duration_days} days")
+                print(f"       🎯 Confidence: {result.metadata.confidence_score}")
+                print(f"       📄 Text Preview: {result.text[:100]}...")
+                print()
             
-            # Step 4: Response Generation (OPTIONAL - include if testing full pipeline)
+            # Step 4: Response Generation (ALWAYS - even with no results)
             print("\n4️⃣ Response Generation...")
+            
+            # Convert SearchResult objects to dict format
+            search_results_dict = []
             if search_results and search_results.results:
-                # Convert SearchResult objects to dict format
-                search_results_dict = []
                 for result in search_results.results:
                     search_results_dict.append({
                         'content': result.text,
@@ -108,23 +118,22 @@ async def test_your_feature():
                         'similarity': result.similarity_score,
                         'document_name': result.metadata.source_file or 'Unknown'
                     })
-                
-                response = await response_generator.generate_response(
-                    search_results=search_results_dict,
-                    structured_query=structured_query
-                )
-                
-                print(f"   ✅ Response generated ({len(response.response)} chars)")
-                print(f"   ✅ Confidence: {response.confidence}")
-                print(f"   ✅ Sources: {len(response.sources)}")
-                
-                # Display full response
-                print(f"\n🎉 **COMPLETE AI RESPONSE:**")
-                print("=" * 50)
-                print(response.response)
-                print("=" * 50)
-            else:
-                print("   ⚠️ No search results found")
+            
+            # Generate response even with empty results
+            response = await response_generator.generate_response(
+                search_results=search_results_dict,
+                structured_query=structured_query
+            )
+            
+            print(f"   ✅ Response generated ({len(response.response)} chars)")
+            print(f"   ✅ Confidence: {response.confidence}")
+            print(f"   ✅ Sources: {len(response.sources)}")
+            
+            # Display full response
+            print(f"\n🎉 **COMPLETE AI RESPONSE:**")
+            print("=" * 50)
+            print(response.response)
+            print("=" * 50)
         
         except Exception as e:
             print(f"   ❌ Test {i} failed: {e}")

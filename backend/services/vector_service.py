@@ -165,11 +165,19 @@ class VectorService:
                 "n_results": query.limit * 3  # Get more results for post-filtering
             }
             
-            # Add metadata filters if provided
+            # Add metadata filters if provided using PRIORITY HIERARCHY
             primary_filter = None
             if query.filters:
-                # Use only the most important filter for ChromaDB (to avoid limitations)
-                priority_filters = ["destination", "location", "category"]  # destination first, location for backward compatibility
+                # FILTER PRIORITY HIERARCHY for non-location queries
+                priority_filters = [
+                    "destination",      # Priority 1: Location-specific queries
+                    "location",         # Priority 1b: Backward compatibility
+                    "travel_month",     # Priority 2: Seasonal queries ("u avgustu")
+                    "season",           # Priority 2b: General seasonal
+                    "category",         # Priority 3: Category queries ("letovanja", "hoteli")
+                    "price_range",      # Priority 4: Budget queries ("jeftino")
+                    "subcategory"       # Priority 5: Specific subcategories
+                ]
                 
                 for filter_key in priority_filters:
                     if filter_key in query.filters:
@@ -182,9 +190,32 @@ class VectorService:
                                 # Always use "destination" in ChromaDB query (new schema)
                                 primary_filter = {"destination": normalized_value}
                                 search_params["where"] = primary_filter
+                                logger.info(f"🎯 Using LOCATION filter: destination={normalized_value}")
+                            elif filter_key == "travel_month":
+                                # Use travel_month for seasonal queries
+                                primary_filter = {"travel_month": str(value).lower()}
+                                search_params["where"] = primary_filter
+                                logger.info(f"🗓️ Using SEASONAL filter: travel_month={value}")
+                            elif filter_key == "season":
+                                # Use season as fallback for travel_month
+                                primary_filter = {"seasonal": str(value).lower()}
+                                search_params["where"] = primary_filter
+                                logger.info(f"🌸 Using SEASON filter: seasonal={value}")
+                            elif filter_key == "category":
+                                # Use category for type-specific queries
+                                primary_filter = {"category": str(value).lower()}
+                                search_params["where"] = primary_filter
+                                logger.info(f"🏷️ Using CATEGORY filter: category={value}")
+                            elif filter_key == "price_range":
+                                # Use price_range for budget queries
+                                primary_filter = {"price_range": str(value).lower()}
+                                search_params["where"] = primary_filter
+                                logger.info(f"💰 Using PRICE filter: price_range={value}")
                             else:
+                                # Generic filter handling
                                 primary_filter = {filter_key: str(value)}
                                 search_params["where"] = primary_filter
+                                logger.info(f"🔧 Using GENERIC filter: {filter_key}={value}")
                             break  # Use only ONE filter to avoid ChromaDB limitations
             
             # Execute ChromaDB query

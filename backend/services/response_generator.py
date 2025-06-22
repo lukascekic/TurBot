@@ -138,49 +138,45 @@ class ResponseGenerator:
         filters_summary = self._prepare_filters_summary(structured_query.filters)
         
         prompt = f"""
-Ti si TurBot, ekspertni turistički agent koji pomaže klijentima da pronađu najbolje turističke aranžmane. 
-Odgovaraj na srpskom jeziku, prirodno i profesionalno.
+Ti si TurBot, profesionalni turistički agent. Odgovaraj ljubazno i korisno na srpskom jeziku.
 
 KORISNIKOV UPIT: "{structured_query.semantic_query}"
-INTENT: {structured_query.intent}
-FILTTERI: {filters_summary}
+TRAŽI: {filters_summary}
 
 PRONAĐENI REZULTATI:
 {results_summary}
 
-STRUKTURIRANI PODACI:
-{json.dumps(structured_data, ensure_ascii=False, indent=2)}
+KRITIČNO - UVEK PRIKAŽI PRONAĐENE REZULTATE:
+- Ako ima rezultata - OBAVEZNO ih pomeni čak i ako se ne poklapaju svi kriterijumi
+- Objasni šta se poklapa a šta ne (lokacija ✓, datum ✗, cena ✓)
+- Daj konkretne opcije sa detaljima (naziv, cena, datum)
 
-ZADATAK:
-Generiši prirodan, korisničan odgovor na srpskom jeziku koji:
-
-1. ODGOVARA DIREKTNO na korisnikov upit
-2. PREDSTAVLJA pronađene opcije jasno i organizovano
-3. IZDVAJA ključne informacije (cene, lokacije, amenitije)
-4. OBJAŠNJAVA zašto rezultati možda ne odgovaraju savršeno korisnikovim kriterijumima
-5. PREDLAŽE ALTERNATIVE kada rezultati nisu idealni
-6. KORISTI PRIRODAN, KONVERZACIJSKI ton
-7. REFERENCIŠE izvore ("Prema aranžmanu XYZ...")
-8. PREDLAŽE sledeće korake ili pitanja
-
-POSEBNO VAŽNO:
-- Ako nema rezultata za tačnu destinaciju, predloži slične destinacije
-- Ako cene ne odgovaraju budžetu, objasni razliku i predloži alternative
-- Ako datum ne odgovara, predloži slične datume
-- Budi transparentan o ograničenjima pronađenih rezultata
-
-STIL:
-- Prirodan srpski jezik
-- Profesionalan ali prijateljski ton
-- Jasne i konkretne informacije
-- Izbegavaj previše tehničke detalje
-- Fokus na korisnu vrednost za klijenta
+PRISTUP:
+- Budi TRANSPARENTAN o poklapanju kriterijuma
+- Uvek prikaži dostupne opcije pa tek onda alternative
+- Koristi profesionalan ali prijatan ton
+- Fokus na KONKRETNE INFORMACIJE i OPCIJE
 
 STRUKTURA ODGOVORA:
-1. Kratko uvodno obraćanje
-2. Glavni sadržaj sa opcijama
-3. Izdvajanje najbitnijih detalja
-4. Poziv na akciju ili sledeći korak
+
+1. **POZDRAV**: "Zdravo! [kratka procena]"
+
+2. **DOSTUPNE OPCIJE** (ako ima rezultata):
+   - Navedi 2-3 konkretne opcije sa detaljima
+   - Objasni šta se poklapa a šta ne sa zahtevima
+   
+3. **ALTERNATIVE** (ako se ne poklapaju svi kriterijumi):
+   - Predloži slične opcije ili datume
+   - Objasni zašto su relevantne
+
+4. **POZIV NA AKCIJU**:
+   - "Da li vas neka od ovih opcija zanima?"
+
+STIL:
+- Profesionalan ali prijatan srpski
+- Direktan i informativan
+- Fokus na KONKRETNE OPCIJE i DETALJE
+- Bez previše casual izraza
 
 ODGOVOR:
 """
@@ -217,12 +213,45 @@ ODGOVOR:
         """
         Generate template-based response as fallback
         """
+        if not search_results:
+            # Generate helpful response even with no results
+            filters = structured_query.filters or {}
+            location = filters.get('location') or filters.get('destination')
+            travel_month = filters.get('travel_month')
+            category = filters.get('category')
+            price_range = filters.get('price_range')
+            
+            response_parts = []
+            
+            # Acknowledge what they're looking for
+            if location and travel_month:
+                response_parts.append(f"Zdravo! Nažalost nemam aranžmane za {location} u {travel_month}-u u našoj trenutnoj bazi.")
+            elif location:
+                response_parts.append(f"Zdravo! Nažalost, trenutno nemam opcije za {location} koje odgovaraju vašim kriterijumima.")
+            elif travel_month:
+                response_parts.append(f"Zdravo! Nemam dostupne aranžmane za {travel_month} koji odgovaraju vašoj pretrazi.")
+            elif category:
+                response_parts.append(f"Zdravo! Trenutno nemam {category} opcije koje odgovaraju vašim zahtevima.")
+            else:
+                response_parts.append("Zdravo! Nažalost, nisu pronađeni rezultati za vašu pretragu.")
+            
+            # Suggest alternatives based on what was requested
+            response_parts.append("\nAli evo šta mogu da predložim:")
+            
+            # Generate smart alternatives based on filters
+            alternatives = self._generate_smart_alternatives(filters)
+            for alternative in alternatives:
+                response_parts.append(f"• {alternative}")
+            
+            response_parts.append("• Javite mi specifičnije zahteve pa da istražimo zajedno!")
+            
+            response_parts.append("\nDa li vas neka od ovih opcija zanima?")
+            
+            return "\n".join(response_parts)
+        
+        # Handle case with results
         template = self.response_templates.get(structured_query.intent, 
                                                "Evo rezultata vaše pretrage:")
-        
-        if not search_results:
-            return "Nažalost, nije pronađen nijedan rezultat koji odgovara vašim kriterijumima. Molimo pokušajte sa drugačijim pretragom."
-        
         response_parts = [template]
         
         for i, result in enumerate(search_results[:3], 1):  # Limit to top 3 results
@@ -236,6 +265,166 @@ ODGOVOR:
             response_parts.append("")
         
         return "\n".join(response_parts)
+
+    def _generate_smart_alternatives(self, filters: Dict[str, Any]) -> List[str]:
+        """
+        Generate smart alternative suggestions based on filters
+        """
+        alternatives = []
+        
+        location = filters.get('location') or filters.get('destination')
+        travel_month = filters.get('travel_month')
+        category = filters.get('category')
+        price_range = filters.get('price_range')
+        
+        # Month-based alternatives
+        if travel_month:
+            month_alternatives = self._get_month_alternatives(travel_month)
+            if month_alternatives:
+                alternatives.extend(month_alternatives)
+        
+        # Location-based alternatives
+        if location:
+            location_alternatives = self._get_location_alternatives(location)
+            if location_alternatives:
+                alternatives.extend(location_alternatives)
+        
+        # Category-based alternatives
+        if category:
+            category_alternatives = self._get_category_alternatives(category)
+            if category_alternatives:
+                alternatives.extend(category_alternatives)
+        
+        # Price-based alternatives
+        if price_range:
+            price_alternatives = self._get_price_alternatives(price_range)
+            if price_alternatives:
+                alternatives.extend(price_alternatives)
+        
+        # Generic alternatives if nothing specific found
+        if not alternatives:
+            alternatives = [
+                "Proverite slične destinacije u regionu",
+                "Razmislite o alternativnim datumima putovanja",
+                "Istražite različite tipove aranžmana"
+            ]
+        
+        return alternatives[:4]  # Limit to 4 alternatives
+
+    def _get_month_alternatives(self, travel_month: str) -> List[str]:
+        """
+        Get alternative months based on requested month
+        """
+        month_mapping = {
+            'january': {'adjacent': ['december', 'february'], 'season': 'zimski'},
+            'february': {'adjacent': ['january', 'march'], 'season': 'zimski'},
+            'march': {'adjacent': ['february', 'april'], 'season': 'prolećni'},
+            'april': {'adjacent': ['march', 'may'], 'season': 'prolećni'},
+            'may': {'adjacent': ['april', 'june'], 'season': 'prolećni'},
+            'june': {'adjacent': ['may', 'july'], 'season': 'letnji'},
+            'july': {'adjacent': ['june', 'august'], 'season': 'letnji'},
+            'august': {'adjacent': ['july', 'september'], 'season': 'letnji'},
+            'september': {'adjacent': ['august', 'october'], 'season': 'jesenji'},
+            'october': {'adjacent': ['september', 'november'], 'season': 'jesenji'},
+            'november': {'adjacent': ['october', 'december'], 'season': 'jesenji'},
+            'december': {'adjacent': ['november', 'january'], 'season': 'zimski'}
+        }
+        
+        # Serbian month names
+        serbian_months = {
+            'january': 'januar', 'february': 'februar', 'march': 'mart',
+            'april': 'april', 'may': 'maj', 'june': 'jun',
+            'july': 'jul', 'august': 'avgust', 'september': 'septembar',
+            'october': 'oktobar', 'november': 'novembar', 'december': 'decembar'
+        }
+        
+        alternatives = []
+        
+        if travel_month in month_mapping:
+            month_info = month_mapping[travel_month]
+            adjacent_months = month_info['adjacent']
+            season = month_info['season']
+            
+            # Adjacent months
+            serbian_adjacent = [serbian_months.get(m, m) for m in adjacent_months]
+            alternatives.append(f"Proverite aranžmane za {' ili '.join(serbian_adjacent)} - često su slični")
+            
+            # Seasonal suggestions
+            if season == 'letnji':
+                alternatives.append("Razmislite o destinacijama popularnima leti: Grčka, Turska, Hrvatska, Crna Gora")
+            elif season == 'zimski':
+                alternatives.append("Razmislite o zimskim destinacijama: Austrija, Švajcarska, Francuska (skijanje)")
+            elif season == 'prolećni':
+                alternatives.append("Prolećne destinacije: Italija, Španija, Portugalija su prelepe u to vreme")
+            elif season == 'jesenji':
+                alternatives.append("Jesenje destinacije: Turska, Egipat, Maroko imaju prijatne temperature")
+        
+        return alternatives
+
+    def _get_location_alternatives(self, location: str) -> List[str]:
+        """
+        Get alternative locations based on requested location
+        """
+        location_groups = {
+            'Rim': ['Firenca', 'Venecija', 'Milano', 'Napulj'],
+            'Pariz': ['London', 'Amsterdam', 'Brisel', 'Madrid'],
+            'Amsterdam': ['Brisel', 'Pariz', 'Berlin', 'Prag'],
+            'Istanbul': ['Antalija', 'Kapadokija', 'Izmir', 'Bodrum'],
+            'Madrid': ['Barselona', 'Sevilla', 'Lisabon', 'Porto'],
+            'Atina': ['Solun', 'Santorini', 'Mikonos', 'Krit'],
+            'Budva': ['Kotor', 'Herceg Novi', 'Tivat', 'Bar'],
+            'Split': ['Dubrovnik', 'Zadar', 'Pula', 'Rijeka']
+        }
+        
+        alternatives = []
+        
+        if location in location_groups:
+            similar_cities = location_groups[location][:3]  # Top 3 alternatives
+            alternatives.append(f"Slične destinacije: {', '.join(similar_cities)}")
+            alternatives.append(f"{location} u drugim mesecima kada možda imamo više opcija")
+        else:
+            alternatives.append(f"Slične destinacije u istom regionu kao {location}")
+            alternatives.append(f"{location} u drugim mesecima kada možda imamo više opcija")
+        
+        return alternatives
+
+    def _get_category_alternatives(self, category: str) -> List[str]:
+        """
+        Get alternative categories based on requested category
+        """
+        category_alternatives = {
+            'hotel': ['apartman', 'villa', 'resort', 'pansion'],
+            'tour': ['izlet', 'tura', 'aranžman', 'paket'],
+            'restaurant': ['kafić', 'bar', 'restoran', 'lokalna gastronomija'],
+            'attraction': ['muzej', 'spomenik', 'park', 'kulturna baština']
+        }
+        
+        alternatives = []
+        
+        if category in category_alternatives:
+            alt_categories = category_alternatives[category][:2]
+            alternatives.append(f"Razmislite o alternativama: {', '.join(alt_categories)}")
+        
+        return alternatives
+
+    def _get_price_alternatives(self, price_range: str) -> List[str]:
+        """
+        Get alternative price ranges based on requested price range
+        """
+        price_alternatives = {
+            'budget': ['moderate - možda nešto skuplje ali sa boljim sadržajem'],
+            'moderate': ['budget - ekonomičnije opcije', 'expensive - luksuznije opcije'],
+            'expensive': ['moderate - nešto povoljnije opcije'],
+            'luxury': ['expensive - i dalje kvalitetno ali pristupačnije']
+        }
+        
+        alternatives = []
+        
+        if price_range in price_alternatives:
+            for alt in price_alternatives[price_range]:
+                alternatives.append(f"Proverite {alt}")
+        
+        return alternatives
 
     def _extract_structured_data(self, search_results: List[Dict[str, Any]]) -> Dict[str, Any]:
         """
