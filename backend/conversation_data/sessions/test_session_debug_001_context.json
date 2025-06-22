@@ -1,0 +1,47 @@
+{
+  "session_id": "test_session_debug_001",
+  "total_messages": 3,
+  "recent_messages": [
+    {
+      "message_id": "af269891-98e4-4944-b517-6b9e3d9b926f",
+      "session_id": "test_session_debug_001",
+      "role": "user",
+      "content": "Jel imas nesto za Amsterdam?",
+      "timestamp": "2025-06-22T06:22:23.981347",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "051edd2f-7e2f-461e-a64f-c44c8e41a3ac",
+      "session_id": "test_session_debug_001",
+      "role": "assistant",
+      "content": "Zdravo! Pronašao sam nekoliko opcija za putovanje u Amsterdam u periodu od 30. aprila do 4. maja 2025. godine, koje bi mogle biti zanimljive.\n\nDOSTUPNE OPCIJE:\n1. **Amsterdam – Prvi Maj 2025**\n   - **Datum:** 30. aprila - 4. maja 2025.\n   - **Trajanje:** 5 dana / 4 noćenja\n   - **Tip:** Direktan let\n   - **Uključeno:** Panoramsko razgledanje grada\n   - **Cena:** 1504 EUR (detalji u cenovniku)\n\nDa li vas neka od ovih opcija zanima?",
+      "timestamp": "2025-06-22T06:22:26.862057",
+      "entities_extracted": {},
+      "sources_used": [
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf"
+      ],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "a2ec791e-c3b8-4c4e-aef1-44321470e201",
+      "session_id": "test_session_debug_001",
+      "role": "user",
+      "content": "Jel mozes da mi das detaljniji opis putovanja za prvi maj?",
+      "timestamp": "2025-06-22T06:22:26.866277",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {},
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T06:22:26.866277",
+  "context_switch_detected": false
+}

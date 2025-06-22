@@ -80,7 +80,13 @@ export default function AgentPage() {
 
   const createNewChat = async () => {
     try {
-      const session = await turBotAPI.createSession('agent')
+      // Generate user identifier (in production, use proper auth)
+      const userIdentifier = localStorage.getItem('turbot_user_id') || `agent_${Date.now()}`
+      localStorage.setItem('turbot_user_id', userIdentifier)
+      
+      // Create new session with user identification
+      const session = await turBotAPI.createSessionWithUser('agent', userIdentifier)
+      
       const newSession: ChatSession = {
         id: session.session_id,
         title: "Nova sesija",
@@ -99,15 +105,26 @@ export default function AgentPage() {
     }
   }
 
-  const deleteChat = (sessionId: string) => {
-    setChatSessions((prev) => prev.filter((session) => session.id !== sessionId))
-    if (currentSessionId === sessionId) {
-      const remainingSessions = chatSessions.filter((session) => session.id !== sessionId)
-      if (remainingSessions.length > 0) {
-        setCurrentSessionId(remainingSessions[0].id)
-      } else {
-        createNewChat()
+  const deleteChat = async (sessionId: string) => {
+    try {
+      // Reset conversation memory on backend
+      await turBotAPI.resetSession(sessionId)
+      
+      // Remove from frontend state
+      setChatSessions((prev) => prev.filter((session) => session.id !== sessionId))
+      
+      if (currentSessionId === sessionId) {
+        const remainingSessions = chatSessions.filter((session) => session.id !== sessionId)
+        if (remainingSessions.length > 0) {
+          setCurrentSessionId(remainingSessions[0].id)
+        } else {
+          createNewChat()
+        }
       }
+    } catch (error) {
+      console.error('Failed to delete session:', error)
+      // Still remove from frontend even if backend fails
+      setChatSessions((prev) => prev.filter((session) => session.id !== sessionId))
     }
   }
 

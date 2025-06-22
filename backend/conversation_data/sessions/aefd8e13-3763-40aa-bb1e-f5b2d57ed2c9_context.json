@@ -1,0 +1,52 @@
+{
+  "session_id": "aefd8e13-3763-40aa-bb1e-f5b2d57ed2c9",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "7c44f2af-4d8e-40b1-9e6a-a98e537d6974",
+      "session_id": "aefd8e13-3763-40aa-bb1e-f5b2d57ed2c9",
+      "role": "user",
+      "content": "Jel imas neko putovanje u Amsterdam i kad?",
+      "timestamp": "2025-06-22T06:33:00.443749",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "bdd07d5a-1a01-4e70-b284-4969fa4350b4",
+      "session_id": "aefd8e13-3763-40aa-bb1e-f5b2d57ed2c9",
+      "role": "assistant",
+      "content": "Imam sjajnu ponudu za putovanje u Amsterdam! \n\n### Detalji putovanja:\n**Datumi:** 30. april - 4. maj 2025.  \n**Tip putovanja:** Direktan let  \n**Trajanje:** 5 dana\n\n### Cena putovanja:\nCene se kreću u okviru različitih aranžmana, a plaćanje se vrši po srednjem kursu NBS. Detalji o cijenama mogu se naći u pratećim dokumentima. \n\n### Usluge uključene u aranžman:\n- **Prtljag:** Putnik ima pravo na 1 besplatan prtljag maksimalne težine 23 kg, kao i na ručni prtljag do 8 kg. (Izvor: Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf)\n- **Fakultativni izleti:** U ponudi su razni izleti, kao što je \"Mala Holandska Tura\" sa turističkim vodičem na srpskom jeziku po ceni od 90€ po osobi. (Izvor: Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf)\n\n### Napomene:\n- **Plaćanje:** 40% prilikom rezervacije, a ostatak 60% najkasnije 14 dana pre putovanja. (Izvor: Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf)\n- **Dokumentacija:** Za putovanje je neophodan važeći pasoš sa rokom važenja od najmanje šest meseci od dana završetka putovanja. (Izvor: Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf)\n\n### Kako rezervisati:\nPreporučujem da se odlučite što pre, jer su mesta ograničena. Ako imate dodatna pitanja ili želite da rezervišete putovanje, slobodno mi se obratite!\n\nRadujem se vašem odgovoru i nadam se da ćemo uskoro organizovati vaše putovanje u Amsterdam!",
+      "timestamp": "2025-06-22T06:33:13.325740",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Amsterdam",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:33:03.013124",
+          "last_mentioned": "2025-06-22T06:33:03.013124",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf"
+      ],
+      "confidence": 0.9920012669845957,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "destination": "Amsterdam"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T06:33:13.325740",
+  "context_switch_detected": false
+}

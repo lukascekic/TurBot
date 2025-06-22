@@ -41,6 +41,30 @@ export default function HomePage() {
     // Pass suggestion to chat bubble - would need to modify ChatBubble to accept initial message
   }
 
+  const createNewSession = async () => {
+    try {
+      // Generate user identifier for client (in production, use proper auth)
+      const userIdentifier = localStorage.getItem('turbot_client_id') || `client_${Date.now()}`
+      localStorage.setItem('turbot_client_id', userIdentifier)
+      
+      // Create new session with user identification
+      const sessionResponse = await turBotAPI.createSessionWithUser('client', userIdentifier)
+      const newSessionId = sessionResponse.session_id
+      
+      setSessionId(newSessionId)
+      localStorage.setItem('turbot_session_id', newSessionId)
+      
+      return newSessionId
+    } catch (error) {
+      console.error('Failed to create new session:', error)
+      // Fallback to timestamp-based session
+      const fallbackSessionId = `client_${Date.now()}`
+      setSessionId(fallbackSessionId)
+      localStorage.setItem('turbot_session_id', fallbackSessionId)
+      return fallbackSessionId
+    }
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}

@@ -216,6 +216,40 @@ class TurBotAPI {
       return false;
     }
   }
+
+  async resetSession(sessionId: string): Promise<void> {
+    try {
+      await this.api.delete(`/sessions/${sessionId}`);
+    } catch (error) {
+      console.error('Reset session error:', error);
+      throw error;
+    }
+  }
+
+  async createSessionWithUser(userType: 'client' | 'agent', userIdentifier?: string): Promise<SessionResponse> {
+    try {
+      const response = await this.api.post('/sessions/create-with-user', {
+        user_type: userType,
+        user_id: userIdentifier
+      }, {
+        params: userIdentifier ? { user_identifier: userIdentifier } : {}
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Create session with user error:', error);
+      throw error;
+    }
+  }
+
+  async getUserSessions(userIdentifier: string): Promise<SessionResponse[]> {
+    try {
+      const response = await this.api.get(`/sessions/user/${userIdentifier}`);
+      return response.data.user_sessions;
+    } catch (error) {
+      console.error('Get user sessions error:', error);
+      return [];
+    }
+  }
 }
 
 export const turBotAPI = new TurBotAPI();

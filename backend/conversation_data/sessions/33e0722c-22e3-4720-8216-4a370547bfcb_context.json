@@ -1,0 +1,150 @@
+{
+  "session_id": "33e0722c-22e3-4720-8216-4a370547bfcb",
+  "total_messages": 6,
+  "recent_messages": [
+    {
+      "message_id": "99fb591f-e2bc-41c5-94a2-883b491445c2",
+      "session_id": "33e0722c-22e3-4720-8216-4a370547bfcb",
+      "role": "assistant",
+      "content": "Zdravo! Pronašao sam nekoliko informacija o dostupnosti hotela Raeli u Rimu.\n\n**DOSTUPNE OPCIJE**:\n\n1. **Hotel Raeli** (kategorija 3* ili 4*)\n   - **Lokacija**: U zoni stanice Termini, blizu glavnih znamenitosti.\n   - **Sadržaji**: Sve sobe su opremljene telefonom, TV-om, klima uređajem i kupatilom. Doručak je kontinentalni (samoposluživanje).\n   - **Cena**: Približno 779 € po osobi za 4 noći.\n   - **Poklapanje**: Lokacija ✓, Kategorija ✓, ali treba proveriti dostupnost za specifične datume.\n\nNažalost, nisam mogao pronaći tačne datume kada je hotel Raeli dostupan. Preporučujem da kontaktirate hotel ili organizatora putovanja da biste dobili precizne informacije o dostupnosti u željenim mesecima.\n\n**ALTERNATIVE**:\nAko vaši datumi nisu fleksibilni, možete razmotriti i druge hotele u centralnom delu Rima koji nude slične sadržaje kao Raeli. Takođe, ukoliko vam je važna blizina znamenitostima, predlažem da tražite hotele u blizini stanice Termini.\n\n**POZIV NA AKCIJU**:\nDa li vas neka od ovih opcija zanima? Mogu vam pomoći da rezervišemo ili pronađemo dodatne informacije!",
+      "timestamp": "2025-06-22T05:56:03.562431",
+      "entities_extracted": {
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "mesec_ili_null",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T05:55:59.065033",
+          "last_mentioned": "2025-06-22T05:55:59.065033",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [],
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T05:55:59.065033",
+          "last_mentioned": "2025-06-22T05:55:59.065033",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Rim_Praznik_rada_avionom_01.05._cenovnik_2901bb.pdf",
+        "Rim_Praznik_rada_avionom_01.05._cenovnik_2901bb.pdf",
+        "Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf",
+        "Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf",
+        "Rim_Avio_Uskrs_i_Prvi_Maj_4_nocenja_cenovnik_1401vvt.pdf"
+      ],
+      "confidence": 0.7218235537750894,
+      "metadata": {}
+    },
+    {
+      "message_id": "08e3240e-29da-41ec-87ba-1d9552deeb50",
+      "session_id": "33e0722c-22e3-4720-8216-4a370547bfcb",
+      "role": "user",
+      "content": "Moze nesto u blizini te stanice",
+      "timestamp": "2025-06-22T05:57:38.113722",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "53035615-1e18-4aa0-8d21-1b08620aeeaf",
+      "session_id": "33e0722c-22e3-4720-8216-4a370547bfcb",
+      "role": "assistant",
+      "content": "Zdravo! Pronašao sam nekoliko informacija o smeštaju u Rimu koji odgovara vašem zahtevu.\n\n**DOSTUPNE OPCIJE**:\n\n1. **Hotel Raeli** (kategorija 3* ili 4*)\n   - **Lokacija**: U blizini stanice Termini, centralna gradska zona.\n   - **Sadržaji**: Sobe su opremljene telefonom, TV-om, klima uređajem i kupatilom. Doručak je kontinentalni (samoposluživanje).\n   - **Cena**: Približno 779 € po osobi za 4 noći.\n   - **Poklapanje**: Lokacija ✓, Kategorija ✓, ali dostupnost je potrebno proveriti za konkretne datume.\n\n2. **Alternativni hoteli iz lanca Raeli**\n   - **Slične opcije**: Mogu se naći i drugi hoteli iz lanca Raeli koji su takođe u blizini stanice Termini, sa sličnim sadržajima i cenama.\n   - **Cena**: Prosečne cene su slične, oko 779 € po osobi za 4 noći, u zavisnosti od trenutne dostupnosti.\n\nNažalost, nisam mogao da pronađem konkretne datume kada su ovi hoteli dostupni. Preporučujem da kontaktirate hotel direktno ili se obratite organizatoru putovanja za tačne informacije o dostupnosti u željenim mesecima.\n\n**ALTERNATIVE**:\nAko su vaši datumi fleksibilni, možete razmotriti i druge hotele u centralnom delu Rima koji nude slične sadržaje kao Raeli. Takođe, blizina znamenitostima može biti dodatni plus prilikom izbora.\n\n**POZIV NA AKCIJU**:\nDa li vas neka od ovih opcija zanima? Mogu vam pomoći da rezervišemo ili pronađemo dodatne informacije!",
+      "timestamp": "2025-06-22T05:57:47.608271",
+      "entities_extracted": {
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [],
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T05:57:41.083630",
+          "last_mentioned": "2025-06-22T05:57:41.083630",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf",
+        "Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf",
+        "Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf",
+        "Rim_Praznik_rada_avionom_01.05._cenovnik_2901bb.pdf",
+        "Rim_Avio_Uskrs_i_Prvi_Maj_4_nocenja_cenovnik_1401vvt.pdf"
+      ],
+      "confidence": 0.5924568367361969,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {
+    "destination": {
+      "entity_type": "destination",
+      "entity_value": {
+        "entity_type": "destination",
+        "entity_value": "Rim",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T05:55:10.230308",
+        "last_mentioned": "2025-06-22T05:55:10.230308",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T05:55:17.243243",
+      "last_mentioned": "2025-06-22T05:55:17.243243",
+      "frequency": 1,
+      "source_messages": [
+        "956fe12e-173c-490c-af3b-420a68b35ff8"
+      ]
+    },
+    "group_size": {
+      "entity_type": "group_size",
+      "entity_value": {
+        "entity_type": "group_size",
+        "entity_value": 2,
+        "confidence": 0.9,
+        "first_mentioned": "2025-06-22T05:55:10.231326",
+        "last_mentioned": "2025-06-22T05:55:10.231326",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T05:55:17.243243",
+      "last_mentioned": "2025-06-22T05:55:17.243243",
+      "frequency": 1,
+      "source_messages": [
+        "956fe12e-173c-490c-af3b-420a68b35ff8"
+      ]
+    },
+    "category": {
+      "entity_type": "category",
+      "entity_value": {
+        "entity_type": "category",
+        "entity_value": "hotel",
+        "confidence": 0.9,
+        "first_mentioned": "2025-06-22T05:55:10.231433",
+        "last_mentioned": "2025-06-22T05:55:10.231433",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T05:55:17.243243",
+      "last_mentioned": "2025-06-22T05:55:17.243243",
+      "frequency": 1,
+      "source_messages": [
+        "956fe12e-173c-490c-af3b-420a68b35ff8"
+      ]
+    }
+  },
+  "active_entities": {
+    "destination": "Rim",
+    "group_size": 2,
+    "category": "hotel",
+    "travel_month": "mesec_ili_null",
+    "amenities": []
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T05:57:47.608271",
+  "context_switch_detected": false
+}

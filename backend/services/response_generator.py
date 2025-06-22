@@ -76,59 +76,437 @@ class ResponseGenerator:
         self, 
         search_results: List[Dict[str, Any]], 
         structured_query: StructuredQuery,
-        context: Optional[Dict[str, Any]] = None
+        conversation_context: Optional[Dict[str, Any]] = None
     ) -> ResponseData:
-        """
-        Generate comprehensive response with natural language and structured data
-        """
+        """Generate response using RAG results with conversation context"""
         try:
-            # Extract structured information from results
-            structured_data = self._extract_structured_data(search_results)
+            print(f"\n🤖 RESPONSE GENERATOR:")
+            print(f"   Number of search results: {len(search_results)}")
+            print(f"   Structured query: {structured_query.semantic_query if hasattr(structured_query, 'semantic_query') else 'N/A'}")
+            print(f"   Query intent: {structured_query.intent if hasattr(structured_query, 'intent') else 'N/A'}")
             
-            # Generate natural language response
-            natural_response = await self._generate_natural_response(
-                search_results, structured_query, structured_data, context
+            # Check if conversation context is provided
+            if conversation_context:
+                print(f"   🧠 CONVERSATION CONTEXT RECEIVED:")
+                print(f"      Session ID: {conversation_context.get('session_id', 'N/A')}")
+                print(f"      Total messages: {conversation_context.get('total_messages', 0)}")
+                print(f"      Recent conversation: {len(conversation_context.get('recent_conversation', []))} messages")
+                print(f"      Active entities: {conversation_context.get('active_entities', {})}")
+                print(f"      Historical preferences: {len(conversation_context.get('historical_preferences', {}))} entities")
+                
+                # Log recent conversation details
+                recent_conv = conversation_context.get('recent_conversation', [])
+                if recent_conv:
+                    print(f"   Recent conversation to be included in prompt:")
+                    for i, msg in enumerate(recent_conv):
+                        print(f"      {i+1}. {msg['role']}: {msg['content'][:60]}...")
+                else:
+                    print(f"   ⚠️  No recent conversation in context!")
+            else:
+                print(f"   ⚠️  NO CONVERSATION CONTEXT PROVIDED!")
+            
+            # Check if we need detailed content for this query
+            needs_detailed = self._needs_detailed_content(structured_query.semantic_query)
+            print(f"   Needs detailed content: {needs_detailed}")
+            
+            if needs_detailed:
+                print(f"   🔍 GENERATING DETAILED RESPONSE...")
+                return await self._generate_detailed_response(search_results, structured_query, conversation_context)
+            
+            # Standard response generation
+            print(f"   📝 GENERATING STANDARD RESPONSE...")
+            
+            if not search_results:
+                return self._generate_no_results_response(structured_query, conversation_context)
+            
+            # Prepare context for LLM prompt
+            context_text = ""
+            sources = []
+            
+            for i, result in enumerate(search_results[:5]):  # Use top 5 results
+                content = result.get('content', '')[:400]  # Limit content length for standard response
+                metadata = result.get('metadata', {})
+                source_file = result.get('document_name', metadata.get('source_file', f'Document {i+1}'))
+                similarity = result.get('similarity', 0)
+                
+                context_text += f"\n--- Document {i+1}: {source_file} (Relevance: {similarity:.2f}) ---\n{content}\n"
+                
+                sources.append({
+                    "document_name": source_file,
+                    "relevance": f"{similarity:.0%}",
+                    "snippet": content[:150] + "..." if len(content) > 150 else content
+                })
+            
+            print(f"   Context prepared: {len(context_text)} characters from {len(sources)} sources")
+            
+            # Build conversation-aware prompt
+            conversation_prompt = ""
+            if conversation_context and conversation_context.get('recent_conversation'):
+                print(f"   🧠 BUILDING CONVERSATION-AWARE PROMPT...")
+                conversation_prompt = "\n--- RECENT CONVERSATION HISTORY ---\n"
+                for msg in conversation_context['recent_conversation']:
+                    role = "Korisnik" if msg['role'] == 'user' else "TurBot"
+                    conversation_prompt += f"{role}: {msg['content']}\n"
+                conversation_prompt += "--- END CONVERSATION HISTORY ---\n\n"
+                
+                # Add active entities context
+                if conversation_context.get('active_entities'):
+                    conversation_prompt += "--- ACTIVE CONTEXT ---\n"
+                    for entity_type, value in conversation_context['active_entities'].items():
+                        conversation_prompt += f"{entity_type}: {value}\n"
+                    conversation_prompt += "--- END ACTIVE CONTEXT ---\n\n"
+                
+                print(f"   Conversation prompt built: {len(conversation_prompt)} characters")
+            else:
+                print(f"   No conversation context to include in prompt")
+            
+            # Create comprehensive system prompt with conversation awareness
+            system_prompt = f"""Ti si TurBot, napredni AI asistent za turističke agencije u Srbiji. Tvoja uloga je da pomazeš korisnicima sa informacijama o putovanjima i turističkim aranžmanima.
+
+KONTEKST RAZGOVORA:
+{conversation_prompt if conversation_prompt else "Ovo je početak razgovora."}
+
+DOSTUPNI TURISTIČKI SADRŽAJ:
+{context_text}
+
+INSTRUKCIJE:
+1. **Kontekst razgovora**: {"Koristi gornji kontekst razgovora da razumeš kontinuitet komunikacije." if conversation_prompt else "Ovo je početak novog razgovora."}
+2. **Personalizovane preporuke**: Odgovori na srpskom jeziku sa konkretnim preporukama na osnovu dostupnih aranžmana
+3. **Source attribution**: Uvek navedi izvore informacija (nazive PDF dokumenata)
+4. **Praktične informacije**: Uključi cene, datume, destinacije i specifičnosti aranžmana
+5. **Profesionalan ton**: Koristi prijateljski ali profesionalan ton turističkog agenta
+6. **Format odgovora**: Struktuiran, jasan i informativan odgovor
+
+TRENUTNI UPIT: {structured_query.semantic_query}
+
+Generiši sveobuhvatan odgovor koji pomaže korisniku da donese informisanu odluku o putovanju."""
+
+            print(f"   System prompt prepared: {len(system_prompt)} characters")
+            
+            # Calculate estimated token usage
+            estimated_input_tokens = len(system_prompt) // 4  # Rough estimate: 4 chars = 1 token
+            print(f"   💰 Estimated input tokens: ~{estimated_input_tokens}")
+            print(f"   💰 Estimated cost: ~${estimated_input_tokens * 0.000150:.6f}")
+            print(f"   Sending to OpenAI GPT-4o-mini...")
+            
+            response = await self.client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": structured_query.semantic_query}
+                ],
+                max_tokens=800,
+                temperature=0.7
             )
             
-            # Prepare sources with proper attribution
-            sources = self._prepare_sources(search_results)
+            generated_response = response.choices[0].message.content.strip()
             
-            # Generate suggested follow-up questions
-            suggested_questions = self._generate_suggested_questions(
-                structured_query, search_results
-            )
+            # Log actual token usage if available
+            if hasattr(response, 'usage') and response.usage:
+                input_tokens = response.usage.prompt_tokens
+                output_tokens = response.usage.completion_tokens
+                total_tokens = response.usage.total_tokens
+                total_cost = (input_tokens * 0.000150) + (output_tokens * 0.000600)  # GPT-4o-mini pricing
+                
+                print(f"   ✅ OpenAI response received: {len(generated_response)} characters")
+                print(f"   💰 ACTUAL TOKEN USAGE:")
+                print(f"      Input tokens: {input_tokens}")
+                print(f"      Output tokens: {output_tokens}")
+                print(f"      Total tokens: {total_tokens}")
+                print(f"      Total cost: ${total_cost:.6f}")
+            else:
+                print(f"   ✅ OpenAI response received: {len(generated_response)} characters")
+                print(f"   ⚠️  Token usage info not available")
             
-            # Calculate response confidence
-            confidence = self._calculate_confidence(search_results, structured_query)
+            # Generate suggested questions based on context and search results
+            suggested_questions = self._generate_suggested_questions(search_results, structured_query, conversation_context)
             
-            response_data = ResponseData(
-                response=natural_response,
+            # Calculate confidence based on search results and conversation context
+            confidence = self._calculate_confidence(search_results, conversation_context)
+            
+            print(f"   Generated {len(suggested_questions)} suggested questions")
+            print(f"   Calculated confidence: {confidence:.2f}")
+            
+            return ResponseData(
+                response=generated_response,
                 sources=sources,
-                structured_data=structured_data,
+                structured_data={
+                    "intent": structured_query.intent if hasattr(structured_query, 'intent') else None,
+                    "filters_used": structured_query.filters if hasattr(structured_query, 'filters') else {},
+                    "results_count": len(search_results),
+                    "conversation_aware": bool(conversation_context and conversation_context.get('recent_conversation'))
+                },
                 suggested_questions=suggested_questions,
                 confidence=confidence
             )
             
-            logger.info(f"Generated response for intent '{structured_query.intent}' with {len(sources)} sources")
-            return response_data
-            
         except Exception as e:
-            logger.error(f"Error generating response: {e}")
-            # Return basic fallback response
+            print(f"   ❌ ERROR in response generation: {e}")
+            logger.error(f"❌ Response generation failed: {e}")
             return ResponseData(
-                response="Izvinjavam se, došlo je do greške pri generisanju odgovora. Molimo pokušajte ponovo.",
+                response="Izvinjavam se, došlo je do greške pri generisanju odgovora. Molim pokušajte ponovo.",
                 sources=[],
                 structured_data={},
-                suggested_questions=["Možete li precizirati svoju pretragu?"],
+                suggested_questions=["Možete li ponoviti pitanje?"],
                 confidence=0.1
             )
+
+    def _needs_detailed_content(self, query: str) -> bool:
+        """Check if query requires detailed document content"""
+        detail_keywords = [
+            'datumi', 'datum', 'kada', 'koji dani', 'polazak', 'povratak',
+            'program', 'itinerar', 'šta je uključeno', 'detaljno',
+            'više informacija', 'specifično', 'dodatno', 'extra',
+            'cene', 'cenovnik', 'košta', 'price', 'koliko'
+        ]
+        
+        return any(keyword in query.lower() for keyword in detail_keywords)
+
+    def _generate_no_results_response(self, structured_query, conversation_context: Optional[Dict[str, Any]] = None) -> ResponseData:
+        """Generate response when no search results are found"""
+        # Build context-aware message
+        context_info = ""
+        if conversation_context and conversation_context.get('active_entities'):
+            active_entities = conversation_context['active_entities']
+            if 'destination' in active_entities:
+                context_info = f" za {active_entities['destination']}"
+        
+        response = f"Izvinjavam se, trenutno nemamo dostupne aranžmane{context_info} koji odgovaraju vašem upitu. Možete li precizirati vašu pretragu ili probati sa drugačijim kriterijumima?"
+        
+        # Generate alternative suggestions
+        suggested_questions = [
+            "Možete li proširiti kriterijume pretrage?",
+            "Da li vas zanima druga destinacija?",
+            "Možete li promeniti datume putovanja?",
+            "Da li imate fleksibilan budžet?"
+        ]
+        
+        return ResponseData(
+            response=response,
+            sources=[],
+            structured_data={"no_results": True, "query": structured_query.semantic_query},
+            suggested_questions=suggested_questions,
+            confidence=0.3
+        )
+
+    async def _generate_detailed_response(
+        self, 
+        detailed_docs: List[Dict[str, Any]], 
+        structured_query: StructuredQuery,
+        conversation_context: Optional[Dict[str, Any]] = None
+    ) -> ResponseData:
+        """
+        Generate response using detailed document content
+        """
+        try:
+            # Prepare comprehensive content for AI
+            detailed_content_summary = self._prepare_detailed_content_summary(detailed_docs)
+            
+            # Add conversation context if available
+            conversation_info = ""
+            if conversation_context:
+                recent_messages = conversation_context.get("recent_conversation", [])
+                active_entities = conversation_context.get("active_entities", {})
+                
+                if recent_messages:
+                    conversation_info += "\nPREDHODNA KONVERZACIJA:\n"
+                    for msg in recent_messages[-2:]:
+                        role = "Korisnik" if msg["role"] == "user" else "TurBot"
+                        conversation_info += f"{role}: {msg['content']}\n"
+                
+                if active_entities:
+                    conversation_info += f"\nAKTIVNE PREFERENCIJE: {active_entities}\n"
+
+            prompt = f"""
+Ti si TurBot, profesionalni turistički agent. Imaš pristup detaljnim informacijama o aranžmanima.
+
+KORISNIKOV UPIT: "{structured_query.semantic_query}"
+{conversation_info}
+
+DETALJNE INFORMACIJE O ARANŽMANIMA:
+{detailed_content_summary}
+
+VAŽNO: Sada imaš kompletne informacije - koristi ih za precizne odgovore!
+
+ZADATAK:
+- Odgovori DETALJNO sa konkretnim informacijama (datumi, cene, program)
+- Koristi sve dostupne podatke iz dokumenata
+- Budi SPECIFIČAN sa datumima, cenama, uslugama
+- Strukturiraj odgovor jasno (bullets, sekcije)
+
+STRUKTURA ODGOVORA:
+
+1. **DIREKTAN ODGOVOR**: Konkretne informacije na pitanje
+
+2. **DETALJNI PODACI**:
+   - Datumi polaska: [konkretni datumi]
+   - Cene: [specifične cene sa valutom]
+   - Program: [ključne aktivnosti]
+   - Uključeno: [šta je u ceni]
+
+3. **DODATNE INFORMACIJE**: Relevantni detalji
+
+4. **SLEDEĆI KORACI**: Konkretne preporuke
+
+STIL: Profesionalan, informativan, sa svim potrebnim detaljima
+
+ODGOVOR:
+"""
+
+            response = await self.client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "Ti si ekspert turistički agent sa pristupom detaljnim informacijama."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.3,
+                max_tokens=800
+            )
+
+            ai_response = response.choices[0].message.content.strip()
+
+            # Prepare sources from detailed documents
+            sources = []
+            for doc in detailed_docs:
+                sources.append({
+                    "document_name": doc["document_name"],
+                    "similarity": 1.0,  # High relevance since we specifically fetched this
+                    "content_preview": doc["full_content"][:300] + "...",
+                    "metadata": doc["metadata"],
+                    "detailed_content_available": True
+                })
+
+            # Generate enhanced suggested questions based on detailed content
+            suggested_questions = self._generate_detailed_suggested_questions(detailed_docs, structured_query)
+
+            # Extract structured data from detailed content
+            structured_data = self._extract_detailed_structured_data(detailed_docs)
+
+            return ResponseData(
+                response=ai_response,
+                sources=sources,
+                structured_data=structured_data,
+                suggested_questions=suggested_questions,
+                confidence=0.9  # High confidence with detailed content
+            )
+
+        except Exception as e:
+            logger.error(f"Error generating detailed response: {e}")
+            # Fallback to standard response
+            return ResponseData(
+                response="Izvinjavam se, došlo je do greške pri pristupu detaljnim informacijama.",
+                sources=[],
+                structured_data={},
+                suggested_questions=["Molim pokušajte ponovo sa konkretnim pitanjem"],
+                confidence=0.1
+            )
+
+    def _prepare_detailed_content_summary(self, detailed_docs: List[Dict[str, Any]]) -> str:
+        """Prepare comprehensive summary from detailed documents"""
+        summary_parts = []
+        
+        for i, doc in enumerate(detailed_docs, 1):
+            doc_name = doc["document_name"]
+            full_content = doc["full_content"]
+            structured = doc.get("structured_content", {})
+            
+            summary_parts.append(f"DOKUMENT {i}: {doc_name}")
+            summary_parts.append("=" * 50)
+            
+            # Add full content (not limited to 400 chars like before)
+            summary_parts.append("KOMPLETNI SADRŽAJ:")
+            summary_parts.append(full_content)
+            
+            # Add structured information if available
+            if structured:
+                if structured.get("prices"):
+                    summary_parts.append(f"CENE: {', '.join(structured['prices'])}")
+                if structured.get("dates"):
+                    summary_parts.append(f"DATUMI: {', '.join(structured['dates'])}")
+                if structured.get("amenities"):
+                    summary_parts.append(f"SADRŽAJI: {', '.join(structured['amenities'])}")
+            
+            summary_parts.append("\n" + "-" * 50 + "\n")
+        
+        return "\n".join(summary_parts)
+
+    def _generate_detailed_suggested_questions(
+        self, 
+        detailed_docs: List[Dict[str, Any]], 
+        structured_query: StructuredQuery
+    ) -> List[str]:
+        """Generate specific follow-up questions based on detailed content"""
+        suggestions = []
+        
+        # Analyze detailed content to generate specific questions
+        for doc in detailed_docs:
+            structured = doc.get("structured_content", {})
+            
+            # Date-based questions
+            if structured.get("dates"):
+                suggestions.append("Koji su tačni datumi polaska i povratka?")
+                suggestions.append("Da li postoje alternativni termini?")
+            
+            # Price-based questions
+            if structured.get("prices"):
+                suggestions.append("Šta je tačno uključeno u cenu?")
+                suggestions.append("Da li postoje dodatni troškovi?")
+            
+            # Program-based questions
+            if "program" in structured.get("sections", {}):
+                suggestions.append("Možete li mi objasniti detaljan program po danima?")
+                suggestions.append("Koliko slobodnog vremena imamo?")
+            
+            # Transport-based questions
+            if "transport" in structured.get("sections", {}):
+                suggestions.append("Kakav je prevoz i odakle se kreće?")
+                suggestions.append("Da li je potrebna rezervacija?")
+        
+        # Remove duplicates and limit to 4
+        unique_suggestions = list(dict.fromkeys(suggestions))
+        return unique_suggestions[:4]
+
+    def _extract_detailed_structured_data(self, detailed_docs: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Extract comprehensive structured data from detailed documents"""
+        structured_data = {
+            "total_documents": len(detailed_docs),
+            "detailed_content_used": True,
+            "comprehensive_info": {},
+            "all_prices": [],
+            "all_dates": [],
+            "all_amenities": [],
+            "document_summaries": []
+        }
+        
+        for doc in detailed_docs:
+            doc_name = doc["document_name"]
+            structured = doc.get("structured_content", {})
+            
+            doc_summary = {
+                "name": doc_name,
+                "content_length": doc.get("content_length", 0),
+                "sections": list(structured.get("sections", {}).keys())
+            }
+            
+            # Aggregate data
+            if structured.get("prices"):
+                structured_data["all_prices"].extend(structured["prices"])
+            if structured.get("dates"):
+                structured_data["all_dates"].extend(structured["dates"])
+            if structured.get("amenities"):
+                structured_data["all_amenities"].extend(structured["amenities"])
+            
+            structured_data["document_summaries"].append(doc_summary)
+        
+        return structured_data
 
     async def _generate_natural_response(
         self, 
         search_results: List[Dict[str, Any]], 
         structured_query: StructuredQuery,
         structured_data: Dict[str, Any],
-        context: Optional[Dict[str, Any]] = None
+        context: Optional[Dict[str, Any]] = None,
+        conversation_context: Optional[Dict[str, Any]] = None
     ) -> str:
         """
         Generate natural Serbian response using LLM
@@ -137,12 +515,27 @@ class ResponseGenerator:
         results_summary = self._prepare_results_summary(search_results)
         filters_summary = self._prepare_filters_summary(structured_query.filters)
         
+        # Add conversation context if available
+        conversation_info = ""
+        if conversation_context:
+            recent_messages = conversation_context.get("recent_conversation", [])
+            active_entities = conversation_context.get("active_entities", {})
+            
+            if recent_messages:
+                conversation_info += "\nPREDHODNA KONVERZACIJA:\n"
+                for msg in recent_messages[-2:]:  # Last 2 messages for context
+                    role = "Korisnik" if msg["role"] == "user" else "TurBot"
+                    conversation_info += f"{role}: {msg['content']}\n"
+            
+            if active_entities:
+                conversation_info += f"\nAKTIVNE PREFERENCIJE: {active_entities}\n"
+        
         prompt = f"""
 Ti si TurBot, profesionalni turistički agent. Odgovaraj ljubazno i korisno na srpskom jeziku.
 
 KORISNIKOV UPIT: "{structured_query.semantic_query}"
 TRAŽI: {filters_summary}
-
+{conversation_info}
 PRONAĐENI REZULTATI:
 {results_summary}
 
@@ -171,6 +564,8 @@ STRUKTURA ODGOVORA:
 
 4. **POZIV NA AKCIJU**:
    - "Da li vas neka od ovih opcija zanima?"
+
+VAZNO: Ne pisi eksplicitno delove izmedju ** (npr ** POZDRAV **)
 
 STIL:
 - Profesionalan ali prijatan srpski
@@ -548,8 +943,9 @@ ODGOVOR:
 
     def _generate_suggested_questions(
         self, 
-        structured_query: StructuredQuery, 
-        search_results: List[Dict[str, Any]]
+        search_results: List[Dict[str, Any]], 
+        structured_query: StructuredQuery,
+        conversation_context: Optional[Dict[str, Any]] = None
     ) -> List[str]:
         """
         Generate contextual follow-up questions
@@ -585,7 +981,7 @@ ODGOVOR:
     def _calculate_confidence(
         self, 
         search_results: List[Dict[str, Any]], 
-        structured_query: StructuredQuery
+        conversation_context: Optional[Dict[str, Any]] = None
     ) -> float:
         """
         Calculate response confidence based on various factors
@@ -594,7 +990,7 @@ ODGOVOR:
             return 0.1
         
         # Base confidence from query parsing
-        confidence = structured_query.confidence * 0.4
+        confidence = 0.4
         
         # Add confidence from search results quality
         if search_results:
@@ -604,6 +1000,17 @@ ODGOVOR:
         # Add confidence from number of results
         result_count_factor = min(len(search_results) / 3, 1.0) * 0.2
         confidence += result_count_factor
+        
+        # Add conversation context confidence
+        if conversation_context:
+            recent_messages = conversation_context.get('recent_conversation', [])
+            active_entities = conversation_context.get('active_entities', {})
+            
+            if recent_messages:
+                confidence += 0.1  # Small boost for recent conversation
+            
+            if active_entities:
+                confidence += 0.1  # Small boost for active entities
         
         return min(1.0, confidence)
 

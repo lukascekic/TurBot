@@ -1,0 +1,46 @@
+{
+  "session_id": "agent_1750565658510_db1a2e1b-1a67-4bbb-ab4d-ffea8581efe3",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "61edf211-e80e-4d6f-9bba-7ac28576328c",
+      "session_id": "agent_1750565658510_db1a2e1b-1a67-4bbb-ab4d-ffea8581efe3",
+      "role": "user",
+      "content": "Jel imas nesto za Amsterdam?",
+      "timestamp": "2025-06-22T06:25:06.205107",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "5c81d36a-c8af-4f3d-a1a6-e186b5c77344",
+      "session_id": "agent_1750565658510_db1a2e1b-1a67-4bbb-ab4d-ffea8581efe3",
+      "role": "assistant",
+      "content": "Izvinjavam se, došlo je do greške pri generisanju odgovora. Molim pokušajte ponovo.",
+      "timestamp": "2025-06-22T06:25:10.529744",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Amsterdam",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:25:07.982430",
+          "last_mentioned": "2025-06-22T06:25:07.982430",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [],
+      "confidence": 0.1,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "destination": "Amsterdam"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T06:25:10.529744",
+  "context_switch_detected": false
+}

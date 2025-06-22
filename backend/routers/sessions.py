@@ -99,13 +99,73 @@ async def add_message_to_session(session_id: str, message_data: Dict[str, Any]):
     return {"status": "message_added", "total_messages": len(session["messages"])}
 
 @router.delete("/{session_id}")
-async def delete_session(session_id: str):
-    """Delete a session"""
-    if session_id not in sessions:
-        raise HTTPException(status_code=404, detail="Session not found")
+async def reset_session(session_id: str):
+    """Reset/clear conversation history for a session"""
+    try:
+        # Remove from in-memory sessions
+        if session_id in sessions:
+            del sessions[session_id]
+        
+        # Reset conversation memory
+        from services.conversation_memory_service import ConversationMemoryService
+        memory_service = ConversationMemoryService()
+        success = await memory_service.reset_session_context(session_id)
+        
+        if success:
+            return {"status": "session_reset", "session_id": session_id}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to reset session")
+            
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error resetting session: {str(e)}")
+
+@router.post("/create-with-user", response_model=SessionResponse)
+async def create_session_with_user(session_data: SessionCreate, user_identifier: str = None):
+    """Create a new conversation session with user identification"""
+    # Generate unique session ID with user context
+    if user_identifier:
+        session_id = f"{user_identifier}_{str(uuid.uuid4())}"
+    else:
+        # Fallback to timestamp + random for anonymous users
+        session_id = f"anon_{int(datetime.now().timestamp())}_{str(uuid.uuid4())[:8]}"
     
-    del sessions[session_id]
-    return {"status": "session_deleted", "session_id": session_id}
+    now = datetime.now()
+    
+    session = {
+        "session_id": session_id,
+        "user_type": session_data.user_type,
+        "user_id": user_identifier,
+        "created_at": now,
+        "last_active": now,
+        "messages": [],
+        "preferences": {}
+    }
+    
+    sessions[session_id] = session
+    
+    return SessionResponse(
+        session_id=session_id,
+        user_type=session_data.user_type,
+        created_at=now,
+        last_active=now,
+        message_count=0
+    )
+
+@router.get("/user/{user_identifier}")
+async def get_user_sessions(user_identifier: str):
+    """Get all sessions for a specific user"""
+    user_sessions = []
+    for session_id, session in sessions.items():
+        if session.get("user_id") == user_identifier:
+            user_sessions.append({
+                "session_id": session_id,
+                "user_type": session["user_type"],
+                "created_at": session["created_at"],
+                "last_active": session["last_active"],
+                "message_count": len(session["messages"])
+            })
+    
+    return {"user_sessions": user_sessions, "total": len(user_sessions)}
 
 @router.get("/")
 async def list_active_sessions():

@@ -9,6 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import Dict, Any, Optional
 from pydantic import BaseModel
 from openai import AsyncOpenAI
+from datetime import datetime
 
 # Load environment variables FIRST!
 load_dotenv()
@@ -23,6 +24,12 @@ from services.vector_service import VectorService
 from services.response_generator import ResponseGenerator, get_response_generator
 from models.document import SearchQuery
 
+# Import Conversation Memory services
+from services.conversation_memory_service import ConversationMemoryService
+from services.named_entity_extractor import NamedEntityExtractor
+from services.context_aware_enhancer import ContextAwareEnhancer
+from models.conversation import MessageRole
+
 # Configure logging
 logging.basicConfig(level=getattr(logging, os.getenv("LOG_LEVEL", "INFO")))
 logger = logging.getLogger(__name__)
@@ -30,8 +37,15 @@ logger = logging.getLogger(__name__)
 # Initialize OpenAI client
 client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# Initialize Enhanced RAG services
-self_querying_service = SelfQueryingService(client)
+# Initialize Conversation Memory services
+conversation_memory_service = ConversationMemoryService()
+named_entity_extractor = NamedEntityExtractor(client)
+context_aware_enhancer = ContextAwareEnhancer(conversation_memory_service, named_entity_extractor, client)
+
+# Initialize Enhanced RAG services with conversation context
+self_querying_service = SelfQueryingService(client, context_enhancer=context_aware_enhancer)
+# Add conversation memory service for context-aware parsing
+self_querying_service.conversation_memory_service = conversation_memory_service
 query_expansion_service = QueryExpansionService(client)
 vector_service = VectorService()
 response_generator = get_response_generator(client)
@@ -52,6 +66,8 @@ class ChatResponse(BaseModel):
     session_id: Optional[str] = None
     confidence: float
     structured_data: Dict[str, Any]
+    conversation_context: Optional[Dict[str, Any]] = None
+    active_entities: Optional[Dict[str, Any]] = None
 
 # Create FastAPI app
 app = FastAPI(
@@ -88,35 +104,71 @@ async def root():
     """Root endpoint"""
     return {"message": "TurBot API - Dobrodošli u turistički AI asistent!"}
 
-# Enhanced chat endpoint with full RAG pipeline
+# Enhanced chat endpoint with conversation memory and full RAG pipeline
 @app.post("/chat", response_model=ChatResponse)
 async def enhanced_chat(chat_message: ChatMessage):
-    """Enhanced chat endpoint using complete RAG pipeline"""
+    """Enhanced chat endpoint with conversation memory and complete RAG pipeline"""
     try:
         user_message = chat_message.message.strip()
         if not user_message:
             raise HTTPException(status_code=400, detail="Message is required")
         
-        logger.info(f"🎯 Processing chat message: '{user_message}'")
+        session_id = chat_message.session_id or f"session_{int(datetime.now().timestamp())}"
         
-        # Run the Enhanced RAG pipeline in thread pool
-        loop = asyncio.get_event_loop()
+        print(f"\n🎯 PROCESSING CHAT MESSAGE:")
+        print(f"   User message: '{user_message}'")
+        print(f"   Session ID: {session_id}")
+        print(f"   User type: {chat_message.user_type}")
         
-        async def enhanced_rag_pipeline():
-            """Complete Enhanced RAG pipeline"""
+        logger.info(f"🎯 Processing chat message: '{user_message}' [Session: {session_id[:8]}]")
+        
+        async def enhanced_rag_with_memory_pipeline():
+            """Complete Enhanced RAG pipeline with conversation memory"""
             try:
-                # Step 1: Self-Querying - Parse user intent and extract filters
-                logger.info("1️⃣ Self-Querying Analysis...")
-                structured_query = await self_querying_service.parse_query(user_message)
+                print(f"\n🚀 STARTING ENHANCED RAG PIPELINE:")
                 
-                # Step 2: Query Expansion - Enhance semantic search
-                logger.info("2️⃣ Query Expansion...")
+                # STEP 0: Save user message to conversation memory
+                print("0️⃣ SAVING USER MESSAGE TO CONVERSATION MEMORY...")
+                await conversation_memory_service.save_message(
+                    session_id=session_id,
+                    role=MessageRole.USER,
+                    content=user_message
+                )
+                
+                # Step 1: Context-Aware Self-Querying - Parse with conversation context
+                print("1️⃣ CONTEXT-AWARE SELF-QUERYING...")
+                structured_query = await self_querying_service.parse_query_with_context(
+                    user_message, session_id
+                )
+                print(f"   Structured query: {structured_query.semantic_query}")
+                print(f"   Extracted filters: {structured_query.filters}")
+                print(f"   Intent: {structured_query.intent}")
+                
+                # Extract entities from current message for context updating
+                print("2️⃣ EXTRACTING ENTITIES FROM MESSAGE...")
+                entity_extraction_result = await named_entity_extractor.extract_entities_from_message(user_message)
+                if entity_extraction_result.entities:
+                    # Convert TourismEntity objects to simple dict for active entities
+                    extracted_entities = {}
+                    for entity_type, entity_obj in entity_extraction_result.entities.items():
+                        extracted_entities[entity_type] = entity_obj.entity_value
+                    
+                    print(f"   Extracted entities: {extracted_entities}")
+                    
+                    # Update active entities in conversation memory
+                    await conversation_memory_service.update_active_entities(session_id, extracted_entities)
+                else:
+                    print(f"   No entities extracted from message")
+                
+                # Step 3: Query Expansion - Enhance semantic search
+                print("3️⃣ QUERY EXPANSION...")
                 expanded_query = await query_expansion_service.expand_query_llm(
                     structured_query.semantic_query
                 )
+                print(f"   Expanded query: {expanded_query}")
                 
-                # Step 3: Enhanced Vector Search
-                logger.info("3️⃣ Enhanced Vector Search...")
+                # Step 4: Enhanced Vector Search with context-aware filters
+                print("4️⃣ ENHANCED VECTOR SEARCH...")
                 search_query = SearchQuery(
                     query=expanded_query,
                     filters=structured_query.filters,
@@ -124,29 +176,65 @@ async def enhanced_chat(chat_message: ChatMessage):
                 )
                 
                 search_results = vector_service.search(search_query)
+                print(f"   Found {len(search_results.results)} search results")
                 
                 # Convert search results to format expected by response generator
                 search_results_dict = []
-                for result in search_results.results:
+                for i, result in enumerate(search_results.results):
                     search_results_dict.append({
                         'content': result.text,
                         'metadata': result.metadata.model_dump(),
                         'similarity': result.similarity_score,
                         'document_name': result.metadata.source_file or 'Unknown'
                     })
+                    print(f"      {i+1}. {result.metadata.source_file} (similarity: {result.similarity_score:.2f})")
                 
-                # Step 4: Intelligent Response Generation
-                logger.info("4️⃣ Intelligent Response Generation...")
+                # Step 5: Context-Aware Response Generation
+                print("5️⃣ CONTEXT-AWARE RESPONSE GENERATION...")
+                
+                # Get conversation context for response generation
+                conversation_context = await conversation_memory_service.build_hybrid_context_for_query(session_id)
+                
+                print(f"   Conversation context to be sent to AI:")
+                print(f"      Recent conversation: {len(conversation_context.get('recent_conversation', []))} messages")
+                print(f"      Active entities: {conversation_context.get('active_entities', {})}")
+                print(f"      Total messages: {conversation_context.get('total_messages', 0)}")
+                
+                # Log conversation context details
+                recent_conv = conversation_context.get('recent_conversation', [])
+                if recent_conv:
+                    print(f"   Recent conversation details:")
+                    for i, msg in enumerate(recent_conv):
+                        print(f"      {i+1}. {msg['role']}: {msg['content'][:80]}...")
+                else:
+                    print(f"   ⚠️  NO RECENT CONVERSATION FOUND!")
+                
                 response_data = await response_generator.generate_response(
                     search_results=search_results_dict,
-                    structured_query=structured_query
+                    structured_query=structured_query,
+                    conversation_context=conversation_context  # Add conversation context
                 )
                 
-                logger.info(f"✅ Enhanced RAG pipeline completed successfully!")
-                return response_data
+                print(f"   Generated response length: {len(response_data.response)} characters")
+                print(f"   Response confidence: {response_data.confidence:.2f}")
+                
+                # STEP 6: Save AI response to conversation memory
+                print("6️⃣ SAVING AI RESPONSE TO MEMORY...")
+                await conversation_memory_service.save_message(
+                    session_id=session_id,
+                    role=MessageRole.ASSISTANT,
+                    content=response_data.response,
+                    entities=entity_extraction_result.entities if entity_extraction_result.entities else None,
+                    sources=[source.get('document_name', '') for source in response_data.sources],
+                    confidence=response_data.confidence
+                )
+                
+                print(f"✅ ENHANCED RAG WITH MEMORY PIPELINE COMPLETED!")
+                return response_data, conversation_context
                 
             except Exception as e:
-                logger.error(f"❌ Enhanced RAG pipeline failed: {e}")
+                print(f"❌ ENHANCED RAG PIPELINE FAILED: {e}")
+                logger.error(f"❌ Enhanced RAG with Memory pipeline failed: {e}")
                 # Return fallback response
                 from services.response_generator import ResponseData
                 return ResponseData(
@@ -159,22 +247,43 @@ async def enhanced_chat(chat_message: ChatMessage):
                         "Kakav je vaš budžet za putovanje?"
                     ],
                     confidence=0.1
-                )
+                ), {}
         
-        # Execute Enhanced RAG pipeline
-        response_data = await enhanced_rag_pipeline()
+        # Execute Enhanced RAG pipeline with memory
+        response_data, conversation_context = await enhanced_rag_with_memory_pipeline()
+        
+        # Get current active entities for frontend display
+        print("\n📊 GATHERING SESSION STATISTICS...")
+        session_stats = await conversation_memory_service.get_session_stats(session_id)
+        current_context = await conversation_memory_service.get_conversation_context(session_id)
+        
+        print(f"   Session stats: {session_stats}")
+        print(f"   Current active entities: {current_context.active_entities if current_context else {}}")
         
         # Format response for frontend
         chat_response = ChatResponse(
             response=response_data.response,
             sources=response_data.sources,
             suggested_questions=response_data.suggested_questions,
-            session_id=chat_message.session_id,
+            session_id=session_id,
             confidence=response_data.confidence,
-            structured_data=response_data.structured_data
+            structured_data=response_data.structured_data,
+            conversation_context={
+                "total_messages": session_stats.get("total_messages", 0),
+                "recent_messages": session_stats.get("recent_messages", 0),
+                "historical_entities": session_stats.get("historical_entities", 0)
+            },
+            active_entities=dict(current_context.active_entities) if current_context else {}
         )
         
-        logger.info(f"🎉 Chat response generated successfully (confidence: {response_data.confidence:.2f})")
+        print(f"\n🎉 CHAT RESPONSE GENERATED:")
+        print(f"   Response length: {len(chat_response.response)} characters")
+        print(f"   Sources: {len(chat_response.sources)}")
+        print(f"   Suggested questions: {len(chat_response.suggested_questions)}")
+        print(f"   Session ID: {chat_response.session_id}")
+        print(f"   Confidence: {chat_response.confidence:.2f}")
+        
+        logger.info(f"🎉 Chat response with memory generated successfully (confidence: {response_data.confidence:.2f})")
         return chat_response
         
     except HTTPException:
@@ -188,7 +297,9 @@ async def enhanced_chat(chat_message: ChatMessage):
             suggested_questions=["Molim pokušajte ponovo za nekoliko trenutaka"],
             session_id=chat_message.session_id,
             confidence=0.0,
-            structured_data={}
+            structured_data={},
+            conversation_context={},
+            active_entities={}
         )
 
 # Simple chat endpoint for testing/fallback

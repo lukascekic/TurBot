@@ -1,0 +1,52 @@
+{
+  "session_id": "0cadf518-0981-4a62-9475-e057a4e3c74c",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "9425d997-4dbe-4045-83d4-2458e609c999",
+      "session_id": "0cadf518-0981-4a62-9475-e057a4e3c74c",
+      "role": "user",
+      "content": "Jel imas nesto za Amsterdam?",
+      "timestamp": "2025-06-22T06:31:58.878388",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "76c40dc2-ef2b-481c-877d-ccc9f981978a",
+      "session_id": "0cadf518-0981-4a62-9475-e057a4e3c74c",
+      "role": "assistant",
+      "content": "Amsterdam, kao grad bogate kulture i istorije, nudi mnoge atrakcije koje ne smete propustiti. Evo nekoliko preporuka za mesta koja biste trebali posetiti:\n\n1. **Rijksmuseum**: Ovo je nacionalni muzej Nizozemske, poznat po svojim kolekcijama remek-dela umetnika kao što su Rembrandt i Vermeer. Obavezno posetite i vrt muzeja.\n\n2. **Van Gogh Museum**: Ovaj muzej je posvećen životu i radu Vincenta van Gogha, sa najvećom kolekcijom njegovih slika na svetu.\n\n3. **Kanali Amsterdama**: Provedite vreme šetajući ili vozeći bicikl duž prelepih kanala, koji su pod zaštitom UNESCO-a. Ne zaboravite na vožnju čamcem po kanalima, što je jedinstveno iskustvo.\n\n4. **Anne Frank House**: Mesto gde je Anne Frank pisala svoj dnevnik, nudi emotivnu i edukativnu perspektivu o Drugom svetskom ratu.\n\n5. **Dam Square**: Glavni trg u Amsterdamu, gde se nalaze značajne zgrade kao što su Kraljevska palata i Nacionalni spomenik.\n\n6. **Vondelpark**: Ova zelena oaza u srcu grada idealna je za opuštanje, piknik ili vožnju biciklom.\n\n7. **Jordaan**: Ova slikovita četvrt poznata je po svojim uskim ulicama, umetničkim galerijama, malim restoranima i šarmantnim prodavnicama.\n\n8. **Zaanse Schans**: Kao fakultativni izlet, možete posetiti ovo popularno mesto poznato po vetrenjačama, tradicionalnim kućama i radionicama, gde možete videti kako se prave klompe i sirevi.\n\nPlanirate li putovanje u Amsterdam? Ako vas zanimaju specijalne ponude, preporučujem aranžman za **Prvi maj 2025.** sa direktnim letom, koji traje od **30. aprila do 4. maja 2025.** i uključuje 4 noćenja. Ova ponuda obuhvata panoramsko razgledanje grada, što je odlična prilika da upoznate sve ključne atrakcije. \n\nIzvori informacija: **Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf** i **Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf**. \n\nAko imate dodatnih pitanja ili vam je potrebna pomoć pri rezervaciji, slobodno se obratite!",
+      "timestamp": "2025-06-22T06:32:10.324587",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Amsterdam",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:32:01.609533",
+          "last_mentioned": "2025-06-22T06:32:01.609533",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf"
+      ],
+      "confidence": 0.9999468020118099,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "destination": "Amsterdam"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T06:32:10.324587",
+  "context_switch_detected": false
+}

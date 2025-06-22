@@ -1,0 +1,98 @@
+{
+  "session_id": "e4c055f3-f0b3-4aaf-b575-0b5200f1c2bb",
+  "total_messages": 6,
+  "recent_messages": [
+    {
+      "message_id": "71b85823-a242-4b1c-a7d7-2f8b55e7d2d1",
+      "session_id": "e4c055f3-f0b3-4aaf-b575-0b5200f1c2bb",
+      "role": "assistant",
+      "content": "Izvinjavam se, došlo je do greške pri generisanju odgovora. Molimo pokušajte ponovo.",
+      "timestamp": "2025-06-22T06:13:21.652645",
+      "entities_extracted": {
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "maj",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:13:18.824932",
+          "last_mentioned": "2025-06-22T06:13:18.824932",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [],
+      "confidence": 0.1,
+      "metadata": {}
+    },
+    {
+      "message_id": "115c2e90-f2c3-4a40-b93b-edfbc41055a0",
+      "session_id": "e4c055f3-f0b3-4aaf-b575-0b5200f1c2bb",
+      "role": "user",
+      "content": "Sta je sve ukljuceno u program putovanja za 1. maj?",
+      "timestamp": "2025-06-22T06:13:52.928905",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "e3303b10-a156-4c2e-8aa4-562a41496772",
+      "session_id": "e4c055f3-f0b3-4aaf-b575-0b5200f1c2bb",
+      "role": "assistant",
+      "content": "Izvinjavam se, došlo je do greške pri generisanju odgovora. Molimo pokušajte ponovo.",
+      "timestamp": "2025-06-22T06:13:57.199700",
+      "entities_extracted": {
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "maj",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:13:54.673573",
+          "last_mentioned": "2025-06-22T06:13:54.673573",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "group_size": {
+          "entity_type": "group_size",
+          "entity_value": 1,
+          "confidence": 0.9,
+          "first_mentioned": "2025-06-22T06:13:54.673617",
+          "last_mentioned": "2025-06-22T06:13:54.673617",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [],
+      "confidence": 0.1,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {
+    "destination": {
+      "entity_type": "destination",
+      "entity_value": {
+        "entity_type": "destination",
+        "entity_value": "Amsterdam",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T06:12:29.028558",
+        "last_mentioned": "2025-06-22T06:12:29.028558",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T06:12:36.523336",
+      "last_mentioned": "2025-06-22T06:12:36.523336",
+      "frequency": 1,
+      "source_messages": [
+        "61ab17b4-a781-450e-88b6-625dbe4ec7ba"
+      ]
+    }
+  },
+  "active_entities": {
+    "destination": "Amsterdam",
+    "travel_month": "maj",
+    "group_size": 1
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T06:13:57.199700",
+  "context_switch_detected": false
+}

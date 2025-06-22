@@ -32,8 +32,9 @@ class SelfQueryingService:
     into structured search queries with semantic content and metadata filters.
     """
     
-    def __init__(self, client: AsyncOpenAI):
+    def __init__(self, client: AsyncOpenAI, context_enhancer=None):
         self.client = client
+        self.context_enhancer = context_enhancer
         self.cache = {}  # Simple in-memory cache
         
         # Intent classifications
@@ -151,6 +152,173 @@ class SelfQueryingService:
                 intent="search",
                 confidence=0.3
             )
+
+    async def parse_query_with_context(self, query: str, session_id: str) -> StructuredQuery:
+        """Parse query with conversation context awareness"""
+        try:
+            print(f"\n🔍 SELF-QUERYING WITH CONTEXT:")
+            print(f"   Original query: '{query}'")
+            print(f"   Session ID: {session_id}")
+            
+            # Get conversation context
+            conversation_context = await self.conversation_memory_service.build_hybrid_context_for_query(session_id)
+            
+            print(f"   Context received:")
+            print(f"      Recent conversation: {len(conversation_context.get('recent_conversation', []))} messages")
+            print(f"      Active entities: {conversation_context.get('active_entities', {})}")
+            print(f"      Historical preferences: {len(conversation_context.get('historical_preferences', {}))} entities")
+            
+            # Enhance query with conversation context if available
+            enhanced_query = query
+            if conversation_context.get('recent_conversation') or conversation_context.get('active_entities'):
+                print(f"   🔧 ENHANCING QUERY WITH CONTEXT...")
+                enhanced_query = await self._enhance_query_with_context(query, conversation_context)
+                print(f"   Enhanced query: '{enhanced_query}'")
+            else:
+                print(f"   No context available for query enhancement")
+            
+            # Parse the enhanced query
+            structured_query = await self.parse_query(enhanced_query)
+            
+            # Merge context-derived filters
+            context_filters = self._extract_filters_from_context(conversation_context)
+            if context_filters:
+                print(f"   🔗 MERGING CONTEXT FILTERS:")
+                print(f"      Query filters: {structured_query.filters}")
+                print(f"      Context filters: {context_filters}")
+                
+                # Merge filters (query filters take precedence)
+                merged_filters = {**context_filters, **structured_query.filters}
+                structured_query.filters = merged_filters
+                
+                print(f"      Merged filters: {merged_filters}")
+            
+            print(f"   ✅ Context-aware structured query:")
+            print(f"      Semantic query: '{structured_query.semantic_query}'")
+            print(f"      Intent: {structured_query.intent}")
+            print(f"      Filters: {structured_query.filters}")
+            print(f"      Confidence: {structured_query.confidence:.2f}")
+            
+            return structured_query
+            
+        except Exception as e:
+            print(f"   ❌ ERROR in parse_query_with_context: {e}")
+            logger.error(f"❌ Error in parse_query_with_context: {e}")
+            # Fallback to basic parsing
+            return await self.parse_query(query)
+
+    async def _enhance_query_with_context(self, query: str, conversation_context: Dict[str, Any]) -> str:
+        """Enhance query using conversation context"""
+        try:
+            print(f"      Building context-enhanced query...")
+            
+            # Build context prompt for query enhancement
+            context_prompt = ""
+            
+            # Add recent conversation
+            recent_conv = conversation_context.get('recent_conversation', [])
+            if recent_conv:
+                context_prompt += "NEDAVNI RAZGOVOR:\n"
+                for msg in recent_conv:
+                    role = "Korisnik" if msg['role'] == 'user' else "TurBot"
+                    context_prompt += f"{role}: {msg['content']}\n"
+                context_prompt += "\n"
+            
+            # Add active entities
+            active_entities = conversation_context.get('active_entities', {})
+            if active_entities:
+                context_prompt += "AKTIVNI KONTEKST:\n"
+                for entity_type, value in active_entities.items():
+                    context_prompt += f"- {entity_type}: {value}\n"
+                context_prompt += "\n"
+            
+            # Query enhancement prompt
+            enhancement_prompt = f"""Analiziraj sledeći upit u kontekstu prethodnog razgovora i aktivnih entiteta.
+
+{context_prompt}
+
+TRENUTNI UPIT: "{query}"
+
+Pojasni i proširi upit tako da bude jasniji i konkretniji na osnovu konteksta razgovora. 
+- Ako se koriste zamenice (to, ono, tako), zameni ih konkretnim rečima
+- Ako se pominje "detalji" ili "više informacija", specificiraj o čemu se radi
+- Ako je upit nejasan, dodaj kontekst iz prethodnog razgovora
+- Zadrži originalni jezik i stil upita
+
+POBOLJŠANI UPIT:"""
+
+            print(f"      Enhancement prompt prepared: {len(enhancement_prompt)} characters")
+            
+            response = await self.client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "Ti si asistent koji pomaže u razumevanju korisničkih upita u kontekstu razgovora."},
+                    {"role": "user", "content": enhancement_prompt}
+                ],
+                max_tokens=200,
+                temperature=0.3
+            )
+            
+            enhanced_query = response.choices[0].message.content.strip()
+            
+            # Remove any quotes or extra formatting
+            if enhanced_query.startswith('"') and enhanced_query.endswith('"'):
+                enhanced_query = enhanced_query[1:-1]
+            
+            print(f"      Enhanced query generated: '{enhanced_query}'")
+            return enhanced_query
+            
+        except Exception as e:
+            print(f"      ❌ Query enhancement failed: {e}")
+            logger.error(f"Query enhancement failed: {e}")
+            return query  # Return original query on failure
+
+    def _extract_filters_from_context(self, conversation_context: Dict[str, Any]) -> Dict[str, Any]:
+        """Extract filters from conversation context"""
+        try:
+            print(f"      Extracting filters from context...")
+            
+            filters = {}
+            
+            # Extract from active entities
+            active_entities = conversation_context.get('active_entities', {})
+            if active_entities:
+                print(f"         Active entities: {active_entities}")
+                
+                # Map entity types to filter names
+                entity_filter_mapping = {
+                    'destination': 'location',
+                    'location': 'location',
+                    'budget': 'price_range',
+                    'price_range': 'price_range',
+                    'category': 'category',
+                    'travel_dates': 'travel_month',
+                    'group_size': 'family_friendly'
+                }
+                
+                for entity_type, value in active_entities.items():
+                    if entity_type in entity_filter_mapping:
+                        filter_name = entity_filter_mapping[entity_type]
+                        filters[filter_name] = value
+                        print(f"         Mapped {entity_type} -> {filter_name}: {value}")
+            
+            # Extract from historical preferences (lower priority)
+            historical_prefs = conversation_context.get('historical_preferences', {})
+            for entity_type, entity_data in historical_prefs.items():
+                if isinstance(entity_data, dict) and 'value' in entity_data:
+                    # Only use if not already set by active entities
+                    filter_name = entity_type.replace('destination', 'location')
+                    if filter_name not in filters:
+                        filters[filter_name] = entity_data['value']
+                        print(f"         Historical: {entity_type} -> {filter_name}: {entity_data['value']}")
+            
+            print(f"         Context filters extracted: {filters}")
+            return filters
+            
+        except Exception as e:
+            print(f"         ❌ Error extracting filters from context: {e}")
+            logger.error(f"Error extracting filters from context: {e}")
+            return {}
 
     async def _parse_with_llm(self, query: str, intent: str) -> StructuredQuery:
         """
@@ -471,7 +639,6 @@ ODGOVORI SAMO JSON:
         
         return "Filteri: " + ", ".join(summary_parts)
 
-# Singleton pattern for service
     def _extract_destination_patterns(self, query_lower: str) -> Optional[str]:
         """Extract destination using pattern matching"""
         destinations = {

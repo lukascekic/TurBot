@@ -1,0 +1,129 @@
+{
+  "session_id": "test_session_memory_001",
+  "total_messages": 8,
+  "recent_messages": [
+    {
+      "message_id": "33d8be79-928c-465f-bb99-1df6d02b3178",
+      "session_id": "test_session_memory_001",
+      "role": "assistant",
+      "content": "Dragi korisniče,\n\nU nastavku vam predstavljam detalje o putovanju u Amsterdam za Prvi maj 2025. godine. Ovo putovanje je idealna prilika da uživate u jedinstvenoj atmosferi ovog prelepog grada.\n\n### Detalji putovanja:\n- **Destinacija**: Amsterdam\n- **Datumi putovanja**: 30. april - 4. maj 2025. (5 dana / 4 noćenja)\n- **Tip putovanja**: Individualno putovanje\n- **Prevoz**: Direktan let iz Beograda\n\n### Uključeno u aranžman:\n- **4 noćenja** u hotelu u Amsterdamu\n- **Panoramsko razgledanje grada** sa vodičem\n- Mogućnost fakultativnih izleta (uz dodatnu cenu)\n\n### Fakultativni izleti:\nJedan od popularnih fakultativnih izleta je **Mala Holandska Tura**, koja uključuje posetu tradicionalnim mestima kao što su vetrenjače, klompe i lokalni sirevi. Cena izleta je 90€ po osobi, a potrebna je minimalna prijava od 12 putnika.\n\n### Cene:\nCene aranžmana variraju, pa je preporučljivo kontaktirati agenciju za tačne informacije i rezervaciju. Agencija koja organizuje putovanje je **Dream Land**.\n\n### Dodatne informacije:\n- **Vizni režim**: Putnici sa stranim pasošem moraju se raspitati o viznom režimu pre putovanja.\n- **Preporučuje se**: Da se unapred prijavite za fakultativne izlete prilikom rezervacije putovanja kako biste osigurali mesto.\n\nZa više informacija, slobodno posetite sajt agencije [Dream Land](http://www.dreamland.travel).\n\nIzvori informacija: \n- Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf\n- Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf\n\nUkoliko imate dodatnih pitanja ili vam je potrebna pomoć oko rezervacije, slobodno se obratite!\n\nSrdačan pozdrav!",
+      "timestamp": "2025-06-22T06:30:34.721790",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Amsterdam",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:30:26.732630",
+          "last_mentioned": "2025-06-22T06:30:26.732630",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf"
+      ],
+      "confidence": 1.0,
+      "metadata": {}
+    },
+    {
+      "message_id": "4cf8a699-1671-457e-b443-82d6697bc9f2",
+      "session_id": "test_session_memory_001",
+      "role": "user",
+      "content": "Jel mozes da mi das detaljniji opis putovanja za prvi maj?",
+      "timestamp": "2025-06-22T06:30:36.774818",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "3f59b17a-5dfa-4c65-a756-b0764cddddef",
+      "session_id": "test_session_memory_001",
+      "role": "assistant",
+      "content": "Dragi korisniče,\n\nEvo detaljnijeg opisa putovanja u Amsterdam za Prvi maj 2025. godine. Ovaj aranžman pruža vam priliku da istražite lepotu i jedinstvenu kulturu ovog fascinantnog grada.\n\n### Detalji putovanja:\n- **Destinacija**: Amsterdam\n- **Datumi putovanja**: 30. april - 4. maj 2025. (5 dana / 4 noćenja)\n- **Tip putovanja**: Individualno putovanje\n- **Prevoz**: Direktan let iz Beograda, sa polaskom 30. aprila u 12:35h i dolaskom u Amsterdam u 15:10h.\n\n### Uključeno u aranžman:\n- **4 noćenja** u hotelu u Amsterdamu (detalje o hotelu možete dobiti prilikom rezervacije).\n- **Panoramsko razgledanje grada** sa vodičem, gde ćete imati priliku da vidite najvažnije znamenitosti kao što su Muzej Van Gogha, Rijksmuseum, i čuveni kanali Amsterdama.\n\n### Fakultativni izleti:\nJedan od popularnih fakultativnih izleta je **Mala Holandska Tura**:\n- **Opis**: Ovaj izlet uključuje posetu Zaanse Schans, gde možete videti tradicionalne vetrenjače, klompe i degustirati lokalne sireve.\n- **Cena**: 90€ po osobi.\n- **Napomena**: Potrebna je minimalna prijava od 12 putnika za realizaciju izleta. Prijavljivanje i plaćanje izleta se vrši prilikom rezervacije putovanja.\n\n### Cene:\nCene aranžmana se mogu razlikovati u zavisnosti od datuma i dostupnosti, pa se preporučuje da kontaktirate agenciju **Dream Land** za tačne informacije i rezervaciju.\n\n### Dodatne informacije:\n- **Vizni režim**: Putnici sa stranim pasošem moraju se raspitati o viznom režimu pre putovanja.\n- **Preporučuje se**: Da se unapred prijavite za fakultativne izlete prilikom rezervacije putovanja kako biste osigurali mesto.\n\n### Kontakt:\nZa više informacija, slobodno posetite sajt agencije [Dream Land](http://www.dreamland.travel).\n\nIzvori informacija:\n- Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf\n- Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf\n\nUkoliko imate dodatnih pitanja ili vam je potrebna pomoć oko rezervacije, slobodno se obratite!\n\nSrdačan pozdrav!",
+      "timestamp": "2025-06-22T06:30:51.132567",
+      "entities_extracted": {
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "maj",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:30:39.642901",
+          "last_mentioned": "2025-06-22T06:30:39.642901",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [],
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T06:30:40.656414",
+          "last_mentioned": "2025-06-22T06:30:40.656414",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf"
+      ],
+      "confidence": 1.0,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {
+    "destination": {
+      "entity_type": "destination",
+      "entity_value": {
+        "entity_type": "destination",
+        "entity_value": "Amsterdam",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T06:28:57.651196",
+        "last_mentioned": "2025-06-22T06:28:57.651196",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T06:29:05.692433",
+      "last_mentioned": "2025-06-22T06:29:05.692433",
+      "frequency": 1,
+      "source_messages": [
+        "103b26fc-3ed5-4f98-ab42-2988a3ad526c"
+      ]
+    },
+    "travel_month": {
+      "entity_type": "travel_month",
+      "entity_value": {
+        "entity_type": "travel_month",
+        "entity_value": "maj",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T06:29:10.086859",
+        "last_mentioned": "2025-06-22T06:29:10.086859",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T06:29:20.172492",
+      "last_mentioned": "2025-06-22T06:29:20.172492",
+      "frequency": 1,
+      "source_messages": [
+        "15971590-6ad0-40bf-b8da-26a6a28a9837"
+      ]
+    }
+  },
+  "active_entities": {
+    "destination": "Amsterdam",
+    "travel_month": "maj",
+    "amenities": []
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T06:30:51.132567",
+  "context_switch_detected": false
+}

@@ -6,6 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from services.document_service import DocumentService
 from models.document import SearchQuery, SearchResponse
+from services.document_detail_service import DocumentDetailService
 
 router = APIRouter(prefix="/documents", tags=["documents"])
 
@@ -246,4 +247,74 @@ async def get_search_suggestions():
         "Gradsko putovanje Madrid",
         "Krstarenje Mediteranom"
     ]
-    return {"suggestions": suggestions} 
+    return {"suggestions": suggestions}
+
+@router.get("/document-detail/{document_name}")
+async def get_document_detail(document_name: str):
+    """Get detailed content for a specific document"""
+    try:
+        detail_service = DocumentDetailService(vector_service)
+        detailed_content = detail_service.get_detailed_content(document_name)
+        
+        if "error" in detailed_content:
+            raise HTTPException(status_code=404, detail=detailed_content["error"])
+        
+        return {
+            "status": "success",
+            "document_name": detailed_content["document_name"],
+            "content_length": detailed_content["content_length"],
+            "total_chunks": detailed_content["total_chunks"],
+            "structured_content": detailed_content["structured_content"],
+            "metadata": detailed_content["metadata"]
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting document detail: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/test-detailed-response")
+async def test_detailed_response(request: dict):
+    """Test endpoint for detailed response generation"""
+    try:
+        query = request.get("query", "")
+        if not query:
+            raise HTTPException(status_code=400, detail="Query is required")
+        
+        # Get documents related to query
+        search_query = SearchQuery(query=query, limit=3)
+        search_results = vector_service.search(search_query)
+        
+        if not search_results.results:
+            return {"message": "No documents found for query"}
+        
+        # Test detailed content retrieval
+        detail_service = DocumentDetailService(vector_service)
+        detailed_docs = []
+        
+        for result in search_results.results[:2]:  # Top 2 documents
+            doc_name = result.metadata.source_file
+            if doc_name:
+                detailed_content = detail_service.get_detailed_content(doc_name)
+                if "error" not in detailed_content:
+                    detailed_docs.append(detailed_content)
+        
+        return {
+            "status": "success",
+            "query": query,
+            "standard_results": len(search_results.results),
+            "detailed_documents": len(detailed_docs),
+            "detailed_content_summary": [
+                {
+                    "document": doc["document_name"],
+                    "content_length": doc["content_length"],
+                    "extracted_prices": doc["structured_content"].get("prices", []),
+                    "extracted_dates": doc["structured_content"].get("dates", []),
+                    "sections": list(doc["structured_content"].get("sections", {}).keys())
+                }
+                for doc in detailed_docs
+            ]
+        }
+        
+    except Exception as e:
+        logger.error(f"Error testing detailed response: {e}")
+        raise HTTPException(status_code=500, detail=str(e)) 
