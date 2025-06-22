@@ -90,6 +90,11 @@ Tvoj odgovor:
             
             # Validate expansion
             if self._is_valid_expansion(expanded_query, query):
+                # Check if we have a truncated version to return
+                if hasattr(self, '_truncated_expansion'):
+                    truncated = self._truncated_expansion
+                    delattr(self, '_truncated_expansion')  # Clean up
+                    return truncated
                 return expanded_query
             else:
                 logger.warning(f"Invalid LLM expansion for '{query}': {expanded_query}")
@@ -149,14 +154,22 @@ Tvoj odgovor:
             return False
         
         # Count number of OR terms
-        terms_count = len(expanded.split(" OR "))
-        if terms_count > 15:  # Too many terms
-            logger.warning(f"Too many expansion terms ({terms_count}) for '{original}'")
-            return False
+        terms = expanded.split(" OR ")
+        terms_count = len(terms)
+        
+        # If too many terms, truncate to first 12 (don't reject completely)
+        if terms_count > 12:
+            logger.warning(f"Too many expansion terms ({terms_count}) for '{original}', truncating to 12")
+            # Truncate to first 12 terms and return modified expansion
+            truncated_terms = terms[:12]
+            truncated_expansion = " OR ".join(truncated_terms)
+            # Store truncated version for return
+            self._truncated_expansion = truncated_expansion
+            return True
             
         # Check expansion ratio (not too long)
         expansion_ratio = len(expanded) / len(original)
-        if expansion_ratio > 12:  # Reasonable expansion limit (relaxed for better UX)
+        if expansion_ratio > 15:  # Slightly increased limit
             logger.warning(f"Expansion too long (ratio: {expansion_ratio:.1f}) for '{original}'")
             return False
             

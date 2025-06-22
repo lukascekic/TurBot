@@ -4,21 +4,30 @@ from typing import List, Dict, Any, Tuple
 from pathlib import Path
 import hashlib
 from datetime import datetime
+from openai import AsyncOpenAI
+import asyncio
+import logging
 
 from models.document import DocumentChunk, DocumentMetadata, ProcessedDocument
+from services.metadata_enhancement_service import MetadataEnhancementService
 
+# Configure detailed logging
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 class PDFProcessor:
-    """Service for processing PDF documents into searchable chunks"""
+    """Service for processing PDF documents into searchable chunks with enhanced metadata"""
     
-    def __init__(self, chunk_size: int = 1024, chunk_overlap: int = 200):
+    def __init__(self, chunk_size: int = 1024, chunk_overlap: int = 200, openai_client: AsyncOpenAI = None):
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
+        self.metadata_service = MetadataEnhancementService(openai_client) if openai_client else None
         
     def process_pdf(self, file_path: str) -> ProcessedDocument:
         """Process a PDF file and return structured document data"""
         try:
             filename = Path(file_path).name
+            logger.info(f"🔄 Processing PDF: {filename}")
             chunks = []
             
             with pdfplumber.open(file_path) as pdf:
@@ -37,12 +46,25 @@ class PDFProcessor:
                             table_text = self._format_table(table)
                             full_text += f"\n\nTabela:\n{table_text}\n"
             
+            logger.info(f"📄 Extracted {len(full_text)} characters from {filename}")
+            
             # Create chunks from the extracted text
             text_chunks = self._create_chunks(full_text)
+            logger.info(f"📊 Created {len(text_chunks)} chunks from {filename}")
             
-            # Process each chunk
+            # Process each chunk with enhanced metadata
             for i, chunk_text in enumerate(text_chunks):
-                metadata = self._extract_metadata(chunk_text, filename)
+                logger.info(f"🧠 Processing chunk {i+1}/{len(text_chunks)} for {filename}")
+                
+                if self.metadata_service:
+                    # Use enhanced metadata service (async)
+                    logger.info(f"🤖 Calling GPT-4o-mini for metadata extraction...")
+                    metadata = asyncio.run(self.metadata_service.enhance_document_metadata(chunk_text, filename))
+                    logger.info(f"✅ GPT-4o-mini response: destination={metadata.destination}, category={metadata.category}")
+                else:
+                    # Fallback to basic metadata extraction
+                    logger.info(f"📝 Using fallback metadata extraction...")
+                    metadata = self._extract_metadata_fallback(chunk_text, filename)
                 
                 chunk = DocumentChunk(
                     id=self._generate_chunk_id(filename, i),
@@ -51,7 +73,9 @@ class PDFProcessor:
                     created_at=datetime.now()
                 )
                 chunks.append(chunk)
+                logger.info(f"✅ Created chunk {chunk.id} with source_file={metadata.source_file}")
             
+            logger.info(f"🎉 Successfully processed {filename}: {len(chunks)} chunks created")
             return ProcessedDocument(
                 filename=filename,
                 chunks=chunks,
@@ -61,6 +85,7 @@ class PDFProcessor:
             )
             
         except Exception as e:
+            logger.error(f"❌ Error processing {filename}: {e}")
             return ProcessedDocument(
                 filename=Path(file_path).name,
                 chunks=[],
@@ -109,7 +134,7 @@ class PDFProcessor:
             
         return chunks
     
-    def _extract_metadata(self, text: str, filename: str) -> DocumentMetadata:
+    def _extract_metadata_fallback(self, text: str, filename: str) -> DocumentMetadata:
         """Extract metadata from chunk text"""
         text_lower = text.lower()
         
@@ -143,8 +168,8 @@ class PDFProcessor:
         seasonal = self._extract_seasonal(text_lower)
         
         return DocumentMetadata(
+            destination=location or "Unknown",  # Use destination instead of location
             category=category,
-            location=location,
             price_range=price_range,
             family_friendly=family_friendly,
             seasonal=seasonal,
@@ -153,7 +178,90 @@ class PDFProcessor:
     
     def _extract_location(self, text: str, filename: str = "") -> str:
         """Extract location from text with filename-based priority"""
-        # Major cities and regions
+        
+        # PRIORITY 1: Filename-based location detection (HIGHEST PRIORITY)
+        filename_lower = filename.lower()
+        
+        # Specific filename patterns for exact matching
+        filename_patterns = {
+            # French destinations
+            'romanticna_francuska': 'Pariz',
+            'francuska': 'Pariz',
+            'pariz': 'Pariz',
+            'france': 'Pariz',
+            
+            # Portuguese destinations  
+            'portugalska': 'Lisabon',
+            'portugal': 'Lisabon',
+            'lisabon': 'Lisabon',
+            'porto': 'Porto',
+            
+            # Italian destinations
+            'rim_': 'Rim',
+            'roma': 'Rim',
+            'italy': 'Rim',
+            'italija': 'Rim',
+            'toskana': 'Firenca',
+            'sicilija': 'Palermo',
+            'bari': 'Bari',
+            'pulja': 'Bari',
+            
+            # Turkish destinations
+            'istanbul': 'Istanbul',
+            'turska': 'Istanbul',
+            'turkey': 'Istanbul',
+            'kabadokija': 'Istanbul',
+            
+            # Dutch destinations
+            'amsterdam': 'Amsterdam',
+            'holland': 'Amsterdam',
+            'netherlands': 'Amsterdam',
+            
+            # Spanish destinations
+            'madrid': 'Madrid',
+            'barcelona': 'Barcelona',
+            'andaluzija': 'Sevilla',
+            'spain': 'Madrid',
+            
+            # Greek destinations
+            'grcka': 'Atina',
+            'greece': 'Atina',
+            'atina': 'Atina',
+            
+            # German destinations
+            'nemacka': 'Berlin',
+            'germany': 'Berlin',
+            'minhen': 'Minhen',
+            'munich': 'Minhen',
+            
+            # Serbian destinations
+            'beograd': 'Beograd',
+            'novi_sad': 'Novi Sad',
+            'kopaonik': 'Kopaonik',
+            'zlatibor': 'Zlatibor',
+            'tara': 'Tara',
+            
+            # Other destinations
+            'maroko': 'Kazablanka',
+            'morocco': 'Kazablanka',
+            'egipat': 'Kairo',
+            'egypt': 'Kairo',
+            'indija': 'Deli',
+            'india': 'Deli',
+            'kina': 'Peking',
+            'china': 'Peking',
+            'rusija': 'Moskva',
+            'russia': 'Moskva',
+            'sankt_petersburg': 'Sankt Peterburg',
+            'moskva': 'Moskva'
+        }
+        
+        # Check filename patterns first (HIGHEST PRIORITY)
+        for pattern, location in filename_patterns.items():
+            if pattern in filename_lower:
+                return location
+        
+        # Major cities and regions for text-based detection
         locations = {
             'beograd': 'Beograd',
             'novi sad': 'Novi Sad',
@@ -181,8 +289,7 @@ class PDFProcessor:
             'fruška gora': 'Fruška Gora'
         }
         
-        # Priority 1: Check filename for destination (more reliable)
-        filename_lower = filename.lower()
+        # Priority 2: Check generic location names in filename  
         for key, value in locations.items():
             if key in filename_lower and key != 'beograd':  # Skip Beograd (usually departure city)
                 return value

@@ -459,3 +459,83 @@ response = response_generator.generate(results, context)
 *Poslednja izmena: Jun 21, 2025 - Chat 4*
 *Status: Phase 2 KOMPLETNO ✅ + Phase 3 PRIPREMLJEN 🚀*
 *Next: Advanced RAG Implementation - Query Expansion, Self-Querying, Conversational AI* 
+
+## 📝 Chat 5 - Critical Search Issues Analysis & Resolution (ZAVRŠENO)
+
+### **🚨 KRITIČNI PROBLEMI IDENTIFIKOVANI I REŠENI**
+
+#### **Problem 1: Pogrešni Search Results**
+- **Issue:** "smestaj u Rimu" vraćao FRANCUSKI i PORTUGALSKI dokumenti
+- **Expected:** Trebalo je da vrati Rome-specific dokumente
+- **Status:** ✅ ROOT CAUSE IDENTIFIKOVAN
+
+#### **Problem 2: Location Filter Not Working**
+- **Issue:** ChromaDB filter `{'location': 'Rim'}` vraćao pogrešne dokumente
+- **Investigation:** Debug logs dodani u vector_service.py i query_expansion_service.py
+- **Status:** ✅ CONFIRMED - Filter radi, problem je u metadata
+
+### **🔍 ROOT CAUSE ANALYSIS COMPLETED**
+
+#### **KRITIČNA OTKRIĆA:**
+```
+Query: 'smestaj u Rimu' with filter {'location': 'Rim'}
+ChromaDB Results: 9 documents with location='Rim' ✅
+BUT Sources: 
+- product_be_unique_ROMANTICNA_FRANCUSKA_5.pdf (FRENCH document!) ❌
+- Portugalska_tura_Lisabon_i_Porto (PORTUGUESE document!) ❌
+```
+
+**CONFIRMED ROOT CAUSE**: French and Portuguese documents are incorrectly labeled as `location: 'Rim'` in the database during PDF processing phase.
+
+#### **What's Working Correctly:**
+1. ✅ **ChromaDB filtering** - Filter application working perfectly
+2. ✅ **Location detection** - Self-querying correctly detects "Rim" from user query
+3. ✅ **Embedding similarity** - Vector search returns relevant results
+4. ✅ **Amsterdam/Istanbul queries** - Work correctly with proper documents
+
+#### **What's Broken:**
+1. ❌ **PDF metadata processing** - Wrong location assignment during document ingestion
+2. ❌ **Query expansion** - Failing validation (too many terms) and falling back
+3. ❌ **Semantic matching** - "letovanje" not matching summer vacation documents
+
+### **🔧 IMMEDIATE FIXES REQUIRED**
+
+#### **Priority 1: Fix PDF Processing (CRITICAL)**
+- **Location:** `pdf_processor.py` or `metadata_enhancement_service.py`
+- **Issue:** French docs getting `location="Rim"` instead of `location="Pariz"`
+- **Solution:** Fix filename-based location detection logic
+
+#### **Priority 2: Database Cleanup**
+- **Issue:** Existing wrong metadata in ChromaDB
+- **Solution:** Update specific documents with correct locations
+- **Impact:** Will immediately fix search relevance
+
+#### **Priority 3: Query Expansion Fix**
+- **Issue:** Term limits too strict (failing at 16 terms)
+- **Solution:** Allow 10-12 terms, improve validation logic
+- **Impact:** Better Serbian language semantic search
+
+### **Debug Infrastructure Created:**
+- ✅ **Comprehensive debug logs** - Added to vector_service.py and query_expansion_service.py
+- ✅ **Database diagnostic test** - Created and tested to identify metadata issues
+- ✅ **Testing template** - Working pattern documented for future tests
+- ✅ **Debug logs cleaned** - Removed from production code after analysis
+
+### **Testing Guidelines Confirmed:**
+1. **Always use async functions** for tests involving LLM calls
+2. **Always include full RAG pipeline** for realistic testing
+3. **Use only location filter** in vector search to avoid ChromaDB limitations
+4. **Use expanded query** from query expansion service, not original query text
+5. **Follow test_template.py structure** for consistency and reliability
+
+### **Next Steps Before Frontend:**
+1. **Fix PDF processing** - Correct location assignment logic
+2. **Clean database** - Update wrong metadata entries
+3. **Fix query expansion** - Adjust term validation limits
+4. **Validate fixes** - Test all problematic queries return correct results
+
+---
+
+*Poslednja izmena: Jun 21, 2025 - Chat 5*
+*Status: Phase 2 KOMPLETNO ✅ + CRITICAL ISSUES IDENTIFIED ✅ + ROOT CAUSE CONFIRMED ✅*
+*Next: Fix PDF Processing + Database Cleanup + Query Expansion Improvements* 

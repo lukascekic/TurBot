@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from openai import AsyncOpenAI
 import hashlib
+from models.document import DocumentMetadata
 
 logger = logging.getLogger(__name__)
 
@@ -51,382 +52,251 @@ class EnhancedMetadata:
             self.extracted_at = datetime.now()
 
 class MetadataEnhancementService:
+    """AI-powered metadata enhancement using GPT-4o-mini for maximum precision"""
+    
     def __init__(self, openai_client: AsyncOpenAI):
         self.client = openai_client
-        self.cache: Dict[str, EnhancedMetadata] = {}
         
-    async def enhance_document_metadata_comprehensive(
-        self, 
-        content: str, 
-        filename: str, 
-        existing_metadata: Dict[str, Any] = None
-    ) -> EnhancedMetadata:
+    async def enhance_document_metadata(self, content: str, filename: str) -> DocumentMetadata:
         """
-        Comprehensive metadata extraction optimized for demo quality
+        Extract comprehensive metadata from document content using GPT-4o-mini
+        
+        Args:
+            content: Document text content
+            filename: Original filename for context
+            
+        Returns:
+            Enhanced DocumentMetadata with AI-extracted fields
         """
         try:
-            # Check cache first
-            cache_key = self._get_cache_key(content, filename)
-            if cache_key in self.cache:
-                logger.info(f"Cache hit for metadata: {filename}")
-                return self.cache[cache_key]
+            # Prepare content for analysis (truncate if too long)
+            analysis_content = self._prepare_content_for_analysis(content)
             
-            # Extract comprehensive metadata using LLM
-            enhanced_metadata = await self._extract_comprehensive_metadata(
-                content, filename, existing_metadata
-            )
+            # Create comprehensive extraction prompt
+            extraction_prompt = self._create_extraction_prompt(analysis_content, filename)
             
-            # Cache the result
-            self.cache[cache_key] = enhanced_metadata
-            
-            logger.info(f"Enhanced metadata for {filename}: {enhanced_metadata.category} - {enhanced_metadata.subcategory}")
-            return enhanced_metadata
-            
-        except Exception as e:
-            logger.error(f"Error enhancing metadata for '{filename}': {e}")
-            # Fallback to existing metadata + basic enhancement
-            return self._fallback_metadata_enhancement(content, filename, existing_metadata)
-    
-    async def _extract_comprehensive_metadata(
-        self, 
-        content: str, 
-        filename: str, 
-        existing_metadata: Dict[str, Any] = None
-    ) -> EnhancedMetadata:
-        """
-        Use LLM to extract comprehensive metadata from document content
-        """
-        
-        # Truncate content if too long (to save tokens)
-        truncated_content = content[:3000] if len(content) > 3000 else content
-        
-        prompt = f"""
-Analiziraj ovaj dokument turističke agencije i izvuci detaljne metapodatke.
-
-DOKUMENT: {filename}
-SADRŽAJ:
-{truncated_content}
-
-IZVUCI SLEDEĆE METAPODATKE u JSON formatu:
-
-{{
-    "category": "tour|hotel|restaurant|attraction",
-    "subcategory": "city_tour|beach_resort|cultural_experience|adventure|romantic_getaway|family_vacation",
-    "destinations": ["lista lokacija - gradovi, zemlje, regioni"],
-    "price_details": {{
-        "currency": "EUR|USD|RSD",
-        "price_per_person": number_or_null,
-        "price_range_min": number_or_null,
-        "price_range_max": number_or_null,
-        "includes": ["lista šta je uključeno u cenu"]
-    }},
-    "amenities": ["lista sadržaja - bazen, spa, wifi, parking, klima, balkon, itd"],
-    "duration_days": number_or_null,
-    "travel_dates": {{
-        "start_date": "YYYY-MM-DD format ili null",
-        "end_date": "YYYY-MM-DD format ili null", 
-        "flexible_dates": true_or_false,
-        "season": "spring|summer|autumn|winter|year_round"
-    }},
-    "group_size": {{
-        "min_size": number_or_null,
-        "max_size": number_or_null,
-        "optimal_size": number_or_null,
-        "family_friendly": true_or_false
-    }},
-    "difficulty_level": "easy|moderate|challenging|null",
-    "transport_type": "bus|plane|train|ship|car|mixed|null",
-    "location": "glavna destinacija",
-    "price_range": "budget|moderate|expensive|luxury",
-    "seasonal": "year_round|spring|summer|autumn|winter",
-    "family_friendly": true_or_false,
-    "confidence_score": 0.0_to_1.0
-}}
-
-PRAVILA:
-- Budi precizna i konzistentna
-- Koristi null za nepoznate vrednosti
-- Confidence score na osnovu jasnoće informacija u dokumentu
-- Destinations lista treba da bude sveobuhvatna
-- Amenities lista treba da bude detaljn
-
-ODGOVORI SAMO SA JSON-om:
-"""
-
-        try:
+            # Call GPT-4o-mini for metadata extraction
             response = await self.client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[
-                    {"role": "system", "content": "Ti si ekspert za analizu turističkih dokumenata. Odgovaraj samo validnim JSON-om."},
-                    {"role": "user", "content": prompt}
+                    {"role": "system", "content": self._get_system_prompt()},
+                    {"role": "user", "content": extraction_prompt}
                 ],
-                max_tokens=800,
-                temperature=0.1
+                temperature=0.1,  # Low temperature for consistent extraction
+                max_tokens=500
             )
             
-            json_response = response.choices[0].message.content.strip()
+            # Parse AI response
+            ai_response = response.choices[0].message.content
+            metadata_dict = self._parse_ai_response(ai_response)
             
-            # Debug logging for JSON parsing issues
-            if not json_response:
-                logger.error(f"Empty LLM response for {filename}")
-                return self._fallback_metadata_enhancement(content, filename, existing_metadata)
+            # Add filename-based fallbacks
+            metadata_dict = self._add_filename_based_metadata(metadata_dict, filename)
             
-            logger.debug(f"LLM response for {filename}: {json_response[:200]}...")
+            # Ensure source_file is set
+            metadata_dict['source_file'] = filename
             
-            # Clean JSON response (remove markdown formatting if present)
-            if json_response.startswith("```json"):
-                json_response = json_response.replace("```json", "").replace("```", "").strip()
-            elif json_response.startswith("```"):
-                json_response = json_response.replace("```", "").strip()
+            # Create DocumentMetadata object
+            enhanced_metadata = DocumentMetadata(**metadata_dict)
             
-            # Parse JSON response
-            metadata_dict = json.loads(json_response)
-            
-            # Create EnhancedMetadata object
-            enhanced_metadata = EnhancedMetadata(
-                category=metadata_dict.get("category", "tour"),
-                subcategory=metadata_dict.get("subcategory"),
-                location=metadata_dict.get("location", ""),
-                destinations=metadata_dict.get("destinations", []),
-                price_details=metadata_dict.get("price_details", {}),
-                amenities=metadata_dict.get("amenities", []),
-                duration_days=metadata_dict.get("duration_days"),
-                travel_dates=metadata_dict.get("travel_dates", {}),
-                group_size=metadata_dict.get("group_size", {}),
-                difficulty_level=metadata_dict.get("difficulty_level"),
-                transport_type=metadata_dict.get("transport_type"),
-                price_range=metadata_dict.get("price_range", "moderate"),
-                seasonal=metadata_dict.get("seasonal", "year_round"),
-                family_friendly=metadata_dict.get("family_friendly", False),
-                confidence_score=metadata_dict.get("confidence_score", 0.7),
-                extraction_method="llm_comprehensive"
-            )
-            
-            # Validate and post-process
-            enhanced_metadata = self._validate_and_enhance_metadata(enhanced_metadata, filename)
-            
+            logger.info(f"Enhanced metadata for {filename}: destination={enhanced_metadata.destination}, category={enhanced_metadata.category}")
             return enhanced_metadata
             
-        except json.JSONDecodeError as e:
-            logger.error(f"JSON parsing error for {filename}: {e}")
-            return self._fallback_metadata_enhancement(content, filename, existing_metadata)
         except Exception as e:
-            logger.error(f"LLM metadata extraction failed for {filename}: {e}")
-            return self._fallback_metadata_enhancement(content, filename, existing_metadata)
+            logger.error(f"Error enhancing metadata for {filename}: {e}")
+            # Return basic metadata as fallback
+            return self._create_fallback_metadata(filename)
     
-    def _validate_and_enhance_metadata(self, metadata: EnhancedMetadata, filename: str) -> EnhancedMetadata:
-        """
-        Validate and enhance metadata with filename-based insights
-        """
-        # Filename-based location enhancement
+    def _get_system_prompt(self) -> str:
+        """System prompt for metadata extraction"""
+        return """Ti si ekspert za analizu turističkih dokumenata. Tvoj zadatak je da iz sadržaja dokumenta izvučeš precizne metadata.
+
+VAŽNO: Odgovori SAMO u JSON formatu bez dodatnog teksta.
+
+Analiziraj dokument i izvuci sledeće informacije:
+- destination: Glavna destinacija (grad/zemlja) - OBAVEZNO
+- category: tour/hotel/restaurant/attraction
+- price_range: budget/moderate/expensive/luxury (na osnovu cena)
+- duration_days: Broj dana putovanja (broj)
+- transport_type: bus/plane/train/ship
+- family_friendly: true/false (na osnovu sadržaja)
+- seasonal: year_round/summer/winter/spring/autumn
+- travel_month: konkretni mesec ako je spomenut
+- price_details: JSON sa cenama (single, double, currency)
+- confidence_score: Tvoja sigurnost u izvučene podatke (0.0-1.0)
+
+Primer odgovora:
+{
+  "destination": "Rim",
+  "category": "tour", 
+  "price_range": "moderate",
+  "duration_days": 4,
+  "transport_type": "plane",
+  "family_friendly": true,
+  "seasonal": "year_round",
+  "travel_month": "maj",
+  "price_details": "{\"single\": 450, \"double\": 320, \"currency\": \"EUR\"}",
+  "confidence_score": 0.9
+}"""
+
+    def _create_extraction_prompt(self, content: str, filename: str) -> str:
+        """Create extraction prompt with content and filename context"""
+        return f"""Analiziraj ovaj turistički dokument i izvuci metadata:
+
+FILENAME: {filename}
+
+SADRŽAJ DOKUMENTA:
+{content}
+
+Izvuci metadata u JSON formatu:"""
+
+    def _prepare_content_for_analysis(self, content: str) -> str:
+        """Prepare content for AI analysis (truncate if needed)"""
+        # Limit to ~2000 characters to stay within token limits
+        if len(content) > 2000:
+            # Take first 1000 and last 1000 chars to capture both intro and pricing
+            content = content[:1000] + "\n...\n" + content[-1000:]
+        return content
+
+    def _parse_ai_response(self, ai_response: str) -> Dict[str, Any]:
+        """Parse AI response into metadata dictionary"""
+        try:
+            # Try to extract JSON from response
+            json_match = re.search(r'\{.*\}', ai_response, re.DOTALL)
+            if json_match:
+                json_str = json_match.group()
+                metadata_dict = json.loads(json_str)
+                
+                # Validate and clean the response
+                return self._validate_and_clean_metadata(metadata_dict)
+            else:
+                logger.warning("No JSON found in AI response")
+                return {}
+                
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse AI response as JSON: {e}")
+            return {}
+
+    def _validate_and_clean_metadata(self, metadata_dict: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate and clean AI-extracted metadata"""
+        cleaned = {}
+        
+        # Destination (most important)
+        if 'destination' in metadata_dict and metadata_dict['destination']:
+            cleaned['destination'] = str(metadata_dict['destination']).strip()
+            # Also set location for backward compatibility
+            cleaned['location'] = cleaned['destination']
+        
+        # Category validation
+        valid_categories = ['tour', 'hotel', 'restaurant', 'attraction']
+        if metadata_dict.get('category') in valid_categories:
+            cleaned['category'] = metadata_dict['category']
+        
+        # Price range validation
+        valid_price_ranges = ['budget', 'moderate', 'expensive', 'luxury']
+        if metadata_dict.get('price_range') in valid_price_ranges:
+            cleaned['price_range'] = metadata_dict['price_range']
+        
+        # Duration (validate as integer)
+        if 'duration_days' in metadata_dict:
+            try:
+                duration = int(metadata_dict['duration_days'])
+                if 1 <= duration <= 30:  # Reasonable range
+                    cleaned['duration_days'] = duration
+            except (ValueError, TypeError):
+                pass
+        
+        # Transport type validation
+        valid_transport = ['bus', 'plane', 'train', 'ship']
+        if metadata_dict.get('transport_type') in valid_transport:
+            cleaned['transport_type'] = metadata_dict['transport_type']
+        
+        # Boolean fields
+        if isinstance(metadata_dict.get('family_friendly'), bool):
+            cleaned['family_friendly'] = metadata_dict['family_friendly']
+        
+        # Seasonal validation
+        valid_seasonal = ['year_round', 'summer', 'winter', 'spring', 'autumn']
+        if metadata_dict.get('seasonal') in valid_seasonal:
+            cleaned['seasonal'] = metadata_dict['seasonal']
+        
+        # Travel month
+        if 'travel_month' in metadata_dict and metadata_dict['travel_month']:
+            cleaned['travel_month'] = str(metadata_dict['travel_month']).lower().strip()
+        
+        # Price details (keep as JSON string)
+        if 'price_details' in metadata_dict:
+            cleaned['price_details'] = str(metadata_dict['price_details'])
+        
+        # Confidence score validation
+        if 'confidence_score' in metadata_dict:
+            try:
+                confidence = float(metadata_dict['confidence_score'])
+                if 0.0 <= confidence <= 1.0:
+                    cleaned['confidence_score'] = confidence
+            except (ValueError, TypeError):
+                pass
+        
+        return cleaned
+
+    def _add_filename_based_metadata(self, metadata_dict: Dict[str, Any], filename: str) -> Dict[str, Any]:
+        """Add filename-based metadata as fallback/enhancement"""
         filename_lower = filename.lower()
         
-        # Geographic location enhancement from filename
-        location_mappings = {
-            "amsterdam": "Amsterdam",
-            "istanbul": "Istanbul", 
-            "rim": "Rim",
-            "roma": "Rim",
-            "rome": "Rim",
-            "beograd": "Beograd",
-            "belgrade": "Beograd",
-            "pariz": "Pariz",
-            "paris": "Pariz",
-            "maroko": "Maroko",
-            "morocco": "Maroko",
-            "malta": "Malta",
-            "bari": "Bari",
-            "pulja": "Pulja",
-            "portugal": "Portugalska",
-            "portugals": "Portugalska",
-            "lisabon": "Lisabon",
-            "porto": "Porto",
-            "andaluz": "Andaluzija",
-            "espana": "Španija",
-            "madrid": "Madrid",
-            "toskana": "Toskana",
-            "italy": "Italija",
-            "italija": "Italija"
+        # Destination detection from filename (high priority)
+        filename_destinations = {
+            'amsterdam': 'Amsterdam',
+            'istanbul': 'Istanbul', 
+            'rim': 'Rim',
+            'roma': 'Rim',
+            'rome': 'Rim',
+            'pariz': 'Pariz',
+            'paris': 'Pariz',
+            'romanticna_francuska': 'Pariz',
+            'portugalska': 'Lisabon',
+            'portugal': 'Lisabon',
+            'madrid': 'Madrid',
+            'barcelona': 'Barcelona',
+            'maroko': 'Marakeš',
+            'morocco': 'Marakeš',
+            'malta': 'Malta',
+            'bari': 'Bari',
+            'pulja': 'Pulja'
         }
         
-        for key, location in location_mappings.items():
-            if key in filename_lower:
-                if not metadata.location or metadata.location == "":
-                    metadata.location = location
-                if location not in metadata.destinations:
-                    metadata.destinations.append(location)
-                break
+        # If destination not found by AI, try filename
+        if not metadata_dict.get('destination'):
+            for keyword, destination in filename_destinations.items():
+                if keyword in filename_lower:
+                    metadata_dict['destination'] = destination
+                    metadata_dict['location'] = destination  # Backward compatibility
+                    break
         
-        # Price range adjustment based on filename patterns
-        if any(term in filename_lower for term in ["lux", "luxury", "premium", "vip"]):
-            metadata.price_range = "luxury"
-        elif any(term in filename_lower for term in ["budget", "economic", "jeftin"]):
-            metadata.price_range = "budget"
+        # Transport type from filename
+        if not metadata_dict.get('transport_type'):
+            if 'avio' in filename_lower or 'avion' in filename_lower:
+                metadata_dict['transport_type'] = 'plane'
+            elif 'bus' in filename_lower:
+                metadata_dict['transport_type'] = 'bus'
         
-        # Category enhancement based on filename
-        if any(term in filename_lower for term in ["hotel", "resort", "vila", "apartman"]):
-            if metadata.category == "tour":
-                metadata.subcategory = "accommodation_focused_tour"
+        # Category from filename patterns
+        if not metadata_dict.get('category'):
+            if any(word in filename_lower for word in ['cenovnik', 'program', 'putovanja']):
+                metadata_dict['category'] = 'tour'
         
-        # Ensure minimum confidence score
-        if metadata.confidence_score < 0.3:
-            metadata.confidence_score = 0.5  # Reasonable default
-        
-        return metadata
-    
-    def _fallback_metadata_enhancement(
-        self, 
-        content: str, 
-        filename: str, 
-        existing_metadata: Dict[str, Any] = None
-    ) -> EnhancedMetadata:
-        """
-        Fallback metadata enhancement using pattern matching
-        """
-        logger.info(f"Using fallback metadata enhancement for {filename}")
-        
-        # Start with existing metadata if available
-        base_metadata = existing_metadata or {}
-        
-        # Basic pattern matching for key information
-        price_info = self._extract_price_info(content)
-        duration_info = self._extract_duration_info(content)
-        amenities_info = self._extract_amenities_info(content)
-        
-        enhanced_metadata = EnhancedMetadata(
-            category=base_metadata.get("category", "tour"),
-            location=base_metadata.get("location", ""),
-            price_range=base_metadata.get("price_range", "moderate"),
-            family_friendly=base_metadata.get("family_friendly", False),
-            seasonal=base_metadata.get("seasonal", "year_round"),
-            price_details=price_info,
-            duration_days=duration_info,
-            amenities=amenities_info,
-            confidence_score=0.4,
-            extraction_method="pattern_matching"
-        )
-        
-        # Apply filename-based enhancements
-        enhanced_metadata = self._validate_and_enhance_metadata(enhanced_metadata, filename)
-        
-        return enhanced_metadata
-    
-    def _extract_price_info(self, content: str) -> Dict[str, Any]:
-        """Extract price information using regex patterns"""
-        price_patterns = [
-            r'(\d+)\s*(?:EUR|€|eur)',
-            r'(\d+)\s*(?:USD|\$|usd)',
-            r'(\d+)\s*(?:RSD|din|rsd)',
-            r'cena.*?(\d+)',
-            r'price.*?(\d+)',
-            r'(\d+)\s*po\s*osobi'
-        ]
-        
-        prices = []
-        for pattern in price_patterns:
-            matches = re.findall(pattern, content, re.IGNORECASE)
-            prices.extend([int(match) for match in matches])
-        
-        if prices:
-            return {
-                "currency": "EUR",  # Default assumption
-                "price_range_min": min(prices),
-                "price_range_max": max(prices),
-                "includes": ["basic_package"]
-            }
-        
-        return {}
-    
-    def _extract_duration_info(self, content: str) -> Optional[int]:
-        """Extract trip duration using regex patterns"""
-        duration_patterns = [
-            r'(\d+)\s*(?:dana|day|days)',
-            r'(\d+)\s*(?:noći|night|nights)',
-            r'(\d+)\s*(?:dan|day)'
-        ]
-        
-        for pattern in duration_patterns:
-            matches = re.findall(pattern, content, re.IGNORECASE)
-            if matches:
-                return int(matches[0])
-        
-        return None
-    
-    def _extract_amenities_info(self, content: str) -> List[str]:
-        """Extract amenities using keyword matching"""
-        amenity_keywords = {
-            "bazen": ["pool", "swimming pool", "bazen"],
-            "spa": ["spa", "wellness", "masaža"],
-            "wifi": ["wifi", "wi-fi", "internet"],
-            "parking": ["parking", "parkiranje"],
-            "klima": ["air conditioning", "klima", "ac"],
-            "balkon": ["balkon", "balcony", "terasa"],
-            "restoran": ["restoran", "restaurant", "dining"],
-            "bar": ["bar", "lounge", "kafić"],
-            "fitness": ["fitness", "gym", "teretana"],
-            "room_service": ["room service", "sobni servis"]
+        return metadata_dict
+
+    def _create_fallback_metadata(self, filename: str) -> DocumentMetadata:
+        """Create basic fallback metadata when AI extraction fails"""
+        fallback_dict = {
+            'source_file': filename,
+            'confidence_score': 0.1  # Low confidence for fallback
         }
         
-        found_amenities = []
-        content_lower = content.lower()
+        # Add filename-based metadata
+        fallback_dict = self._add_filename_based_metadata(fallback_dict, filename)
         
-        for amenity, keywords in amenity_keywords.items():
-            if any(keyword in content_lower for keyword in keywords):
-                found_amenities.append(amenity)
-        
-        return found_amenities
-    
-    def _get_cache_key(self, content: str, filename: str) -> str:
-        """Generate cache key for content and filename"""
-        content_hash = hashlib.md5(content[:1000].encode()).hexdigest()
-        filename_hash = hashlib.md5(filename.encode()).hexdigest()
-        return f"{filename_hash}_{content_hash}"
-    
-    async def batch_enhance_metadata(
-        self, 
-        documents: List[Tuple[str, str, Dict[str, Any]]]  # (content, filename, existing_metadata)
-    ) -> List[EnhancedMetadata]:
-        """
-        Batch process multiple documents for metadata enhancement
-        """
-        logger.info(f"Starting batch metadata enhancement for {len(documents)} documents")
-        
-        # Process in smaller batches to avoid overwhelming the LLM
-        batch_size = 5
-        results = []
-        
-        for i in range(0, len(documents), batch_size):
-            batch = documents[i:i + batch_size]
-            
-            # Process batch concurrently
-            batch_tasks = [
-                self.enhance_document_metadata_comprehensive(content, filename, existing_metadata)
-                for content, filename, existing_metadata in batch
-            ]
-            
-            batch_results = await asyncio.gather(*batch_tasks, return_exceptions=True)
-            
-            for result in batch_results:
-                if isinstance(result, Exception):
-                    logger.error(f"Batch processing error: {result}")
-                    # Add fallback metadata
-                    results.append(EnhancedMetadata(
-                        category="tour",
-                        location="",
-                        price_range="moderate",
-                        family_friendly=False,
-                        seasonal="year_round",
-                        confidence_score=0.1,
-                        extraction_method="error_fallback"
-                    ))
-                else:
-                    results.append(result)
-            
-            # Small delay between batches to be nice to the API
-            await asyncio.sleep(0.5)
-        
-        logger.info(f"Completed batch metadata enhancement. Success rate: {len([r for r in results if r.confidence_score > 0.3])/len(results)*100:.1f}%")
-        return results
+        return DocumentMetadata(**fallback_dict)
 
 # Singleton instance
 _metadata_enhancement_service = None

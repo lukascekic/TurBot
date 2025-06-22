@@ -3,34 +3,60 @@ from pathlib import Path
 import shutil
 import tempfile
 import os
+from openai import AsyncOpenAI
+from dotenv import load_dotenv
+import logging
 
 from services.pdf_processor import PDFProcessor
 from services.vector_service import VectorService
 from models.document import ProcessedDocument, SearchQuery, SearchResponse
 
+# Load environment variables
+load_dotenv()
+
+# Configure detailed logging
+logger = logging.getLogger(__name__)
 
 class DocumentService:
     """Service for managing document upload, processing, and search"""
     
     def __init__(self):
-        self.pdf_processor = PDFProcessor()
+        logger.info("🚀 Initializing DocumentService...")
+        
+        # Initialize OpenAI client for enhanced metadata
+        openai_client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        
+        # Initialize services with enhanced metadata support
+        self.pdf_processor = PDFProcessor(openai_client=openai_client)
         self.vector_service = VectorService()
         
         # Create uploads directory if it doesn't exist
         self.uploads_dir = Path("./uploads")
         self.uploads_dir.mkdir(exist_ok=True)
+        
+        logger.info("✅ DocumentService initialized successfully")
     
     def process_and_store_pdf(self, file_path: str) -> ProcessedDocument:
         """Process a PDF file and store chunks in vector database"""
+        logger.info(f"📁 Starting processing for: {file_path}")
+        
         # Process PDF into chunks
         processed_doc = self.pdf_processor.process_pdf(file_path)
+        logger.info(f"📊 PDF processing result: {processed_doc.processing_status}, {processed_doc.total_chunks} chunks")
         
         if processed_doc.processing_status == "success" and processed_doc.chunks:
+            logger.info(f"💾 Storing {len(processed_doc.chunks)} chunks in vector database...")
+            
             # Store chunks in vector database
             success = self.vector_service.add_documents(processed_doc.chunks)
+            logger.info(f"💾 Vector storage result: {'✅ Success' if success else '❌ Failed'}")
+            
             if not success:
                 processed_doc.processing_status = "error"
                 processed_doc.error_message = "Failed to store chunks in vector database"
+                logger.error(f"❌ Failed to store chunks for {file_path}")
+        else:
+            logger.warning(f"⚠️ PDF processing failed or no chunks created for {file_path}")
         
         return processed_doc
     
@@ -65,24 +91,31 @@ class DocumentService:
     
     def process_documents_directory(self, directory_path: str) -> List[ProcessedDocument]:
         """Process all PDF files in a directory"""
+        logger.info(f"📂 Starting bulk processing of directory: {directory_path}")
         results = []
         directory = Path(directory_path)
         
         if not directory.exists():
+            logger.error(f"❌ Directory does not exist: {directory_path}")
             return results
         
         # Find all PDF files
         pdf_files = list(directory.glob("**/*.pdf"))
+        logger.info(f"📋 Found {len(pdf_files)} PDF files to process")
         
-        for pdf_file in pdf_files:
-            print(f"Processing {pdf_file.name}...")
+        for i, pdf_file in enumerate(pdf_files, 1):
+            logger.info(f"🔄 Processing file {i}/{len(pdf_files)}: {pdf_file.name}")
             processed_doc = self.process_and_store_pdf(str(pdf_file))
             results.append(processed_doc)
             
             if processed_doc.processing_status == "success":
-                print(f"✅ {pdf_file.name}: {processed_doc.total_chunks} chunks")
+                logger.info(f"✅ Successfully processed {pdf_file.name}")
             else:
-                print(f"❌ {pdf_file.name}: {processed_doc.error_message}")
+                logger.error(f"❌ Failed to process {pdf_file.name}: {processed_doc.error_message}")
+        
+        # Summary
+        successful = len([r for r in results if r.processing_status == 'success'])
+        logger.info(f"🎉 Bulk processing complete: {successful}/{len(results)} files processed successfully")
         
         return results
     
@@ -116,7 +149,7 @@ class DocumentService:
             try:
                 file_path.unlink()
             except Exception as e:
-                print(f"Error removing file {filename}: {e}")
+                pass
         
         return success
     
