@@ -1,0 +1,52 @@
+{
+  "session_id": "7a6a84b4-3ee3-4a8d-a862-6a45d56bb8eb",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "800d8fb9-d7dc-41ee-b758-fee5b849cbc5",
+      "session_id": "7a6a84b4-3ee3-4a8d-a862-6a45d56bb8eb",
+      "role": "user",
+      "content": "Jel imas nesto u Amsterdamu?",
+      "timestamp": "2025-06-22T07:57:06.105515",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "4c7a1d50-869c-4040-a947-c5e2ebd77d86",
+      "session_id": "7a6a84b4-3ee3-4a8d-a862-6a45d56bb8eb",
+      "role": "assistant",
+      "content": "U Amsterdamu možete uživati u raznim smeštajnim opcijama i aktivnostima koje će obogatiti vaše putovanje. Evo detalja o mogućnostima:\n\n### Smeštaj\nZa putovanje od 30. aprila do 4. maja 2025. godine, možete izabrati aranžman koji uključuje:\n\n- **Direktan let** iz Beograda do Amsterdama.\n- **4 noćenja** u hotelima različitih kategorija (detalji o hotelima se mogu dobiti prilikom rezervacije).\n\n### Aktivnosti\nTokom boravka u Amsterdamu, možete se odlučiti za različite aktivnosti i izlete, uključujući:\n\n1. **Panoramsko razgledanje grada**: U okviru aranžmana, uživaćete u vožnji kroz najlepše delove Amsterdama.\n   \n2. **Fakultativni izleti**:\n   - **Mala Holandska tura**: Ovaj izlet uključuje posetu Zaanse Schans, poznatom po vetrenjačama, klompama i sirevima. Cena izleta je **90€ po osobi**, a vodič će biti na srpskom jeziku (minimum 12 putnika) (izvor: Document 4).\n\n3. **Istraživanje lokalne kulture**: Amsterdam je poznat po svojim muzejima, kao što su Muzej Van Goga, Rijksmuseum, i kuća Ane Frank.\n\n4. **Vožnja biciklom**: Iznajmljivanje bicikla je popularna aktivnost s obzirom na to da je grad prilagođen biciklistima.\n\n5. **Poseta kafanama i restoranima**: Isprobajte lokalne specijalitete, kao što su stroopwafels i haring.\n\n### Preporuka za rezervaciju\nZa više informacija o cijenama i konkretnim smeštajnim opcijama, preporučujem da kontaktirate agenciju ili posetite vama najprikladniju turističku agenciju koja nudi aranžmane za Amsterdam. \n\nAko imate dodatna pitanja ili vam je potrebna pomoć pri rezervaciji, slobodno se obratite!",
+      "timestamp": "2025-06-22T07:57:18.347529",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Amsterdam",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T07:57:10.221839",
+          "last_mentioned": "2025-06-22T07:57:10.221839",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf"
+      ],
+      "confidence": 1.0,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "destination": "Amsterdam"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T07:57:18.347529",
+  "context_switch_detected": false
+}

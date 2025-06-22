@@ -1,0 +1,52 @@
+{
+  "session_id": "e8beef71-4d67-4500-b50e-8a701a6d4a0f",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "6e09453f-6766-48d4-84fd-8a32908ed3df",
+      "session_id": "e8beef71-4d67-4500-b50e-8a701a6d4a0f",
+      "role": "user",
+      "content": "Jel imas nesto u Amsterdamu?",
+      "timestamp": "2025-06-22T08:02:40.742391",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "a72a3bfb-c79e-4803-b1e8-564f2d0a9550",
+      "session_id": "e8beef71-4d67-4500-b50e-8a701a6d4a0f",
+      "role": "assistant",
+      "content": "Dragi korisniče,\n\nZa vaše putovanje u Amsterdam, mogu vam ponuditi specijalni aranžman koji obuhvata smeštaj i razne aktivnosti. Evo detalja:\n\n### Aranžman: Amsterdam – Prvi maj 2025\n- **Datumi putovanja**: 30. april 2025 - 4. maj 2025 (5 dana / 4 noćenja)\n- **Tip putovanja**: Individualno putovanje\n- **Prevoz**: Direktan let\n\n#### Smeštaj:\n- **Tip smeštaja**: 4 noćenja u Amsterdamu\n- Za specifične informacije o hotelima i smeštaju, preporučujemo da proverite sa agencijom ili na njihovom veb sajtu. \n\n#### Aktivnosti:\n1. **Panoramsko razgledanje grada**: Uključeno u paket, omogućava vam da upoznate glavne atrakcije grada.\n   \n2. **Fakultativni izleti**:\n   - **Mala Holandska tura**: Ova tura obuhvata posetu Zaanse Schans, poznatom po vetrenjačama, klompama i sirevima. Cena izleta je 90€ po osobi, a minimum je 12 putnika.\n   \n3. **Slobodno vreme**: U okviru aranžmana imate i slobodno vreme za istraživanje grada, uživanje u lokalnoj kuhinji i kulturi.\n\n### Cene:\n- **Cena aranžmana**: Specijalna ponuda agencije Dream Land. Preporučujemo da kontaktirate agenciju za tačne cene i dostupnost.\n\n### Dodatne informacije:\n- **Vizni režim**: Putnici sa stranim pasošem trebaju se raspitati o viznom režimu pre putovanja.\n- **Plaćanje izleta**: Prijavljivanje i plaćanje fakultativnih izleta vrši se prilikom rezervacije putovanja.\n\nZa više informacija, možete posetiti sajt agencije Dream Land: [www.dreamland.travel](http://www.dreamland.travel).\n\nUkoliko imate dodatnih pitanja ili želite detaljnije informacije, slobodno me kontaktirajte!\n\nSrećno planiranje putovanja!",
+      "timestamp": "2025-06-22T08:02:56.115843",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Amsterdam",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:02:43.828409",
+          "last_mentioned": "2025-06-22T08:02:43.828409",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf"
+      ],
+      "confidence": 1.0,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "destination": "Amsterdam"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T08:02:56.115843",
+  "context_switch_detected": false
+}

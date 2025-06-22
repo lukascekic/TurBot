@@ -11,6 +11,7 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import turBotAPI, { ChatMessage, ChatResponse, DocumentInfo, DocumentStats } from "@/lib/api"
+import ReactMarkdown from 'react-markdown'
 
 interface ChatSession {
   id: string
@@ -32,6 +33,11 @@ export default function AgentPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  
+  // ==================== STREAMING STATE ====================
+  // Added for real-time streaming on agent page
+  const [isStreaming, setIsStreaming] = useState(false)
+  const [streamingContent, setStreamingContent] = useState("")
 
   // Load initial data
   useEffect(() => {
@@ -129,8 +135,16 @@ export default function AgentPage() {
   }
 
   const handleSendMessage = async () => {
-    if (!inputValue.trim() || !currentSession) return
+    if (!inputValue.trim() || !currentSession || isTyping || isStreaming) return
 
+    // Agent stranica koristi streaming endpoint (isti kao client stranica)
+    // Client stranica koristi streaming i daje kratke, kvalitetne odgovore
+    await handleSendMessageStreaming()
+  }
+
+  // ==================== STREAMING MESSAGE HANDLER ====================
+  // New streaming functionality for agent page
+  const handleSendMessageStreaming = async () => {
     const userMessage: ChatMessage = {
       role: 'user',
       content: inputValue,
@@ -151,11 +165,115 @@ export default function AgentPage() {
       ),
     )
 
+    const messageText = inputValue
     setInputValue("")
+    setIsStreaming(true)
+    setStreamingContent("")
+
+    // Store the complete response content
+    let completeResponse = ""
+
+    try {
+      await turBotAPI.chatStream(messageText, currentSessionId!, 'agent', {
+        onChunk: (chunk: string) => {
+          completeResponse += chunk
+          setStreamingContent(completeResponse)
+        },
+        onComplete: (metadata) => {
+          const assistantMessage: ChatMessage = {
+            role: 'assistant',
+            content: completeResponse || "Izvinjavam se, odgovor nije generisan.",
+            timestamp: new Date(),
+            sources: metadata.sources.map(source => ({
+              document_name: source,
+              similarity: 0.9,
+              content_preview: "",
+              metadata: {}
+            })),
+            suggested_questions: metadata.suggestions,
+          }
+
+          setChatSessions((prev) =>
+            prev.map((session) =>
+              session.id === currentSessionId
+                ? {
+                    ...session,
+                    messages: [...session.messages, assistantMessage],
+                    lastActivity: new Date(),
+                  }
+                : session,
+            ),
+          )
+          setStreamingContent("")
+        },
+        onError: (error: string) => {
+          console.error('Streaming error:', error)
+          
+          const errorMessage: ChatMessage = {
+            role: 'assistant',
+            content: "Izvinjavam se, došlo je do greške sa streaming-om. Pokušavam standardni način...",
+            timestamp: new Date(),
+          }
+          setChatSessions((prev) =>
+            prev.map((session) =>
+              session.id === currentSessionId
+                ? {
+                    ...session,
+                    messages: [...session.messages, errorMessage],
+                    lastActivity: new Date(),
+                  }
+                : session,
+            ),
+          )
+          
+          // Fallback to regular chat
+          handleSendMessageRegular()
+        }
+      })
+    } catch (error) {
+      console.error('Streaming setup error:', error)
+      // Fallback to regular chat
+      await handleSendMessageRegular()
+    } finally {
+      setIsStreaming(false)
+      setStreamingContent("")
+    }
+  }
+
+  // ==================== REGULAR MESSAGE HANDLER ====================
+  // Original functionality preserved as fallback
+  const handleSendMessageRegular = async () => {
+    if (!currentSession) return
+
+    const messageText = inputValue || "Ponovi poslednji odgovor"
+    
+    if (!isStreaming) {
+      const userMessage: ChatMessage = {
+        role: 'user',
+        content: messageText,
+        timestamp: new Date(),
+      }
+
+      // Update current session with user message
+      setChatSessions((prev) =>
+        prev.map((session) =>
+          session.id === currentSessionId
+            ? {
+                ...session,
+                messages: [...session.messages, userMessage],
+                title: session.title === "Nova sesija" ? messageText.slice(0, 30) + "..." : session.title,
+                lastActivity: new Date(),
+              }
+            : session,
+        ),
+      )
+      setInputValue("")
+    }
+    
     setIsTyping(true)
 
     try {
-      const response: ChatResponse = await turBotAPI.chat(inputValue, currentSessionId!, 'agent')
+      const response: ChatResponse = await turBotAPI.chat(messageText, currentSessionId!, 'agent')
       
       const assistantMessage: ChatMessage = {
         role: 'assistant',
@@ -517,7 +635,21 @@ export default function AgentPage() {
                             : "bg-gray-100 text-black border"
                         )}
                       >
-                        <div className="whitespace-pre-wrap">{message.content}</div>
+                        <div className="prose prose-sm max-w-none [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+                          <ReactMarkdown 
+                            components={{
+                              p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                              ul: ({ children }) => <ul className="mb-2 ml-4 list-disc">{children}</ul>,
+                              ol: ({ children }) => <ol className="mb-2 ml-4 list-decimal">{children}</ol>,
+                              li: ({ children }) => <li className="mb-1">{children}</li>,
+                              strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                              em: ({ children }) => <em className="italic">{children}</em>,
+                              code: ({ children }) => <code className="bg-gray-200 px-1 py-0.5 rounded text-xs">{children}</code>,
+                            }}
+                          >
+                            {message.content}
+                          </ReactMarkdown>
+                        </div>
                         <div
                           className={cn(
                             "text-xs mt-2",
@@ -556,7 +688,35 @@ export default function AgentPage() {
                   </div>
                 ))}
 
-                {isTyping && (
+                {/* ==================== STREAMING DISPLAY ==================== */}
+                {/* Real-time streaming content display */}
+                {isStreaming && streamingContent && (
+                  <div className="flex justify-start">
+                    <div className="flex items-start space-x-3 max-w-[90%] sm:max-w-[80%]">
+                      <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Bot className="h-4 w-4 text-white" />
+                      </div>
+                      <div className="bg-gray-100 p-3 sm:p-4 rounded-lg border overflow-hidden">
+                        <div className="text-sm sm:text-base text-black break-words prose prose-sm max-w-none [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+                          <ReactMarkdown 
+                            components={{
+                              p: ({ children }) => <p className="mb-1 last:mb-0 inline">{children}</p>,
+                              strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                              em: ({ children }) => <em className="italic">{children}</em>,
+                              code: ({ children }) => <code className="bg-gray-200 px-1 py-0.5 rounded text-xs">{children}</code>,
+                            }}
+                          >
+                            {streamingContent}
+                          </ReactMarkdown>
+                          <span className="inline-block w-2 h-4 bg-red-600 ml-1 animate-pulse"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Regular typing indicator (fallback) */}
+                {(isTyping || (isStreaming && !streamingContent)) && (
                   <div className="flex justify-start">
                     <div className="flex items-start space-x-3">
                       <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
@@ -574,6 +734,9 @@ export default function AgentPage() {
                             style={{ animationDelay: "0.2s" }}
                           ></div>
                         </div>
+                        {isStreaming && (
+                          <div className="text-xs text-gray-500 mt-1">Kucam...</div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -614,12 +777,12 @@ export default function AgentPage() {
                         onKeyPress={handleKeyPress}
                         placeholder="Postavite pitanje..."
                         className="min-h-[40px] sm:min-h-[50px] text-sm"
-                        disabled={isTyping}
+                        disabled={isTyping || isStreaming}
                       />
                   </div>
                                       <button
                       onClick={handleSendMessage}
-                      disabled={!inputValue.trim() || isTyping}
+                      disabled={!inputValue.trim() || isTyping || isStreaming}
                       className="bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-3 sm:px-4 py-2 rounded-md transition-colors"
                     >
                       <Send className="h-4 w-4" />

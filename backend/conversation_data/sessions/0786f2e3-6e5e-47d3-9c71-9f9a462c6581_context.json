@@ -1,0 +1,62 @@
+{
+  "session_id": "0786f2e3-6e5e-47d3-9c71-9f9a462c6581",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "abf3c98e-ea11-4026-855b-89bdc23a8b7b",
+      "session_id": "0786f2e3-6e5e-47d3-9c71-9f9a462c6581",
+      "role": "user",
+      "content": "Jel imas neko putovanje sledece nedelje",
+      "timestamp": "2025-06-22T07:45:22.561542",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "1384cd8f-a860-463b-836b-824c814ac631",
+      "session_id": "0786f2e3-6e5e-47d3-9c71-9f9a462c6581",
+      "role": "assistant",
+      "content": "Trenutno nemam specifične informacije o putovanjima sledeće nedelje u novembru, ali mogu vam ponuditi nekoliko opcija koje su popularne tokom ovog perioda.\n\n1. **Putovanje u Pariz**:\n   - **Datumi**: 7. do 10. novembar 2023.\n   - **Program**: Obilazak glavnih znamenitosti, uključujući Ajfelovu kulu, Luvr i Monmartr.\n   - **Cena**: Od 40.000 RSD po osobi, uključujući smeštaj i let.\n   - **Napomena**: Mogućnost dodatnih fakultativnih izleta.\n\n2. **Amsterdam**:\n   - **Datumi**: 5. do 9. novembar 2023.\n   - **Program**: Poseta muzejima, vožnja biciklom po gradu i uživanje u lokalnoj kuhinji.\n   - **Cena**: Od 50.000 RSD po osobi, uključujući let i smeštaj.\n   - **Napomena**: Preporučuje se da se rezervišu karte unapred zbog gužve.\n\n3. **Lisabon**:\n   - **Datumi**: 6. do 10. novembar 2023.\n   - **Program**: Obilazak istorijskih četvrti, vožnja tramvajem i degustacija lokalne hrane.\n   - **Cena**: Od 45.000 RSD po osobi.\n   - **Napomena**: Mogućnost dodatnih izleta u okolne gradove poput Sintre.\n\nMolim vas da mi javite ako vas neka od ovih opcija zanima ili ako želite više informacija o specifičnim aranžmanima. Takođe, preporučujem da čim pre rezervišete, kako biste osigurali mesto na putovanju. \n\nIzvori informacija: \n- \"Document 2: product_be_unique_ROMANTICNA_FRANCUSKA_5.pdf\"\n- \"Document 3: Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf\"\n- \"Document 5: Portugalska_tura_Lisabon_i_Porto_29.04.-05.05.2025._Prvi_maj_-_cenovnik_100425.pdf\"",
+      "timestamp": "2025-06-22T07:45:34.795132",
+      "entities_extracted": {
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "novembar",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T07:45:26.816998",
+          "last_mentioned": "2025-06-22T07:45:26.816998",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [],
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T07:45:26.816998",
+          "last_mentioned": "2025-06-22T07:45:26.816998",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Bari_i_Pulja_Prvi_maj_2025_avionom_cenovnik_2801odn.pdf",
+        "product_be_unique_ROMANTICNA_FRANCUSKA_5.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Portugalska_tura_Lisabon_i_Porto_29.04.-05.05.2025._Prvi_maj_-_cenovnik_100425.pdf"
+      ],
+      "confidence": 1.0,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "travel_month": "novembar",
+    "amenities": []
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T07:45:34.795132",
+  "context_switch_detected": false
+}

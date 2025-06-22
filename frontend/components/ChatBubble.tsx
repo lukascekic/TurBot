@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { MessageCircle, X, Send, Bot, User, FileText, ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils"
 import turBotAPI, { ChatMessage, ChatResponse, Source } from "@/lib/api"
+import ReactMarkdown from 'react-markdown'
 
 interface ChatBubbleProps {
   isOpen: boolean
@@ -250,13 +251,22 @@ export default function ChatBubble({
             {/* Real-time streaming content display */}
             {isStreaming && streamingContent && (
               <div className="flex justify-start">
-                <div className="flex items-start space-x-2">
-                  <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center">
+                <div className="flex items-start space-x-2 max-w-[85%]">
+                  <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center flex-shrink-0">
                     <Bot className="h-3 w-3 text-white" />
                   </div>
-                  <div className="bg-gray-100 p-3 rounded-lg max-w-[280px]">
-                    <div className="text-sm text-gray-800 whitespace-pre-wrap">
-                      {streamingContent}
+                  <div className="bg-gray-100 p-3 rounded-lg overflow-hidden">
+                    <div className="text-sm text-gray-800 break-words prose prose-sm max-w-none [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+                      <ReactMarkdown 
+                        components={{
+                          p: ({ children }) => <p className="mb-1 last:mb-0 inline break-words">{children}</p>,
+                          strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                          em: ({ children }) => <em className="italic">{children}</em>,
+                          code: ({ children }) => <code className="bg-gray-200 px-1 py-0.5 rounded text-xs break-all">{children}</code>,
+                        }}
+                      >
+                        {streamingContent}
+                      </ReactMarkdown>
                       <span className="inline-block w-2 h-4 bg-red-600 ml-1 animate-pulse"></span>
                     </div>
                   </div>
@@ -325,22 +335,36 @@ interface MessageBubbleProps {
 function MessageBubble({ message }: MessageBubbleProps) {
   return (
     <div className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-              <div className={`flex items-start space-x-2 max-w-[85%]`}>
+      <div className={`flex items-start space-x-2 max-w-[85%]`}>
         {message.role === "assistant" && (
           <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center flex-shrink-0">
             <Bot className="h-3 w-3 text-white" />
           </div>
         )}
-        <div className="space-y-2">
+        <div className="space-y-2 overflow-hidden">
           <div
             className={cn(
-              "p-3 rounded-lg text-sm",
+              "p-3 rounded-lg text-sm overflow-hidden",
               message.role === "user" 
                 ? "bg-black text-white" 
                 : "bg-gray-100 text-black"
             )}
           >
-            <div className="whitespace-pre-wrap">{message.content}</div>
+            <div className="prose prose-sm max-w-none break-words [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+              <ReactMarkdown 
+                components={{
+                  p: ({ children }) => <p className="mb-2 last:mb-0 break-words">{children}</p>,
+                  ul: ({ children }) => <ul className="mb-2 ml-4 list-disc">{children}</ul>,
+                  ol: ({ children }) => <ol className="mb-2 ml-4 list-decimal">{children}</ol>,
+                  li: ({ children }) => <li className="mb-1 break-words">{children}</li>,
+                  strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                  em: ({ children }) => <em className="italic">{children}</em>,
+                  code: ({ children }) => <code className="bg-gray-200 px-1 py-0.5 rounded text-xs break-all">{children}</code>,
+                }}
+              >
+                {message.content}
+              </ReactMarkdown>
+            </div>
           </div>
           
           {/* Sources */}

@@ -1,0 +1,52 @@
+{
+  "session_id": "4346ca21-203a-40bd-8ce6-5d57145b2faf",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "d8c97c87-0503-4ac0-886d-fb3933256765",
+      "session_id": "4346ca21-203a-40bd-8ce6-5d57145b2faf",
+      "role": "user",
+      "content": "Jel imas nesto u Amsterdamu?",
+      "timestamp": "2025-06-22T08:03:05.414078",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "c3f039cc-cda1-495e-af66-81b07690c3f1",
+      "session_id": "4346ca21-203a-40bd-8ce6-5d57145b2faf",
+      "role": "assistant",
+      "content": "U Amsterdamu imate mogućnost da uživate u raznovrsnim aktivnostima i udobnom smeštaju. Evo nekoliko informacija koje bi vam mogle pomoći da donosite odluku o putovanju:\n\n### Smeštaj\n\n**Aranžman:**\n- **Direktan let sa boravkom u Amsterdamu**: 4 noćenja u okviru aranžmana \"Amsterdam – Grad slobode\" od 30. aprila do 4. maja 2025. godine. \n\n**Cene**: \n- Detaljne cene i specijalne ponude možete pronaći na sajtovima turističkih agencija, kao što je Dream Land (www.dreamland.travel).\n\n### Aktivnosti\n\n**Fakultativni izleti**:\n1. **Mala holandska tura**: \n   - Ova tura uključuje posetu Zaanse Schans, poznatom po vetrenjačama, klompama i sirevima. \n   - Cena izleta: 90€ po osobi, a vodič je na srpskom jeziku. \n   - Minimalan broj putnika za realizaciju izleta je 12.\n\n2. **Panoramsko razgledanje grada**: \n   - Uključeno u paket aranžmana, omogućiće vam da uživate u prelepim panoramskim pogledima na grad.\n\n### Dodatne informacije\n- Uživajte u kulturi Amsterdama, koja obuhvata brojne muzeje, parkove i istorijske znamenitosti.\n- Preporučujemo da rezervišete aktivnosti unapred, kako biste osigurali mesto i povoljne cene.\n\nAko imate dodatnih pitanja ili vam je potrebna pomoć oko rezervacije, slobodno se javite!",
+      "timestamp": "2025-06-22T08:03:14.060019",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Amsterdam",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:03:06.475701",
+          "last_mentioned": "2025-06-22T08:03:06.475701",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf"
+      ],
+      "confidence": 1.0,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "destination": "Amsterdam"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T08:03:14.060019",
+  "context_switch_detected": false
+}
