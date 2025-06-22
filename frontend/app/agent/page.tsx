@@ -174,7 +174,7 @@ export default function AgentPage() {
     let completeResponse = ""
 
     try {
-      await turBotAPI.chatStream(messageText, currentSessionId!, 'agent', {
+      await turBotAPI.chatStreamEnhanced(messageText, currentSessionId!, 'agent', {
         onChunk: (chunk: string) => {
           completeResponse += chunk
           setStreamingContent(completeResponse)

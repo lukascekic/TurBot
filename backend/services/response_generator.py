@@ -160,26 +160,19 @@ class ResponseGenerator:
             else:
                 print(f"   No conversation context to include in prompt")
             
-            # Create comprehensive system prompt with conversation awareness
-            system_prompt = f"""Ti si TurBot, napredni AI asistent za turističke agencije u Srbiji. Tvoja uloga je da pomazeš korisnicima sa informacijama o putovanjima i turističkim aranžmanima.
+            # Create natural system prompt (shorter and more conversational like streaming)
+            system_prompt = f"""Ti si TurBot, AI asistent za turističke agencije. Odgovori na srpskom jeziku koristeći dostupne informacije.
 
-KONTEKST RAZGOVORA:
-{conversation_prompt if conversation_prompt else "Ovo je početak razgovora."}
-
-DOSTUPNI TURISTIČKI SADRŽAJ:
+{conversation_prompt if conversation_prompt else ""}DOSTUPNI SADRŽAJ:
 {context_text}
 
 INSTRUKCIJE:
-1. **Kontekst razgovora**: {"Koristi gornji kontekst razgovora da razumeš kontinuitet komunikacije." if conversation_prompt else "Ovo je početak novog razgovora."}
-2. **Personalizovane preporuke**: Odgovori na srpskom jeziku sa konkretnim preporukama na osnovu dostupnih aranžmana
-3. **Source attribution**: Uvek navedi izvore informacija (nazive PDF dokumenata)
-4. **Praktične informacije**: Uključi cene, datume, destinacije i specifičnosti aranžmana
-5. **Profesionalan ton**: Koristi prijateljski ali profesionalan ton turističkog agenta
-6. **Format odgovora**: Struktuiran, jasan i informativan odgovor
-
-TRENUTNI UPIT: {structured_query.semantic_query}
-
-Generiši sveobuhvatan odgovor koji pomaže korisniku da donese informisanu odluku o putovanju."""
+- Odgovori prirodno i prijateljski na srpskom jeziku
+- Koristi informacije iz dostupnih dokumenata
+- Ako nemaš tačne informacije, budi iskren
+- Fokusiraj se na korisne detalje (cene, datumi, lokacije)
+- Budi kratak i precizan (maksimalno 3-4 pasusa)
+- Izbegavaj dugačke strukture i sekcije"""
 
             print(f"   System prompt prepared: {len(system_prompt)} characters")
             
@@ -195,8 +188,8 @@ Generiši sveobuhvatan odgovor koji pomaže korisniku da donese informisanu odlu
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": structured_query.semantic_query}
                 ],
-                max_tokens=800,
-                temperature=0.7
+                max_tokens=400,  # Shorter responses like streaming endpoint
+                temperature=0.1  # More consistent responses like streaming endpoint
             )
             
             generated_response = response.choices[0].message.content.strip()

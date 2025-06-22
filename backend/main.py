@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 import os
 from dotenv import load_dotenv
 import logging
@@ -10,6 +10,8 @@ from typing import Dict, Any, Optional
 from pydantic import BaseModel
 from openai import AsyncOpenAI
 from datetime import datetime
+import json
+import asyncio
 
 # Load environment variables FIRST!
 load_dotenv()
@@ -301,6 +303,195 @@ async def enhanced_chat(chat_message: ChatMessage):
             conversation_context={},
             active_entities={}
         )
+
+# Enhanced RAG with Streaming - Best of both worlds!
+@app.post("/chat/stream")
+async def enhanced_chat_stream(chat_message: ChatMessage):
+    """Enhanced RAG endpoint with real-time streaming for optimal UX"""
+    try:
+        user_message = chat_message.message.strip()
+        if not user_message:
+            raise HTTPException(status_code=400, detail="Message is required")
+        
+        session_id = chat_message.session_id or f"session_{int(datetime.now().timestamp())}"
+        
+        print(f"\n🎬 ENHANCED RAG STREAMING: '{user_message[:50]}...' [Session: {session_id[:8]}]")
+        logger.info(f"🎬 Enhanced RAG streaming: '{user_message}' [Session: {session_id[:8]}]")
+        
+        async def enhanced_rag_stream_generator():
+            try:
+                # STEP 0: Save user message to conversation memory
+                await conversation_memory_service.save_message(
+                    session_id=session_id,
+                    role=MessageRole.USER,
+                    content=user_message
+                )
+                
+                # Step 1: Context-Aware Self-Querying - Parse with conversation context
+                structured_query = await self_querying_service.parse_query_with_context(
+                    user_message, session_id
+                )
+                
+                # Extract entities from current message for context updating
+                entity_extraction_result = await named_entity_extractor.extract_entities_from_message(user_message)
+                if entity_extraction_result.entities:
+                    extracted_entities = {}
+                    for entity_type, entity_obj in entity_extraction_result.entities.items():
+                        extracted_entities[entity_type] = entity_obj.entity_value
+                    await conversation_memory_service.update_active_entities(session_id, extracted_entities)
+                
+                # Step 2: Query Expansion - Enhance semantic search
+                expanded_query = await query_expansion_service.expand_query_llm(
+                    structured_query.semantic_query
+                )
+                
+                # Step 3: Enhanced Vector Search with context-aware filters
+                search_query = SearchQuery(
+                    query=expanded_query,
+                    filters=structured_query.filters,
+                    limit=5
+                )
+                
+                search_results = vector_service.search(search_query)
+                
+                # Step 4: Prepare context for streaming response
+                context_content = ""
+                sources = []
+                for result in search_results.results[:3]:  # Top 3 results
+                    context_content += f"\n## Source: {result.metadata.source_file}\n{result.text[:400]}...\n"
+                    sources.append(result.metadata.source_file)
+                
+                # Get conversation context
+                conversation_context = await conversation_memory_service.build_hybrid_context_for_query(session_id)
+                
+                # Step 5: Create enhanced system prompt (shorter and more natural like streaming)
+                system_prompt = f"""Ti si TurBot, AI asistent za turističke agencije. Odgovori na srpskom jeziku koristeći dostupne informacije.
+
+DOSTUPNI SADRŽAJ:
+{context_content}
+
+INSTRUKCIJE:
+- Odgovori prirodno i prijateljski na srpskom jeziku
+- Koristi informacije iz dostupnih dokumenata
+- Ako nemaš tačne informacije, budi iskren
+- Fokusiraj se na korisne detalje (cene, datumi, lokacije)
+- Budi kratak i precizan (maksimalno 3-4 pasusa)
+- Izbegavaj dugačke strukture i sekcije"""
+
+                # Add conversation context if available
+                recent_conv = conversation_context.get('recent_conversation', [])
+                if recent_conv:
+                    context_text = "\n\nKONTEKST RAZGOVORA:\n"
+                    for msg in recent_conv[-2:]:  # Last 2 messages
+                        context_text += f"{msg['role']}: {msg['content'][:100]}...\n"
+                    system_prompt += context_text
+
+                # Step 6: OpenAI streaming call with Enhanced RAG context
+                messages = [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_message}
+                ]
+                
+                response = await client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=messages,
+                    stream=True,
+                    temperature=0.1,
+                    max_tokens=400
+                )
+                
+                # Step 7: Stream chunks to frontend
+                full_response = ""
+                chunk_count = 0
+                
+                async for chunk in response:
+                    if chunk.choices[0].delta.content:
+                        content = chunk.choices[0].delta.content
+                        full_response += content
+                        chunk_count += 1
+                        
+                        # Send content chunk
+                        data = {
+                            "type": "content",
+                            "content": content,
+                            "chunk_id": chunk_count
+                        }
+                        yield f"data: {json.dumps(data)}\n\n"
+                        
+                        # Small delay for natural typing feel
+                        await asyncio.sleep(0.02)
+                
+                # Step 8: Generate suggested questions based on structured query intent
+                suggested_questions = []
+                intent = structured_query.intent.lower() if structured_query.intent else ""
+                if "hotel" in intent or "accommodation" in intent:
+                    suggested_questions = ["Koliko košta?", "Ima li spa centar?", "Kada je dostupno?"]
+                elif "price" in intent or "cost" in intent:
+                    suggested_questions = ["Šta je uključeno?", "Ima li popusta?", "Kako se plaća?"]
+                elif "tour" in intent or "travel" in intent:
+                    suggested_questions = ["Koliko traje?", "Šta je uključeno?", "Kada su termini?"]
+                else:
+                    suggested_questions = ["Recite mi više", "Koliko košta?", "Ima li alternativa?"]
+                
+                # Step 9: Calculate confidence based on search results and filters
+                confidence = 0.90
+                if len(search_results.results) == 0:
+                    confidence = 0.20
+                elif len(structured_query.filters) > 0:
+                    confidence = 0.95  # Higher confidence when filters are applied
+                elif len(search_results.results) < 3:
+                    confidence = 0.70
+                
+                # Step 10: Send final metadata with enhanced information
+                final_data = {
+                    "type": "complete",
+                    "sources": [{"document_name": source, "similarity": 0.90} for source in sources[:5]],
+                    "suggestions": suggested_questions,
+                    "confidence": confidence,
+                    "total_chunks": chunk_count,
+                    "response_length": len(full_response),
+                    "enhanced_rag": True,  # Flag to indicate this is Enhanced RAG
+                    "filters_applied": len(structured_query.filters),
+                    "entities_extracted": len(entity_extraction_result.entities) if entity_extraction_result.entities else 0
+                }
+                yield f"data: {json.dumps(final_data)}\n\n"
+                
+                # Step 11: Save AI response to conversation memory
+                await conversation_memory_service.save_message(
+                    session_id=session_id,
+                    role=MessageRole.ASSISTANT,
+                    content=full_response,
+                    entities=entity_extraction_result.entities if entity_extraction_result.entities else None,
+                    sources=sources,
+                    confidence=confidence
+                )
+                
+                print(f"🎉 ENHANCED RAG STREAMING COMPLETED: {len(full_response)} chars, {chunk_count} chunks")
+                
+            except Exception as e:
+                print(f"❌ ENHANCED RAG STREAMING ERROR: {str(e)}")
+                error_data = {
+                    "type": "error",
+                    "error": str(e),
+                    "fallback_message": "Izvinjavam se, došlo je do greške. Molim pokušajte ponovo."
+                }
+                yield f"data: {json.dumps(error_data)}\n\n"
+        
+        return StreamingResponse(
+            enhanced_rag_stream_generator(),
+            media_type="text/plain",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type"
+            }
+        )
+        
+    except Exception as e:
+        logger.error(f"Enhanced RAG streaming error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 # Simple chat endpoint for testing/fallback
 @app.post("/chat/simple")

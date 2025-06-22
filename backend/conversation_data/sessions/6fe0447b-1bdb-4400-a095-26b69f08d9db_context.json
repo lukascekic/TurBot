@@ -1,0 +1,66 @@
+{
+  "session_id": "6fe0447b-1bdb-4400-a095-26b69f08d9db",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "951d815d-407d-41a3-bebd-342fef2ac0cd",
+      "session_id": "6fe0447b-1bdb-4400-a095-26b69f08d9db",
+      "role": "user",
+      "content": "Jel ima neko putovanje za leto?",
+      "timestamp": "2025-06-22T08:25:44.622879",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "16a15d74-64c6-458c-8786-0026e26f9419",
+      "session_id": "6fe0447b-1bdb-4400-a095-26b69f08d9db",
+      "role": "assistant",
+      "content": "Naravno! Za leto imamo nekoliko atraktivnih putovanja. Na primer, možete razmotriti putovanje na more u Grčku ili Crnu Goru, gde su popularne destinacije poput Hersonisosa ili Budve. Cene se kreću od 300 do 600 evra po osobi, u zavisnosti od tipa smeštaja i trajanja boravka.\n\nTakođe, organizujemo i izlete u Tursku, gde su hoteli sa all-inclusive uslugom veoma popularni. Cene su slične, a možete uživati u prelepim plažama i raznovrsnim aktivnostima.\n\nAko imate neku specifičnu destinaciju na umu ili želite više informacija o datumu i cijenama, slobodno mi javite!",
+      "timestamp": "2025-06-22T08:25:55.842481",
+      "entities_extracted": {
+        "travel_season": {
+          "entity_type": "travel_season",
+          "entity_value": "leto",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:25:47.547694",
+          "last_mentioned": "2025-06-22T08:25:47.547694",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "transport_type": {
+          "entity_type": "transport_type",
+          "entity_value": "plane",
+          "confidence": 0.9,
+          "first_mentioned": "2025-06-22T08:25:47.547754",
+          "last_mentioned": "2025-06-22T08:25:47.547754",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "leto",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:25:48.923965",
+          "last_mentioned": "2025-06-22T08:25:48.923965",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [],
+      "confidence": 0.2,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "travel_season": "leto",
+    "transport_type": "plane",
+    "travel_month": "leto"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T08:25:55.842481",
+  "context_switch_detected": false
+}

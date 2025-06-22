@@ -1,0 +1,46 @@
+{
+  "session_id": "e8060979-8912-42cd-8483-8809bd5cf2cf",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "5705ef94-39ed-402d-b98c-f993c792bdbf",
+      "session_id": "e8060979-8912-42cd-8483-8809bd5cf2cf",
+      "role": "user",
+      "content": "Jel ima neko putovanje u Maju",
+      "timestamp": "2025-06-22T08:26:41.205968",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "8b4ec5a9-586d-4f2e-a00f-f2b4ea0ea940",
+      "session_id": "e8060979-8912-42cd-8483-8809bd5cf2cf",
+      "role": "assistant",
+      "content": "Nažalost, nemam konkretne informacije o putovanjima u maju. Preporučujem da proverite sa lokalnim turističkim agencijama ili na sajtovima za rezervaciju putovanja. Oni često imaju ažurirane ponude i specijalne aranžmane za različite destinacije. Ako imate neku specifičnu destinaciju na umu, mogu vam pomoći sa dodatnim informacijama!",
+      "timestamp": "2025-06-22T08:26:49.639571",
+      "entities_extracted": {
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "maj",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:26:43.875663",
+          "last_mentioned": "2025-06-22T08:26:43.875663",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [],
+      "confidence": 0.2,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "travel_month": "maj"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T08:26:49.639571",
+  "context_switch_detected": false
+}

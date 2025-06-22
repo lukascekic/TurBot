@@ -1,0 +1,178 @@
+{
+  "session_id": "a947eba7-9ca2-4f9a-a88d-5cb7159822c2",
+  "total_messages": 10,
+  "recent_messages": [
+    {
+      "message_id": "94019f97-0523-4a74-887a-e42f6c0d0aec",
+      "session_id": "a947eba7-9ca2-4f9a-a88d-5cb7159822c2",
+      "role": "assistant",
+      "content": "Imamo organizovan izlet u Rim povodom Praznika rada, sa polaskom 1. maja 2025. godine i povratkom 4. maja 2025. godine. Ovaj paket uključuje 4 dana i 3 noćenja sa doručkom, smeštaj u hotelu kategorije 3*. \n\nU okviru izleta, planirani su obilazak znamenitosti kao što su Vatikan, Forum i Koloseum. Takođe, postoji mogućnost organizovanja fakultativnog izleta u Tivoli, gde možete posetiti kompleks \"Villa D’ Este\". \n\nRim je poznat kao Večni grad i nudi bogato istorijsko i umetničko blago, pa će posetioci imati priliku da istraže sve čari ovog fascinantnog grada. Ako imate dodatnih pitanja ili želite više informacija, slobodno pitajte!",
+      "timestamp": "2025-06-22T08:24:39.352267",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Rim",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:24:27.410354",
+          "last_mentioned": "2025-06-22T08:24:27.410354",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [],
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:24:28.478205",
+          "last_mentioned": "2025-06-22T08:24:28.478205",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Rim_Praznik_rada_avionom_01.05._cenovnik_2901bb.pdf",
+        "Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf",
+        "Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "message_id": "ee64c40c-8d65-4f39-9d77-780dc5d9cbab",
+      "session_id": "a947eba7-9ca2-4f9a-a88d-5cb7159822c2",
+      "role": "user",
+      "content": "A nesto u Parizu ili Barseloni?",
+      "timestamp": "2025-06-22T08:25:11.968391",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "434f1d23-9928-4359-857a-52b6ff84422c",
+      "session_id": "a947eba7-9ca2-4f9a-a88d-5cb7159822c2",
+      "role": "assistant",
+      "content": "Imamo fantastičan program za Pariz! Planiramo putovanje od 5. do 7. maja 2025. godine. U okviru ovog izleta, obići ćemo čuveni Versaj, gde ćete imati priliku da istražite „Velike kraljeve apartmane“, „Kraljičine apartmane“ i „Dvoranu ogledala“. Uveče, uživaćete u šetnji po Monmartru, poznatom boemskom kvartu Pariza.\n\nTakođe, treći dan je predviđen za slobodan dan ili fakultativni obilazak Luvra, gde možete uživati u jednoj od najpoznatijih umetničkih kolekcija na svetu. Ako vas zanima više detalja ili želite da rezervišete, slobodno se javite!",
+      "timestamp": "2025-06-22T08:25:23.972173",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Pariz",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:25:15.648814",
+          "last_mentioned": "2025-06-22T08:25:15.648814",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [
+            "bar"
+          ],
+          "confidence": 0.7,
+          "first_mentioned": "2025-06-22T08:25:15.648880",
+          "last_mentioned": "2025-06-22T08:25:15.648880",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "product_be_unique_ROMANTICNA_FRANCUSKA_5.pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {
+    "destination": {
+      "entity_type": "destination",
+      "entity_value": {
+        "entity_type": "destination",
+        "entity_value": "Amsterdam",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T08:22:59.473762",
+        "last_mentioned": "2025-06-22T08:22:59.473762",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T08:23:07.697584",
+      "last_mentioned": "2025-06-22T08:23:07.697584",
+      "frequency": 1,
+      "source_messages": [
+        "49825191-cacd-4c55-88c0-bcc72b63a593"
+      ]
+    },
+    "transport_type": {
+      "entity_type": "transport_type",
+      "entity_value": {
+        "entity_type": "transport_type",
+        "entity_value": "plane",
+        "confidence": 0.9,
+        "first_mentioned": "2025-06-22T08:23:34.472650",
+        "last_mentioned": "2025-06-22T08:23:34.472650",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T08:23:40.994979",
+      "last_mentioned": "2025-06-22T08:24:08.935055",
+      "frequency": 2,
+      "source_messages": [
+        "9d73b573-2eed-4855-9b52-1e78be7c286f",
+        "7894ff40-f03e-4705-8c96-7d4681f88499"
+      ]
+    },
+    "travel_month": {
+      "entity_type": "travel_month",
+      "entity_value": {
+        "entity_type": "travel_month",
+        "entity_value": "letnji",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T08:23:35.612612",
+        "last_mentioned": "2025-06-22T08:23:35.612612",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T08:23:40.994979",
+      "last_mentioned": "2025-06-22T08:24:08.935055",
+      "frequency": 2,
+      "source_messages": [
+        "9d73b573-2eed-4855-9b52-1e78be7c286f",
+        "7894ff40-f03e-4705-8c96-7d4681f88499"
+      ]
+    },
+    "travel_season": {
+      "entity_type": "travel_season",
+      "entity_value": {
+        "entity_type": "travel_season",
+        "entity_value": "leto",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T08:24:02.129374",
+        "last_mentioned": "2025-06-22T08:24:02.129374",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T08:24:08.935055",
+      "last_mentioned": "2025-06-22T08:24:08.935055",
+      "frequency": 1,
+      "source_messages": [
+        "7894ff40-f03e-4705-8c96-7d4681f88499"
+      ]
+    }
+  },
+  "active_entities": {
+    "destination": "Pariz",
+    "transport_type": "plane",
+    "travel_month": "leto",
+    "travel_season": "leto",
+    "amenities": [
+      "bar"
+    ]
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T08:25:23.972173",
+  "context_switch_detected": false
+}

@@ -92,7 +92,7 @@ export default function ChatBubble({
     let completeResponse = ""
 
     try {
-      await turBotAPI.chatStream(messageText, sessionId!, userType, {
+      await turBotAPI.chatStreamEnhanced(messageText, sessionId!, userType, {
         onChunk: (chunk: string) => {
           completeResponse += chunk
           setStreamingContent(completeResponse)
