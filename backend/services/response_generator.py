@@ -250,10 +250,27 @@ INSTRUKCIJE:
             'datumi', 'datum', 'kada', 'koji dani', 'polazak', 'povratak',
             'program', 'itinerar', 'šta je uključeno', 'detaljno',
             'više informacija', 'specifično', 'dodatno', 'extra',
-            'cene', 'cenovnik', 'košta', 'price', 'koliko'
+            'cene', 'cenovnik', 'košta', 'price', 'koliko',
+            # Dodatne ključne reči za cene
+            'cena', 'cenu', 'cene', 'troškovi', 'troškove',
+            'plaćanje', 'plaćanja', 'novac', 'budget', 'budžet',
+            'koliko košta', 'koliko je', 'koliko je cena',
+            # Dodatne za detalje
+            'detaljnije', 'precizno', 'tačno', 'konkretno',
+            'više detalja', 'više informacija', 'šta sve',
+            'koja je cena', 'koja cena', 'koje su cene'
         ]
         
-        return any(keyword in query.lower() for keyword in detail_keywords)
+        query_lower = query.lower()
+        found_keywords = [keyword for keyword in detail_keywords if keyword in query_lower]
+        needs_detailed = len(found_keywords) > 0
+        
+        print(f"   🔍 DETAILED CONTENT CHECK:")
+        print(f"      Query: '{query}'")
+        print(f"      Found keywords: {found_keywords}")
+        print(f"      Needs detailed: {needs_detailed}")
+        
+        return needs_detailed
 
     def _generate_no_results_response(self, structured_query, conversation_context: Optional[Dict[str, Any]] = None) -> ResponseData:
         """Generate response when no search results are found"""
@@ -284,16 +301,46 @@ INSTRUKCIJE:
 
     async def _generate_detailed_response(
         self, 
-        detailed_docs: List[Dict[str, Any]], 
+        search_results: List[Dict[str, Any]], 
         structured_query: StructuredQuery,
         conversation_context: Optional[Dict[str, Any]] = None
     ) -> ResponseData:
         """
-        Generate response using detailed document content
+        Generate response using detailed document content - enhanced fallback for price/detail queries
         """
         try:
-            # Prepare comprehensive content for AI
-            detailed_content_summary = self._prepare_detailed_content_summary(detailed_docs)
+            print(f"   🔍 GENERATING DETAILED RESPONSE...")
+            print(f"      Using {len(search_results)} search results")
+            print(f"      Query: '{structured_query.semantic_query}'")
+            
+            # Prepare comprehensive content for AI (FULL content, not limited to 400 chars)
+            detailed_content_summary = ""
+            sources = []
+            
+            for i, result in enumerate(search_results[:3], 1):  # Top 3 results for detailed analysis
+                content = result.get('content', '')  # FULL CONTENT, no [:400] limit!
+                metadata = result.get('metadata', {})
+                source_file = result.get('document_name', metadata.get('source_file', f'Document {i}'))
+                similarity = result.get('similarity', 0)
+                
+                print(f"      Document {i}: {source_file}")
+                print(f"         Content length: {len(content)} characters (FULL)")
+                print(f"         Similarity: {similarity:.2f}")
+                
+                detailed_content_summary += f"\n--- DOKUMENT {i}: {source_file} (Relevantnost: {similarity:.1%}) ---\n"
+                detailed_content_summary += f"KOMPLETNI SADRŽAJ:\n{content}\n"
+                detailed_content_summary += f"METADATA: {metadata}\n"
+                detailed_content_summary += "-" * 80 + "\n"
+                
+                sources.append({
+                    "document_name": source_file,
+                    "similarity": similarity,
+                    "content_preview": content[:300] + "..." if len(content) > 300 else content,
+                    "metadata": metadata,
+                    "detailed_content_available": True
+                })
+            
+            print(f"      Total context length: {len(detailed_content_summary)} characters")
             
             # Add conversation context if available
             conversation_info = ""
@@ -310,80 +357,92 @@ INSTRUKCIJE:
                 if active_entities:
                     conversation_info += f"\nAKTIVNE PREFERENCIJE: {active_entities}\n"
 
-            prompt = f"""
-Ti si TurBot, profesionalni turistički agent. Imaš pristup detaljnim informacijama o aranžmanima.
+            prompt = f"""Ti si TurBot, profesionalni turistički agent sa pristupom KOMPLETNIM informacijama o aranžmanima.
 
 KORISNIKOV UPIT: "{structured_query.semantic_query}"
 {conversation_info}
 
-DETALJNE INFORMACIJE O ARANŽMANIMA:
+KOMPLETNE INFORMACIJE O ARANŽMANIMA:
 {detailed_content_summary}
 
-VAŽNO: Sada imaš kompletne informacije - koristi ih za precizne odgovore!
+KRITIČNO - IMAŠ PRISTUP KOMPLETNIM PODACIMA:
+- Koristi SVE dostupne informacije iz dokumenata iznad
+- Ekstraktuj cene, datume, detalje programa iz KOMPLETNOG sadržaja
+- Ne ograničavaj se samo na metadata - čitaj i analiziraj pun tekst dokumenata
+- Ako vidiš cene ili detalje u tekstu, koristi ih u odgovoru
 
 ZADATAK:
 - Odgovori DETALJNO sa konkretnim informacijama (datumi, cene, program)
-- Koristi sve dostupne podatke iz dokumenata
-- Budi SPECIFIČAN sa datumima, cenama, uslugama
-- Strukturiraj odgovor jasno (bullets, sekcije)
+- Analiziraj KOMPLETNI sadržaj dokumenata da pronađeš sve relevantne informacije
+- Budi SPECIFIČAN sa datumima, cenama, uslugama koje pronađeš u tekstovima
+- Ako pronađeš cene u dokumentima, OBAVEZNO ih navedi
 
 STRUKTURA ODGOVORA:
 
 1. **DIREKTAN ODGOVOR**: Konkretne informacije na pitanje
 
-2. **DETALJNI PODACI**:
-   - Datumi polaska: [konkretni datumi]
-   - Cene: [specifične cene sa valutom]
-   - Program: [ključne aktivnosti]
-   - Uključeno: [šta je u ceni]
+2. **DETALJNI PODACI** (iz kompletnog sadržaja dokumenata):
+   - Datumi polaska: [iz dokumenata]
+   - Cene: [specifične cene sa valutom koje pronađeš u tekstovima]
+   - Program: [detalji iz dokumenata]
+   - Uključeno: [šta je u ceni prema tekstovima]
 
-3. **DODATNE INFORMACIJE**: Relevantni detalji
+3. **DODATNE INFORMACIJE**: Relevantni detalji iz dokumenata
 
-4. **SLEDEĆI KORACI**: Konkretne preporuke
+4. **IZVOR INFORMACIJA**: Navedi odakle su podaci
 
-STIL: Profesionalan, informativan, sa svim potrebnim detaljima
+STIL: Profesionalan, informativan, sa svim detaljima iz dokumenata
 
-ODGOVOR:
-"""
+ODGOVOR:"""
+
+            print(f"      Prompt length: {len(prompt)} characters")
+            print(f"      💰 Estimated tokens: ~{len(prompt) // 4}")
+            print(f"      Sending detailed request to OpenAI...")
 
             response = await self.client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[
-                    {"role": "system", "content": "Ti si ekspert turistički agent sa pristupom detaljnim informacijama."},
+                    {"role": "system", "content": "Ti si ekspert turistički agent sa pristupom kompletnim informacijama iz dokumenata."},
                     {"role": "user", "content": prompt}
                 ],
-                temperature=0.3,
-                max_tokens=800
+                temperature=0.2,  # Lower temperature for more precise information extraction
+                max_tokens=800    # More tokens for detailed responses
             )
 
             ai_response = response.choices[0].message.content.strip()
-
-            # Prepare sources from detailed documents
-            sources = []
-            for doc in detailed_docs:
-                sources.append({
-                    "document_name": doc["document_name"],
-                    "similarity": 1.0,  # High relevance since we specifically fetched this
-                    "content_preview": doc["full_content"][:300] + "...",
-                    "metadata": doc["metadata"],
-                    "detailed_content_available": True
-                })
+            
+            # Log token usage if available
+            if hasattr(response, 'usage') and response.usage:
+                input_tokens = response.usage.prompt_tokens
+                output_tokens = response.usage.completion_tokens
+                total_cost = (input_tokens * 0.000150) + (output_tokens * 0.000600)
+                
+                print(f"      ✅ Detailed response generated: {len(ai_response)} characters")
+                print(f"      💰 DETAILED RESPONSE TOKEN USAGE:")
+                print(f"         Input tokens: {input_tokens}")
+                print(f"         Output tokens: {output_tokens}")
+                print(f"         Total cost: ${total_cost:.6f}")
+            else:
+                print(f"      ✅ Detailed response generated: {len(ai_response)} characters")
 
             # Generate enhanced suggested questions based on detailed content
-            suggested_questions = self._generate_detailed_suggested_questions(detailed_docs, structured_query)
+            suggested_questions = self._generate_detailed_suggested_questions(search_results, structured_query)
 
             # Extract structured data from detailed content
-            structured_data = self._extract_detailed_structured_data(detailed_docs)
+            structured_data = self._extract_detailed_structured_data(search_results)
+
+            print(f"      🎯 Detailed response completed with high confidence (0.95)")
 
             return ResponseData(
                 response=ai_response,
                 sources=sources,
                 structured_data=structured_data,
                 suggested_questions=suggested_questions,
-                confidence=0.9  # High confidence with detailed content
+                confidence=0.95  # High confidence with detailed content analysis
             )
             
         except Exception as e:
+            print(f"      ❌ ERROR in detailed response generation: {e}")
             logger.error(f"Error generating detailed response: {e}")
             # Fallback to standard response
             return ResponseData(
@@ -394,45 +453,16 @@ ODGOVOR:
                 confidence=0.1
             )
 
-    def _prepare_detailed_content_summary(self, detailed_docs: List[Dict[str, Any]]) -> str:
-        """Prepare comprehensive summary from detailed documents"""
-        summary_parts = []
-        
-        for i, doc in enumerate(detailed_docs, 1):
-            doc_name = doc["document_name"]
-            full_content = doc["full_content"]
-            structured = doc.get("structured_content", {})
-            
-            summary_parts.append(f"DOKUMENT {i}: {doc_name}")
-            summary_parts.append("=" * 50)
-            
-            # Add full content (not limited to 400 chars like before)
-            summary_parts.append("KOMPLETNI SADRŽAJ:")
-            summary_parts.append(full_content)
-            
-            # Add structured information if available
-            if structured:
-                if structured.get("prices"):
-                    summary_parts.append(f"CENE: {', '.join(structured['prices'])}")
-                if structured.get("dates"):
-                    summary_parts.append(f"DATUMI: {', '.join(structured['dates'])}")
-                if structured.get("amenities"):
-                    summary_parts.append(f"SADRŽAJI: {', '.join(structured['amenities'])}")
-            
-            summary_parts.append("\n" + "-" * 50 + "\n")
-        
-        return "\n".join(summary_parts)
-
     def _generate_detailed_suggested_questions(
         self, 
-        detailed_docs: List[Dict[str, Any]], 
+        search_results: List[Dict[str, Any]], 
         structured_query: StructuredQuery
     ) -> List[str]:
         """Generate specific follow-up questions based on detailed content"""
         suggestions = []
         
         # Analyze detailed content to generate specific questions
-        for doc in detailed_docs:
+        for doc in search_results:
             structured = doc.get("structured_content", {})
             
             # Date-based questions
@@ -459,10 +489,10 @@ ODGOVOR:
         unique_suggestions = list(dict.fromkeys(suggestions))
         return unique_suggestions[:4]
 
-    def _extract_detailed_structured_data(self, detailed_docs: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def _extract_detailed_structured_data(self, search_results: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Extract comprehensive structured data from detailed documents"""
         structured_data = {
-            "total_documents": len(detailed_docs),
+            "total_documents": len(search_results),
             "detailed_content_used": True,
             "comprehensive_info": {},
             "all_prices": [],
@@ -471,7 +501,7 @@ ODGOVOR:
             "document_summaries": []
         }
         
-        for doc in detailed_docs:
+        for doc in search_results:
             doc_name = doc["document_name"]
             structured = doc.get("structured_content", {})
             

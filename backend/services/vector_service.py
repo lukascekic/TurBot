@@ -517,8 +517,43 @@ class VectorService:
                         pass
                         
             elif filter_key == "travel_month":
-                # For travel_month, this is complex - for now, skip this filter
-                continue
+                # For travel_month, handle Serbian/English month variants
+                if filter_value and metadata_value:
+                    # Month mappings for flexible matching
+                    month_mappings = {
+                        "januari": ["january", "januar"],
+                        "februari": ["february", "februar"],
+                        "mart": ["march", "mart"],
+                        "april": ["april", "april"],
+                        "maj": ["may", "maj"],
+                        "jun": ["june", "jun"],
+                        "juli": ["july", "jul"],
+                        "avgust": ["august", "avgust"],
+                        "septembar": ["september", "septembar"],
+                        "oktobar": ["october", "oktobar"],
+                        "novembar": ["november", "novembar"],
+                        "decembar": ["december", "decembar"]
+                    }
+                    
+                    # Create reverse mapping for lookup
+                    all_variants = {}
+                    for canonical, variants in month_mappings.items():
+                        for variant in variants:
+                            all_variants[variant.lower()] = canonical
+                    
+                    # Normalize both filter and metadata values
+                    filter_normalized = all_variants.get(str(filter_value).lower().strip(), str(filter_value).lower().strip())
+                    metadata_normalized = all_variants.get(str(metadata_value).lower().strip(), str(metadata_value).lower().strip())
+                    
+                    print(f"   🗓️ TRAVEL_MONTH filter debug:")
+                    print(f"      Filter value: '{filter_value}' -> normalized: '{filter_normalized}'")
+                    print(f"      Metadata value: '{metadata_value}' -> normalized: '{metadata_normalized}'")
+                    
+                    if filter_normalized != metadata_normalized:
+                        print(f"      ❌ Month mismatch: '{filter_normalized}' != '{metadata_normalized}'")
+                        return False
+                    else:
+                        print(f"      ✅ Month match: '{filter_normalized}' == '{metadata_normalized}'")
                         
             else:
                 # For other filters, check exact match

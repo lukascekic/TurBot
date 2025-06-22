@@ -1,0 +1,181 @@
+{
+  "session_id": "token_test_0b6e43d9",
+  "total_messages": 18,
+  "recent_messages": [
+    {
+      "message_id": "9073cd37-e9aa-436a-88c7-fd138f46906a",
+      "session_id": "token_test_0b6e43d9",
+      "role": "assistant",
+      "content": "Imamo aranžman za putovanje u Istanbul od 29. aprila do 3. maja 2025. godine. Ovaj paket uključuje avionski prevoz, smeštaj u hotelima sa 3 ili 4 zvezdice u centru grada, kao i 4 noćenja.\n\nTokom boravka, možete uživati u obilasku znamenitosti kao što su Plava džamija, Aja Sofija i Topkapi. Takođe, postoje fakultativni izleti, kao što su krstarenje Bosforom, poseta Vaseljenskoj patrijaršiji i Dolmabahče palati, kao i tursko veče na brodu.\n\nCena aranžmana i detalji o smeštaju će zavisiti od izbora hotela i dodatnih aktivnosti. Ako vas zanimaju dodatne informacije ili želite da rezervišete putovanje, slobodno mi javite!",
+      "timestamp": "2025-06-22T10:29:31.260914",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Istanbul",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T10:29:24.317768",
+          "last_mentioned": "2025-06-22T10:29:24.317768",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Istanbul_Avio_Uskrs_i_Prvi_Maj_4_nocenja_cenovnik_1401vvt.pdf",
+        "Istanbul_Avio_Uskrs_i_Prvi_Maj_4_nocenja_cenovnik_1401vvt.pdf",
+        "Istanbul_Avio_Uskrs_i_Prvi_Maj_4_nocenja_cenovnik_1401vvt.pdf",
+        "Istanbul_uskrs_i_prvi_maj_avionom_4_noci_cenovnik_1303fnt.pdf",
+        "Istanbul_uskrs_i_prvi_maj_avionom_4_noci_cenovnik_1303fnt.pdf"
+      ],
+      "confidence": 0.9457097487383836,
+      "metadata": {}
+    },
+    {
+      "message_id": "8f6856e2-727c-425a-b9b8-dcbb78d40372",
+      "session_id": "token_test_0b6e43d9",
+      "role": "user",
+      "content": "Potreban mi je cenovnik za Grčku sa svim troškovima",
+      "timestamp": "2025-06-22T10:29:33.819007",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "e41edbe4-7c85-4f37-a513-45555f681155",
+      "session_id": "token_test_0b6e43d9",
+      "role": "assistant",
+      "content": "1. **DIREKTAN ODGOVOR**: Nažalost, trenutno nemam specifične informacije o cenovniku za putovanje u Grčku. Međutim, mogu vam pružiti opšte informacije o aranžmanima koji uključuju avionski prevoz, smeštaj i aktivnosti.\n\n2. **DETALJNI PODACI**:\n   - **Datumi polaska**: Aranžmani za Grčku obično se nude tokom letnjih meseci, ali konkretni datumi zavise od izabranog paketa.\n   - **Cene**: Cene putovanja u Grčku variraju u zavisnosti od tipa smeštaja i dodatnih aktivnosti. Na primer, cene aranžmana sa avionskim prevozom i smeštajem u hotelima sa 3 ili 4 zvezdice mogu se kretati od 300 do 600 evra po osobi, u zavisnosti od sezone i trajanja boravka.\n   - **Program**: Uključuje posete popularnim destinacijama kao što su Atina, Santorini, Mikonos, kao i fakultativne izlete kao što su krstarenja i obilasci istorijskih lokaliteta.\n   - **Uključeno**: U cenu obično ulaze avionski prevoz, smeštaj, doručak, kao i transferi do hotela. Dodatne aktivnosti i izleti se naplaćuju posebno.\n\n3. **DODATNE INFORMACIJE**: Preporučujem da se konsultujete sa lokalnim turističkim agencijama ili online platformama za tačne cene i dostupne aranžmane, jer se one mogu menjati u zavisnosti od potražnje i sezonskih promocija.\n\n4. **IZVOR INFORMACIJA**: Podaci su generisani na osnovu opštih informacija o turističkim aranžmanima i iskustvima iz prethodnih godina, jer konkretni dokumenti o cenovnicima nisu dostupni. \n\nAko imate dodatna pitanja ili želite da istražimo specifične aranžmane, slobodno mi javite!",
+      "timestamp": "2025-06-22T10:29:44.131082",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Grčka",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T10:29:38.326434",
+          "last_mentioned": "2025-06-22T10:29:38.326434",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [],
+      "confidence": 0.95,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {
+    "destination": {
+      "entity_type": "destination",
+      "entity_value": {
+        "entity_type": "destination",
+        "entity_value": "Rim",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T10:28:08.166445",
+        "last_mentioned": "2025-06-22T10:28:08.166445",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T10:28:13.838727",
+      "last_mentioned": "2025-06-22T10:29:19.211800",
+      "frequency": 7,
+      "source_messages": [
+        "ca83aef3-97af-4ec1-9b1d-867cc8feedae",
+        "6f84c90e-1044-49ac-94a6-f4b7ebd7cc06",
+        "16bc290b-dc58-4dfd-8607-c52769d8884b",
+        "4f9a1eee-bbf2-4e19-8f4a-7ca3a7ac2aa6",
+        "7558153c-0c6a-4965-bb15-eea256c7b9ce",
+        "463b3268-46d2-47c8-a53b-03fd9ad25f19",
+        "9002de1a-7f1e-4542-b619-a3c7fab8229d"
+      ]
+    },
+    "category": {
+      "entity_type": "category",
+      "entity_value": {
+        "entity_type": "category",
+        "entity_value": "hotel",
+        "confidence": 0.9,
+        "first_mentioned": "2025-06-22T10:28:08.166497",
+        "last_mentioned": "2025-06-22T10:28:08.166497",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T10:28:13.838727",
+      "last_mentioned": "2025-06-22T10:28:13.838727",
+      "frequency": 1,
+      "source_messages": [
+        "ca83aef3-97af-4ec1-9b1d-867cc8feedae"
+      ]
+    },
+    "amenities": {
+      "entity_type": "amenities",
+      "entity_value": {
+        "entity_type": "amenities",
+        "entity_value": [],
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T10:28:31.758008",
+        "last_mentioned": "2025-06-22T10:28:31.758008",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T10:28:37.489940",
+      "last_mentioned": "2025-06-22T10:29:19.211800",
+      "frequency": 3,
+      "source_messages": [
+        "16bc290b-dc58-4dfd-8607-c52769d8884b",
+        "4f9a1eee-bbf2-4e19-8f4a-7ca3a7ac2aa6",
+        "9002de1a-7f1e-4542-b619-a3c7fab8229d"
+      ]
+    },
+    "travel_season": {
+      "entity_type": "travel_season",
+      "entity_value": {
+        "entity_type": "travel_season",
+        "entity_value": "leto",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T10:28:51.152035",
+        "last_mentioned": "2025-06-22T10:28:51.152035",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T10:28:56.182707",
+      "last_mentioned": "2025-06-22T10:28:56.182707",
+      "frequency": 1,
+      "source_messages": [
+        "7558153c-0c6a-4965-bb15-eea256c7b9ce"
+      ]
+    },
+    "transport_type": {
+      "entity_type": "transport_type",
+      "entity_value": {
+        "entity_type": "transport_type",
+        "entity_value": "plane",
+        "confidence": 0.9,
+        "first_mentioned": "2025-06-22T10:28:51.152076",
+        "last_mentioned": "2025-06-22T10:28:51.152076",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T10:28:56.182707",
+      "last_mentioned": "2025-06-22T10:28:56.182707",
+      "frequency": 1,
+      "source_messages": [
+        "7558153c-0c6a-4965-bb15-eea256c7b9ce"
+      ]
+    }
+  },
+  "active_entities": {
+    "destination": "Grčka",
+    "category": "hotel",
+    "amenities": [],
+    "travel_season": "leto",
+    "transport_type": "plane"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T10:29:44.131082",
+  "context_switch_detected": false
+}

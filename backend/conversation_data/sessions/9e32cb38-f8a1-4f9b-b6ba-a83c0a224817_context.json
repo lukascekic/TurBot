@@ -1,0 +1,178 @@
+{
+  "session_id": "9e32cb38-f8a1-4f9b-b6ba-a83c0a224817",
+  "total_messages": 12,
+  "recent_messages": [
+    {
+      "message_id": "5a09e5c2-a9af-43dd-8413-f3c58b5f6a29",
+      "session_id": "9e32cb38-f8a1-4f9b-b6ba-a83c0a224817",
+      "role": "assistant",
+      "content": "Nemam tu informaciju. Dostupni dokumenti se fokusiraju na izlet u Rim, koji uključuje obilazak Vatikana i Foruma i Koloseuma, ali ne sadrže detalje o fakultativnim izletima. Ako imate dodatna pitanja o putovanju u Rim, slobodno pitajte!",
+      "timestamp": "2025-06-22T10:30:52.683839",
+      "entities_extracted": {
+        "transport_type": {
+          "entity_type": "transport_type",
+          "entity_value": "plane",
+          "confidence": 0.9,
+          "first_mentioned": "2025-06-22T10:30:47.042322",
+          "last_mentioned": "2025-06-22T10:30:47.042322",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Italija",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T10:30:48.688419",
+          "last_mentioned": "2025-06-22T10:30:48.688419",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Rim_Praznik_rada_avionom_01.05._cenovnik_2901bb.pdf",
+        "Rim_Praznik_rada_avionom_01.05._cenovnik_2901bb.pdf",
+        "Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "message_id": "36c23a83-3fa1-4220-94fa-51410e47cb77",
+      "session_id": "9e32cb38-f8a1-4f9b-b6ba-a83c0a224817",
+      "role": "user",
+      "content": "Kada mogu da posetim Koloseum?",
+      "timestamp": "2025-06-22T10:31:08.791636",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "4c29c150-5616-42e2-a490-c7fd87562b9b",
+      "session_id": "9e32cb38-f8a1-4f9b-b6ba-a83c0a224817",
+      "role": "assistant",
+      "content": "Možete posetiti Koloseum tokom putovanja u Rim koje je planirano za 1. maj 2025. godine. U okviru aranžmana, postoji poludnevni fakultativni izlet \"Forum i Koloseum\" koji se može organizovati drugog dana boravka u Rimu, nakon doručka. Ovaj izlet uključuje obilazak najznačajnijih lokaliteta antičkog Rima, uključujući Koloseum, koji je najveći rimski amfiteatar i poznat po borbama gladijatora.\n\nCene za fakultativni izlet \"Forum i Koloseum\" su 65 evra po osobi, a u cenu su uključene usluge lokalnog vodiča i ulaznice za Forum i Koloseum. \n\nZa više informacija, možete se osloniti na dokumente koji su dostupni, kao što su \"Rim_Praznik_rada_avionom_01.05._cenovnik_2901bb.pdf\" i \"Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf\". \n\nUkoliko imate dodatnih pitanja ili vam je potrebna pomoć oko rezervacije, slobodno se obratite!",
+      "timestamp": "2025-06-22T10:31:23.947003",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Rim, Italija",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T10:31:12.989079",
+          "last_mentioned": "2025-06-22T10:31:12.989079",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [],
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T10:31:12.989079",
+          "last_mentioned": "2025-06-22T10:31:12.989079",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Rim_Praznik_rada_avionom_01.05._cenovnik_2901bb.pdf",
+        "Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf",
+        "Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {
+    "travel_month": {
+      "entity_type": "travel_month",
+      "entity_value": {
+        "entity_type": "travel_month",
+        "entity_value": "maj",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T10:25:49.311051",
+        "last_mentioned": "2025-06-22T10:25:49.311051",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T10:25:57.543442",
+      "last_mentioned": "2025-06-22T10:27:00.364317",
+      "frequency": 2,
+      "source_messages": [
+        "68ab824d-3529-482a-bb73-d3723a1482bd",
+        "c9ec7d80-9b95-4220-9814-eb4cde0c6531"
+      ]
+    },
+    "amenities": {
+      "entity_type": "amenities",
+      "entity_value": {
+        "entity_type": "amenities",
+        "entity_value": [
+          "spa"
+        ],
+        "confidence": 0.7,
+        "first_mentioned": "2025-06-22T10:26:27.322740",
+        "last_mentioned": "2025-06-22T10:26:27.322740",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T10:26:41.211591",
+      "last_mentioned": "2025-06-22T10:27:46.005948",
+      "frequency": 2,
+      "source_messages": [
+        "47e0e3bd-8f4d-4b5f-98f8-1c274f6dde47",
+        "3ee26a2f-9ae3-4aab-94b8-fb5ccd2aae72"
+      ]
+    },
+    "destination": {
+      "entity_type": "destination",
+      "entity_value": {
+        "entity_type": "destination",
+        "entity_value": "Španija",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T10:26:28.467835",
+        "last_mentioned": "2025-06-22T10:26:28.467835",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T10:26:41.211591",
+      "last_mentioned": "2025-06-22T10:27:46.005948",
+      "frequency": 2,
+      "source_messages": [
+        "47e0e3bd-8f4d-4b5f-98f8-1c274f6dde47",
+        "3ee26a2f-9ae3-4aab-94b8-fb5ccd2aae72"
+      ]
+    },
+    "transport_type": {
+      "entity_type": "transport_type",
+      "entity_value": {
+        "entity_type": "transport_type",
+        "entity_value": "plane",
+        "confidence": 0.9,
+        "first_mentioned": "2025-06-22T10:26:54.380585",
+        "last_mentioned": "2025-06-22T10:26:54.380585",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T10:27:00.364317",
+      "last_mentioned": "2025-06-22T10:27:00.364317",
+      "frequency": 1,
+      "source_messages": [
+        "c9ec7d80-9b95-4220-9814-eb4cde0c6531"
+      ]
+    }
+  },
+  "active_entities": {
+    "travel_month": "letnji",
+    "amenities": [],
+    "destination": "Rim, Italija",
+    "transport_type": "plane"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T10:31:23.947003",
+  "context_switch_detected": false
+}

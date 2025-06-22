@@ -32,6 +32,16 @@ python bulk_load_pdfs.py
 ```
 **Napomena**: Script automatski traži PDF dokumente u `ulazni-podaci/` folderu u root-u projekta.
 
+### Performance Testing
+```bash
+cd app/backend
+python test_token_consumption.py
+```
+**Funkcionalnost**: 
+- Testira cost efficiency sistema (cilj < 0.5€ per 1000 queries)
+- Meri token consumption za različite tipove upita
+- Generiše detaljne performance reportove
+
 ## 📋 Aplikacija
 
 **TurBot** je AI agent sa dvojakom ulogom:
@@ -119,7 +129,7 @@ app/
 
 - **Response Time**: < 3 sekunde
 - **Accuracy**: 90%+ za turističke upite
-- **Cost Efficiency**: < 0.5€ per 1000 queries
+- **Cost Efficiency**: < 0.4€ per 1000 queries
 - **Database**: 112 document chunks, 34 PDF dokumenta
 - **Languages**: Srpski (primarni), osnovni engleski support
 

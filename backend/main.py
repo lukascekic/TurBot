@@ -319,11 +319,36 @@ async def enhanced_chat_stream(chat_message: ChatMessage):
         logger.info(f"🎬 Enhanced RAG streaming: '{user_message}' [Session: {session_id[:8]}]")
         
         async def enhanced_rag_stream_generator():
+            """Enhanced RAG pipeline with streaming response and conversation memory"""
             try:
                 print(f"\n🔍 ===== ENHANCED RAG STREAMING DEBUG SESSION =====")
                 print(f"🔍 Session ID: {session_id}")
                 print(f"🔍 User Type: {chat_message.user_type}")
                 print(f"🔍 Timestamp: {datetime.now().strftime('%H:%M:%S')}")
+                
+                # Helper function to check if query needs detailed content analysis
+                def check_needs_detailed_content(query: str) -> bool:
+                    """Check if query requires detailed document content"""
+                    detail_keywords = [
+                        'datumi', 'datum', 'kada', 'koji dani', 'polazak', 'povratak',
+                        'program', 'itinerar', 'šta je uključeno', 'detaljno',
+                        'više informacija', 'specifično', 'dodatno', 'extra',
+                        'cene', 'cenovnik', 'košta', 'price', 'koliko',
+                        # Dodatne ključne reči za cene
+                        'cena', 'cenu', 'cene', 'troškovi', 'troškove',
+                        'plaćanje', 'plaćanja', 'novac', 'budget', 'budžet',
+                        'koliko košta', 'koliko je', 'koliko je cena',
+                        # Dodatne za detalje
+                        'detaljnije', 'precizno', 'tačno', 'konkretno',
+                        'više detalja', 'više informacija', 'šta sve',
+                        'koja je cena', 'koja cena', 'koje su cene'
+                    ]
+                    
+                    query_lower = query.lower()
+                    found_keywords = [keyword for keyword in detail_keywords if keyword in query_lower]
+                    needs_detailed = len(found_keywords) > 0
+                    
+                    return needs_detailed
                 
                 # STEP 0: Save user message to conversation memory
                 print(f"\n🔍 STEP 0 - CONVERSATION MEMORY:")
@@ -458,11 +483,63 @@ async def enhanced_chat_stream(chat_message: ChatMessage):
                 # Step 5: Create enhanced system prompt with anti-hallucination instructions
                 print(f"\n🔍 STEP 5 - SYSTEM PROMPT CREATION:")
                 
+                # Check if we need detailed content for this query
+                needs_detailed = check_needs_detailed_content(user_message)
+                print(f"   🔍 DETAILED CONTENT CHECK:")
+                print(f"      Query: '{user_message}'")
+                print(f"      Needs detailed: {needs_detailed}")
+                
                 # Determine if we have sufficient context
                 has_context = len(context_content.strip()) > 0
                 print(f"   📋 Has Context: {has_context}")
                 
-                if has_context:
+                # If needs detailed content and we have results, use FULL content
+                if needs_detailed and has_context:
+                    print(f"   🔍 USING DETAILED CONTENT STRATEGY...")
+                    
+                    # Rebuild context with FULL content (not limited to 400 chars)
+                    detailed_context = ""
+                    for i, result in enumerate(search_results.results[:3], 1):  # Top 3 for detailed
+                        content = result.text  # FULL CONTENT!
+                        metadata = result.metadata.model_dump()
+                        source_file = metadata.get('source_file', f'Document {i}')
+                        similarity = result.similarity_score
+                        
+                        print(f"      Document {i}: {source_file}")
+                        print(f"         Content length: {len(content)} characters (FULL)")
+                        print(f"         Similarity: {similarity:.2f}")
+                        
+                        detailed_context += f"\n--- DOKUMENT {i}: {source_file} (Relevantnost: {similarity:.1%}) ---\n"
+                        detailed_context += f"KOMPLETNI SADRŽAJ:\n{content}\n"
+                        detailed_context += f"METADATA: {metadata}\n"
+                        detailed_context += "-" * 80 + "\n"
+                    
+                    print(f"      Total detailed context: {len(detailed_context)} characters")
+                    
+                    system_prompt = f"""Ti si TurBot, profesionalni turistički agent sa pristupom KOMPLETNIM informacijama o aranžmanima.
+
+KOMPLETNE INFORMACIJE O ARANŽMANIMA:
+{detailed_context}
+
+KRITIČNO - IMAŠ PRISTUP KOMPLETNIM PODACIMA:
+- Koristi SVE dostupne informacije iz dokumenata iznad
+- Ekstraktuj cene, datume, detalje programa iz KOMPLETNOG sadržaja
+- Ne ograničavaj se samo na metadata - čitaj i analiziraj pun tekst dokumenata
+- Ako vidiš cene ili detalje u tekstu, koristi ih u odgovoru
+
+INSTRUKCIJE:
+- Odgovori DETALJNO sa konkretnim informacijama (datumi, cene, program)
+- Analiziraj KOMPLETNI sadržaj dokumenata da pronađeš sve relevantne informacije
+- Budi SPECIFIČAN sa datumima, cenama, uslugama koje pronađeš u tekstovima
+- Ako pronađeš cene u dokumentima, OBAVEZNO ih navedi
+- Navedi odakle su informacije (nazivi dokumenata)
+
+STIL: Profesionalan, informativan, sa svim detaljima iz dokumenata"""
+                    
+                    print(f"   💰 DETAILED CONTENT MODE: ~{len(system_prompt) // 4} estimated tokens")
+                    
+                elif has_context:
+                    # Standard mode with limited content
                     system_prompt = f"""Ti si TurBot, AI asistent za turističke agencije. Odgovori na srpskom jeziku koristeći dostupne informacije.
 
 DOSTUPNI SADRŽAJ:
