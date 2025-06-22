@@ -47,7 +47,7 @@ async def test_your_feature():
     # Your test queries
     test_queries = [
         "Jel imas neki smestaj u Rimu za 4 osobe?",
-        "Daj neku ponudu za letovanje u avgustu."
+        "Jel ima nesto za leto ove godine?"
     ]
     
     print("🔄 TESTING YOUR FEATURE")

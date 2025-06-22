@@ -210,4 +210,40 @@ async def documents_health():
         return {
             "status": "unhealthy",
             "error": str(e)
-        } 
+        }
+
+# Additional endpoints for frontend support
+@router.get("/categories")
+async def get_available_categories():
+    """Get all available document categories"""
+    try:
+        stats = document_service.get_database_stats()
+        categories = stats.get("categories", [])
+        return {"categories": categories}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get categories: {str(e)}")
+
+@router.get("/locations")
+async def get_available_locations():
+    """Get all available locations from documents"""
+    try:
+        stats = document_service.get_database_stats()
+        locations = stats.get("locations", [])
+        return {"locations": locations}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get locations: {str(e)}")
+
+@router.get("/search-suggestions")
+async def get_search_suggestions():
+    """Get suggested search queries for users"""
+    suggestions = [
+        "Hotel u centru Rima",
+        "Letovanje u Grčkoj za porodicu", 
+        "Aranžman za Amsterdam u maju",
+        "Budžetno putovanje po Evropi",
+        "Romantičan vikend u Parizu",
+        "All inclusive u Turskoj",
+        "Gradsko putovanje Madrid",
+        "Krstarenje Mediteranom"
+    ]
+    return {"suggestions": suggestions} 

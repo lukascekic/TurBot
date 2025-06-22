@@ -532,23 +532,29 @@ class VectorService:
         try:
             count = self.collection.count()
             
-            # Get some sample metadata to understand the data
-            sample_results = self.collection.get(limit=10)
+            # Get ALL metadata to get complete stats
+            all_results = self.collection.get(limit=count if count > 0 else 1000)
             
             categories = set()
             locations = set()
+            destinations = set()  # Also check for destination field
             
-            if sample_results["metadatas"]:
-                for metadata in sample_results["metadatas"]:
+            if all_results["metadatas"]:
+                for metadata in all_results["metadatas"]:
                     if metadata.get("category"):
                         categories.add(metadata["category"])
                     if metadata.get("location"):
                         locations.add(metadata["location"])
+                    if metadata.get("destination"):  # Check for destination field too
+                        destinations.add(metadata["destination"])
+            
+            # Combine locations and destinations
+            all_locations = locations.union(destinations)
             
             return {
                 "total_documents": count,
                 "categories": list(categories),
-                "locations": list(locations),
+                "locations": list(all_locations),
                 "collection_name": self.collection.name
             }
             
