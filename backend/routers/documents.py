@@ -251,7 +251,7 @@ async def get_search_suggestions():
         "Gradsko putovanje Madrid",
         "Krstarenje Mediteranom"
     ]
-    return {"suggestions": suggestions}
+    return {"suggestions": suggestions} 
 
 @router.get("/document-detail/{document_name}")
 async def get_document_detail(document_name: str):

@@ -117,15 +117,15 @@ export default function AgentPage() {
       await turBotAPI.resetSession(sessionId)
       
       // Remove from frontend state
-      setChatSessions((prev) => prev.filter((session) => session.id !== sessionId))
+    setChatSessions((prev) => prev.filter((session) => session.id !== sessionId))
       
-      if (currentSessionId === sessionId) {
-        const remainingSessions = chatSessions.filter((session) => session.id !== sessionId)
-        if (remainingSessions.length > 0) {
-          setCurrentSessionId(remainingSessions[0].id)
-        } else {
-          createNewChat()
-        }
+    if (currentSessionId === sessionId) {
+      const remainingSessions = chatSessions.filter((session) => session.id !== sessionId)
+      if (remainingSessions.length > 0) {
+        setCurrentSessionId(remainingSessions[0].id)
+      } else {
+        createNewChat()
+      }
       }
     } catch (error) {
       console.error('Failed to delete session:', error)

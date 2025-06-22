@@ -1,0 +1,94 @@
+{
+  "session_id": "6e6c3823-bd29-4f03-8cc1-ed8cf39fa657",
+  "total_messages": 4,
+  "recent_messages": [
+    {
+      "message_id": "87ae5093-8095-4830-b06e-0ef6158e942a",
+      "session_id": "6e6c3823-bd29-4f03-8cc1-ed8cf39fa657",
+      "role": "assistant",
+      "content": "Nemam tu informaciju. Molim vas da precizirate na šta tačno mislite kada pitate za \"neso leti\". Ako imate neku specifičnu destinaciju ili putovanje na umu, slobodno recite!",
+      "timestamp": "2025-06-22T08:57:03.757251",
+      "entities_extracted": {
+        "transport_type": {
+          "entity_type": "transport_type",
+          "entity_value": "plane",
+          "confidence": 0.9,
+          "first_mentioned": "2025-06-22T08:56:58.818621",
+          "last_mentioned": "2025-06-22T08:56:58.818621",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "letnji",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:57:00.124362",
+          "last_mentioned": "2025-06-22T08:57:00.124362",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "016Cenovnik i program putovanja u PDF-u (kliknuti za prikaz).pdf",
+        "Portugalska_tura_Lisabon_i_Porto_29.04.-05.05.2025._Prvi_maj_-_cenovnik_100425.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "message_id": "fb9a07a2-dfac-4785-bf41-0b2adea0d548",
+      "session_id": "6e6c3823-bd29-4f03-8cc1-ed8cf39fa657",
+      "role": "user",
+      "content": "Jel ima neko putovanje leti?",
+      "timestamp": "2025-06-22T08:57:18.485909",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "47cc8d2a-b916-4981-9c40-cb85dadecf2e",
+      "session_id": "6e6c3823-bd29-4f03-8cc1-ed8cf39fa657",
+      "role": "assistant",
+      "content": "Nemam tu informaciju. Dostupni dokumenti se fokusiraju na putovanja u proleće 2025. godine, kao što su putovanja za Prvi maj u Amsterdam i Pariz. Ako vas zanimaju specifične destinacije ili datumi, slobodno pitajte!",
+      "timestamp": "2025-06-22T08:57:25.902540",
+      "entities_extracted": {
+        "transport_type": {
+          "entity_type": "transport_type",
+          "entity_value": "plane",
+          "confidence": 0.9,
+          "first_mentioned": "2025-06-22T08:57:20.883266",
+          "last_mentioned": "2025-06-22T08:57:20.883266",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "letnji",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:57:21.850523",
+          "last_mentioned": "2025-06-22T08:57:21.850523",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Malta_Prvi_maj_2025_cenovnik_1404vvt.pdf",
+        "product_be_unique_ROMANTICNA_FRANCUSKA_5.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "transport_type": "plane",
+    "travel_month": "letnji"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T08:57:25.902540",
+  "context_switch_detected": false
+}

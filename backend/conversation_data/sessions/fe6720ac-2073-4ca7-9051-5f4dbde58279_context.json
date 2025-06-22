@@ -1,0 +1,95 @@
+{
+  "session_id": "fe6720ac-2073-4ca7-9051-5f4dbde58279",
+  "total_messages": 6,
+  "recent_messages": [
+    {
+      "message_id": "e5ee2667-44a9-4789-a18b-b38feb693c82",
+      "session_id": "fe6720ac-2073-4ca7-9051-5f4dbde58279",
+      "role": "assistant",
+      "content": "Da, postoji putovanje u Španiju. Planirano je za period od 28. aprila do 4. maja 2025. godine. Ovo putovanje traje 7 dana i uključuje odlazak avionom, dok je povratak autobusom. U okviru putovanja, posetićete Barselonu, Milano i Padovu. \n\nUživajte u remek-delima Antonija Gaudija, Pabla Pikasa i Salvadora Dalija u Barseloni, kao i u kafi na čuvenom trgu Duomo u Milanu. Ova informacija je preuzeta iz dokumenta \"Cenovnik i program putovanja AVIO-BUS\".",
+      "timestamp": "2025-06-22T09:02:33.874139",
+      "entities_extracted": {
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [
+            "spa"
+          ],
+          "confidence": 0.7,
+          "first_mentioned": "2025-06-22T09:02:26.480747",
+          "last_mentioned": "2025-06-22T09:02:26.480747",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Španija",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T09:02:27.458465",
+          "last_mentioned": "2025-06-22T09:02:27.458465",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "04Cenovnik i program putovanja AVIO-BUS (kliknuti za prikaz).pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "message_id": "18d106e8-8ce9-4915-8ed9-71e5ab119e5e",
+      "session_id": "fe6720ac-2073-4ca7-9051-5f4dbde58279",
+      "role": "user",
+      "content": "Koja je cena?",
+      "timestamp": "2025-06-22T09:02:47.203309",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "e54f299c-0b59-4a26-a13e-d803614cbb4e",
+      "session_id": "fe6720ac-2073-4ca7-9051-5f4dbde58279",
+      "role": "assistant",
+      "content": "Nemam tu informaciju. U dostupnim dokumentima nije navedena cena putovanja. (Izvor: 04Cenovnik i program putovanja AVIO-BUS)",
+      "timestamp": "2025-06-22T09:02:54.990381",
+      "entities_extracted": {},
+      "sources_used": [
+        "04Cenovnik i program putovanja AVIO-BUS (kliknuti za prikaz).pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {
+    "destination": {
+      "entity_type": "destination",
+      "entity_value": {
+        "entity_type": "destination",
+        "entity_value": "Italija",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T09:02:06.577935",
+        "last_mentioned": "2025-06-22T09:02:06.577935",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T09:02:15.631803",
+      "last_mentioned": "2025-06-22T09:02:15.631803",
+      "frequency": 1,
+      "source_messages": [
+        "f4e29880-75aa-4519-89b0-efe800b301e1"
+      ]
+    }
+  },
+  "active_entities": {
+    "destination": "Španija",
+    "amenities": [
+      "spa"
+    ]
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T09:02:54.990381",
+  "context_switch_detected": false
+}

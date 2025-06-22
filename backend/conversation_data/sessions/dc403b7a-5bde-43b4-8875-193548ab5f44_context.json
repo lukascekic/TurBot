@@ -1,0 +1,62 @@
+{
+  "session_id": "dc403b7a-5bde-43b4-8875-193548ab5f44",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "0556e27a-0a46-4528-b4e7-1b622bfe4b9e",
+      "session_id": "dc403b7a-5bde-43b4-8875-193548ab5f44",
+      "role": "user",
+      "content": "Koja je cena putovanja u Spaniju",
+      "timestamp": "2025-06-22T09:10:32.456828",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "443b6156-71aa-4084-964c-e5962631fc2a",
+      "session_id": "dc403b7a-5bde-43b4-8875-193548ab5f44",
+      "role": "assistant",
+      "content": "Nemam tu informaciju. U dostupnim dokumentima se ne navodi cena putovanja u Španiju. Ako imate dodatna pitanja ili vam je potrebna pomoć oko drugih informacija, slobodno pitajte!",
+      "timestamp": "2025-06-22T09:10:39.406565",
+      "entities_extracted": {
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [
+            "spa"
+          ],
+          "confidence": 0.7,
+          "first_mentioned": "2025-06-22T09:10:34.754098",
+          "last_mentioned": "2025-06-22T09:10:34.754098",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Španija",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T09:10:35.734985",
+          "last_mentioned": "2025-06-22T09:10:35.734985",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "04Cenovnik i program putovanja AVIO-BUS (kliknuti za prikaz).pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "amenities": [
+      "spa"
+    ],
+    "destination": "Španija"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T09:10:39.406565",
+  "context_switch_detected": false
+}

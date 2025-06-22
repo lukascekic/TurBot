@@ -1,18 +1,7 @@
 {
   "session_id": "2d5cd5f1-e64f-43b0-8d8e-0c6a7d008124",
-  "total_messages": 2,
+  "total_messages": 4,
   "recent_messages": [
-    {
-      "message_id": "66827f27-24f3-4b15-9f88-b9b98802bed8",
-      "session_id": "2d5cd5f1-e64f-43b0-8d8e-0c6a7d008124",
-      "role": "user",
-      "content": "Jel ima nesto za leto?",
-      "timestamp": "2025-06-22T08:46:09.998698",
-      "entities_extracted": {},
-      "sources_used": [],
-      "confidence": null,
-      "metadata": {}
-    },
     {
       "message_id": "82165283-be1a-43d4-a808-029a2bcc6b5f",
       "session_id": "2d5cd5f1-e64f-43b0-8d8e-0c6a7d008124",
@@ -55,16 +44,53 @@
       ],
       "confidence": 0.95,
       "metadata": {}
+    },
+    {
+      "message_id": "209c0d47-3f21-4696-a90e-ce28fcd7d502",
+      "session_id": "2d5cd5f1-e64f-43b0-8d8e-0c6a7d008124",
+      "role": "user",
+      "content": "Reci mi nesto detaljnije o putovanju za Portugal. Koja je cena?",
+      "timestamp": "2025-06-22T08:47:58.496157",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "7a35b592-f7c7-4042-a6da-b6b4b12928d7",
+      "session_id": "2d5cd5f1-e64f-43b0-8d8e-0c6a7d008124",
+      "role": "assistant",
+      "content": "Putovanje u Portugal obuhvata posetu Lisabonu i Portu, sa terminom od 29. aprila do 5. maja 2025. godine. Cena za ovu turu iznosi 899 evra po osobi. U okviru paketa su uključena 3 noćenja u Lisabonu i 3 noćenja u Portu. \n\nOva specijalna ponuda dolazi od agencije Dream Land, koja se može pronaći na njihovoj veb stranici www.dreamland.travel (informacije iz dokumenta \"Portugalska_tura_Lisabon_i_Porto_29.04.-05.05.2025._Prvi_maj_-_cenovnik_100425.pdf\"). \n\nAko imate dodatnih pitanja ili vam je potrebna pomoć oko rezervacije, slobodno se javite!",
+      "timestamp": "2025-06-22T08:48:10.630858",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Portugal",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:48:01.502674",
+          "last_mentioned": "2025-06-22T08:48:01.502674",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Portugalska_tura_Lisabon_i_Porto_29.04.-05.05.2025._Prvi_maj_-_cenovnik_100425.pdf",
+        "product_be_unique_PORTUGAL_36.pdf",
+        "product_be_unique_PORTUGAL_35.pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
     }
   ],
   "historical_entities": {},
   "active_entities": {
     "travel_season": "leto",
     "transport_type": "plane",
-    "travel_month": "leto"
+    "travel_month": "leto",
+    "destination": "Portugal"
   },
   "conversation_summary": "",
   "user_preferences": {},
-  "last_updated": "2025-06-22T08:46:17.417165",
+  "last_updated": "2025-06-22T08:48:10.630858",
   "context_switch_detected": false
 }

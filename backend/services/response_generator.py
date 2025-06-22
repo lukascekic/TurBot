@@ -382,7 +382,7 @@ ODGOVOR:
                 suggested_questions=suggested_questions,
                 confidence=0.9  # High confidence with detailed content
             )
-
+            
         except Exception as e:
             logger.error(f"Error generating detailed response: {e}")
             # Fallback to standard response
@@ -937,7 +937,7 @@ ODGOVOR:
     def _generate_suggested_questions(
         self, 
         search_results: List[Dict[str, Any]], 
-        structured_query: StructuredQuery,
+        structured_query: StructuredQuery, 
         conversation_context: Optional[Dict[str, Any]] = None
     ) -> List[str]:
         """

@@ -1,0 +1,50 @@
+{
+  "session_id": "4c9512f9-2f07-498e-b868-45483c136430",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "9f55ba5f-4073-46c0-8eba-c1a4a99508d5",
+      "session_id": "4c9512f9-2f07-498e-b868-45483c136430",
+      "role": "user",
+      "content": "Jel ima neko putovanje u Maju?",
+      "timestamp": "2025-06-22T09:00:02.330924",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "5c34200a-b011-4e0f-b3bd-efd75c51732b",
+      "session_id": "4c9512f9-2f07-498e-b868-45483c136430",
+      "role": "assistant",
+      "content": "Da, imamo nekoliko putovanja u maju. Na primer, postoji putovanje u Lisabon i Porto od 29. aprila do 5. maja 2025. godine. Organizator putovanja je turistička agencija Kuća putovanja doo Dream Land. \n\nTakođe, postoji i putovanje u Amsterdam sa direktnim letom od 30. aprila do 4. maja 2025. godine. \n\nAko vas zanimaju detalji o cijenama ili smeštaju, slobodno pitajte! (Informacije su preuzete iz dokumenata \"Portugalska_tura_Lisabon_i_Porto_29.04.-05.05.2025._Prvi_maj_-_cenovnik_100425.pdf\" i \"Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf\").",
+      "timestamp": "2025-06-22T09:00:15.976420",
+      "entities_extracted": {
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "maj",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T09:00:06.612651",
+          "last_mentioned": "2025-06-22T09:00:06.612651",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Portugalska_tura_Lisabon_i_Porto_29.04.-05.05.2025._Prvi_maj_-_cenovnik_100425.pdf",
+        "product_be_unique_ROMANTICNA_FRANCUSKA_5.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "travel_month": "maj"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T09:00:15.976420",
+  "context_switch_detected": false
+}

@@ -1,0 +1,300 @@
+{
+  "session_id": "token_test_bc2040c1",
+  "total_messages": 40,
+  "recent_messages": [
+    {
+      "message_id": "ff6eeba8-f256-4ef7-b57f-23ddb27f0377",
+      "session_id": "token_test_bc2040c1",
+      "role": "assistant",
+      "content": "Evo nekoliko preporuka za luksuzne hotele u Marakešu koji su pogodni za četvoročlanu porodicu:\n\n1. **La Mamounia** - Ovaj hotel je jedan od najpoznatijih luksuznih hotela u Marakešu. Nudi prelepe sobe, bazene, spa centar i raznovrsne restorane. Smešten je blizu glavnog trga Džema-el-Fna, što ga čini idealnim za istraživanje grada.\n\n2. **Royal Mansour Marrakech** - Ovaj hotel je pravi simbol luksuza, sa prelepim riadima i privatnim bazenima. Gosti mogu uživati u vrhunskim restoranima i spa uslugama. Savršeno je mesto za opuštanje i uživanje u marokanskoj kulturi.\n\n3. **Palais Namaskar** - Ovaj hotel nudi savremeni luksuz u prelepom okruženju. Ima prostrane sobe, bazene i spa centar. Idealno je mesto za porodice koje traže mir i udobnost.\n\nPreporučujem da proverite dostupnost i cene za vaše datume putovanja, jer se cene mogu menjati. Ako vam je potrebna pomoć oko rezervacije ili dodatne informacije, slobodno se javite!",
+      "timestamp": "2025-06-22T09:53:39.832580",
+      "entities_extracted": {
+        "price_range": {
+          "entity_type": "price_range",
+          "entity_value": "luxury",
+          "confidence": 0.7,
+          "first_mentioned": "2025-06-22T09:53:34.040098",
+          "last_mentioned": "2025-06-22T09:53:34.040098",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "category": {
+          "entity_type": "category",
+          "entity_value": "hotel",
+          "confidence": 0.9,
+          "first_mentioned": "2025-06-22T09:53:34.040145",
+          "last_mentioned": "2025-06-22T09:53:34.040145",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Maroko_Prazik_rada_30_april_cenovnik_2901bb.pdf"
+      ],
+      "confidence": 0.6689360174615505,
+      "metadata": {}
+    },
+    {
+      "message_id": "e57ef9a5-e1f0-4d65-aac8-68bbd4269161",
+      "session_id": "token_test_bc2040c1",
+      "role": "user",
+      "content": "Romantična putovanja za dvoje",
+      "timestamp": "2025-06-22T09:53:42.394992",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "0d824e30-89c4-4457-afea-d26bf87dc0f6",
+      "session_id": "token_test_bc2040c1",
+      "role": "assistant",
+      "content": "Za romantična putovanja za dvoje, Rim je savršena destinacija. Ovaj grad nudi prelepe pejzaže, bogatu istoriju i romantičnu atmosferu. Evo nekoliko preporuka za vaš boravak:\n\n1. **Hotel Artemide** - Ovaj luksuzni hotel se nalazi u centru Rima i nudi elegantne sobe, spa centar i restoran sa prelepim pogledom na grad. Idealno je mesto za opuštanje nakon dana provedenog u istraživanju.\n\n2. **Hotel Hassler** - Smešten na vrhu Španskih stepenica, ovaj hotel nudi spektakularan pogled na Rim. Savršeno je mesto za romantičnu večeru ili uživanje u piću na terasi.\n\n3. **Palazzo Manfredi** - Ovaj hotel nudi predivan pogled na Koloseum i savremeni luksuz. Gosti mogu uživati u vrhunskim restoranima i opuštanju u elegantnim sobama.\n\nPreporučujem da proverite dostupnost i cene za vaše datume putovanja, jer se cene mogu menjati. Ako vam je potrebna pomoć oko rezervacije ili dodatne informacije, slobodno se javite!",
+      "timestamp": "2025-06-22T09:53:50.979816",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Roma",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T09:53:45.880288",
+          "last_mentioned": "2025-06-22T09:53:45.880288",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "group_size": {
+          "entity_type": "group_size",
+          "entity_value": 2,
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T09:53:46.769119",
+          "last_mentioned": "2025-06-22T09:53:46.769119",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "family_friendly": {
+          "entity_type": "family_friendly",
+          "entity_value": false,
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T09:53:46.769119",
+          "last_mentioned": "2025-06-22T09:53:46.769119",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Maroko_Prazik_rada_30_april_cenovnik_2901bb.pdf",
+        "Maroko_Prvi_maj_2025_avionom_cenovnik_2701flt.pdf",
+        "Maroko_Prvi_maj_2025_avionom_cenovnik_2701flt.pdf",
+        "Maroko_Prvi_maj_2025_avionom_cenovnik_2701flt.pdf",
+        "Maroko_Prvi_maj_2025_avionom_cenovnik_2701flt.pdf"
+      ],
+      "confidence": 0.8015316441573735,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {
+    "destination": {
+      "entity_type": "destination",
+      "entity_value": {
+        "entity_type": "destination",
+        "entity_value": "Rim",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T09:50:23.696053",
+        "last_mentioned": "2025-06-22T09:50:23.696053",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T09:50:29.400095",
+      "last_mentioned": "2025-06-22T09:51:57.430432",
+      "frequency": 10,
+      "source_messages": [
+        "03dc0e73-468e-4339-a1a2-cd0c484d3518",
+        "a59e608c-07f9-498d-948b-ac9ebf498f19",
+        "f5ea55fb-42ff-48a7-84b7-c0b7ff03c0ef",
+        "cd2eb80b-c983-40c9-972c-06b94c042c2c",
+        "d3776aaa-2d65-403f-afc1-382f83c58aa9",
+        "ab9dd06f-be08-4c06-bf34-0c4e34cb4743",
+        "58e204ab-979b-448a-bf84-150fefdb2a36",
+        "055aa789-0027-462d-8e9d-eeff14b0898e",
+        "b4feae0d-65f1-456c-8e30-5afb1591affe",
+        "7da3b5d2-8a85-4ce3-aa06-1d466da7e211"
+      ]
+    },
+    "category": {
+      "entity_type": "category",
+      "entity_value": {
+        "entity_type": "category",
+        "entity_value": "hotel",
+        "confidence": 0.9,
+        "first_mentioned": "2025-06-22T09:50:23.696840",
+        "last_mentioned": "2025-06-22T09:50:23.696840",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T09:50:29.400095",
+      "last_mentioned": "2025-06-22T09:50:29.400095",
+      "frequency": 1,
+      "source_messages": [
+        "03dc0e73-468e-4339-a1a2-cd0c484d3518"
+      ]
+    },
+    "amenities": {
+      "entity_type": "amenities",
+      "entity_value": {
+        "entity_type": "amenities",
+        "entity_value": [],
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T09:50:45.746988",
+        "last_mentioned": "2025-06-22T09:50:45.746988",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T09:50:48.714924",
+      "last_mentioned": "2025-06-22T09:53:28.331507",
+      "frequency": 9,
+      "source_messages": [
+        "f5ea55fb-42ff-48a7-84b7-c0b7ff03c0ef",
+        "cd2eb80b-c983-40c9-972c-06b94c042c2c",
+        "58e204ab-979b-448a-bf84-150fefdb2a36",
+        "055aa789-0027-462d-8e9d-eeff14b0898e",
+        "7da3b5d2-8a85-4ce3-aa06-1d466da7e211",
+        "9c07b58b-7de2-45e3-9336-4f870f3cd8e6",
+        "ae43af80-b528-42bc-8924-246b4ee13061",
+        "e453a512-9e85-42e3-ad9c-4b351ae90d3a",
+        "41856df4-b540-41f2-b35f-e3257252f3ed"
+      ]
+    },
+    "travel_season": {
+      "entity_type": "travel_season",
+      "entity_value": {
+        "entity_type": "travel_season",
+        "entity_value": "leto",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T09:51:02.461788",
+        "last_mentioned": "2025-06-22T09:51:02.461788",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T09:51:07.663439",
+      "last_mentioned": "2025-06-22T09:51:07.663439",
+      "frequency": 1,
+      "source_messages": [
+        "d3776aaa-2d65-403f-afc1-382f83c58aa9"
+      ]
+    },
+    "transport_type": {
+      "entity_type": "transport_type",
+      "entity_value": {
+        "entity_type": "transport_type",
+        "entity_value": "plane",
+        "confidence": 0.9,
+        "first_mentioned": "2025-06-22T09:51:02.461854",
+        "last_mentioned": "2025-06-22T09:51:02.461854",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T09:51:07.663439",
+      "last_mentioned": "2025-06-22T09:51:07.663439",
+      "frequency": 1,
+      "source_messages": [
+        "d3776aaa-2d65-403f-afc1-382f83c58aa9"
+      ]
+    },
+    "price_target": {
+      "entity_type": "price_target",
+      "entity_value": {
+        "entity_type": "price_target",
+        "entity_value": 500,
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T09:53:00.400613",
+        "last_mentioned": "2025-06-22T09:53:00.400613",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T09:53:05.678595",
+      "last_mentioned": "2025-06-22T09:53:05.678595",
+      "frequency": 1,
+      "source_messages": [
+        "1a77e146-0af1-41f2-8825-84d5649a5c37"
+      ]
+    },
+    "price_max": {
+      "entity_type": "price_max",
+      "entity_value": {
+        "entity_type": "price_max",
+        "entity_value": 500,
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T09:53:01.566094",
+        "last_mentioned": "2025-06-22T09:53:01.566094",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T09:53:05.678595",
+      "last_mentioned": "2025-06-22T09:53:05.678595",
+      "frequency": 1,
+      "source_messages": [
+        "1a77e146-0af1-41f2-8825-84d5649a5c37"
+      ]
+    },
+    "group_size": {
+      "entity_type": "group_size",
+      "entity_value": {
+        "entity_type": "group_size",
+        "entity_value": 4,
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T09:53:12.567316",
+        "last_mentioned": "2025-06-22T09:53:12.567316",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T09:53:17.039950",
+      "last_mentioned": "2025-06-22T09:53:17.039950",
+      "frequency": 1,
+      "source_messages": [
+        "0b5a1819-329a-40c1-9343-17ff6500b519"
+      ]
+    },
+    "family_friendly": {
+      "entity_type": "family_friendly",
+      "entity_value": {
+        "entity_type": "family_friendly",
+        "entity_value": true,
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T09:53:12.567316",
+        "last_mentioned": "2025-06-22T09:53:12.567316",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T09:53:17.039950",
+      "last_mentioned": "2025-06-22T09:53:17.039950",
+      "frequency": 1,
+      "source_messages": [
+        "0b5a1819-329a-40c1-9343-17ff6500b519"
+      ]
+    }
+  },
+  "active_entities": {
+    "destination": "Roma",
+    "category": "hotel",
+    "amenities": [],
+    "travel_season": "leto",
+    "transport_type": "plane",
+    "price_target": 500,
+    "price_max": 500,
+    "group_size": 2,
+    "family_friendly": false,
+    "price_range": "luxury"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T09:53:50.979816",
+  "context_switch_detected": false
+}

@@ -335,7 +335,7 @@ interface MessageBubbleProps {
 function MessageBubble({ message }: MessageBubbleProps) {
   return (
     <div className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-      <div className={`flex items-start space-x-2 max-w-[85%]`}>
+              <div className={`flex items-start space-x-2 max-w-[85%]`}>
         {message.role === "assistant" && (
           <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center flex-shrink-0">
             <Bot className="h-3 w-3 text-white" />

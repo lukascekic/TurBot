@@ -1,0 +1,50 @@
+{
+  "session_id": "c6d769b5-be90-4c13-87df-6017c812582f",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "9f8c6ab8-19f7-4d33-8506-4b7f8b5619ec",
+      "session_id": "c6d769b5-be90-4c13-87df-6017c812582f",
+      "role": "user",
+      "content": "Jel ima nesto u Maju?",
+      "timestamp": "2025-06-22T08:57:58.974395",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "7d378ad9-5b3e-4d29-b946-6939399486d5",
+      "session_id": "c6d769b5-be90-4c13-87df-6017c812582f",
+      "role": "assistant",
+      "content": "Da, imamo nekoliko ponuda za putovanja u maju 2025. godine. \n\n1. **Amsterdam**: Direktan let od 30. aprila do 4. maja 2025. godine. Detalji o smeštaju i cijenama su dostupni, ali nemam tačne informacije o cijenama iz dostupnih dokumenata.\n\n2. **Portugalska tura**: Putovanje u Lisabon i Porto od 29. aprila do 5. maja 2025. godine. Takođe, informacije o smeštaju i cijenama su dostupne, ali konkretne cene nisu navedene.\n\nZa više informacija o cijenama i dostupnosti, preporučujem da se obratite turističkoj agenciji. (Izvori: Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf i Portugalska_tura_Lisabon_i_Porto_29.04.-05.05.2025._Prvi_maj_-_cenovnik_100425.pdf)",
+      "timestamp": "2025-06-22T08:58:12.781651",
+      "entities_extracted": {
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "maj",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:58:02.218786",
+          "last_mentioned": "2025-06-22T08:58:02.218786",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Bari_i_Pulja_Prvi_maj_2025_avionom_cenovnik_2801odn.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Portugalska_tura_Lisabon_i_Porto_29.04.-05.05.2025._Prvi_maj_-_cenovnik_100425.pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "travel_month": "maj"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T08:58:12.781651",
+  "context_switch_detected": false
+}

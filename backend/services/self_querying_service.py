@@ -345,6 +345,7 @@ Izvuci sledeće informacije u JSON formatu:
         "season": "spring|summer|autumn|winter ako je spomenuto vreme",
         "travel_month": "january|february|march|april|may|june|july|august|september|october|november|december - SPECIFIČAN mesec",
         "duration_days": number_ili_null_broj_dana_ako_spomenuto,
+        "transport_type": "plane|bus|car|train - SAMO ako je eksplicitno spomenut prevoz (avion/avionom/avio, autobus/bus, auto/kola, voz/vozom). NIKAD ne stavljaj 'plane' za reč 'leto' i 'leti' (godišnje doba)!",
         "subcategory": "romantic_getaway|family_vacation|cultural_experience|adventure ako jasno"
     }},
     "confidence": 0.0_do_1.0_koliko_si_siguran_u_parsing
@@ -375,6 +376,7 @@ PRAVILA:
 - travel_month ima prioritet nad season
 - confidence visok (>0.8) samo ako si siguran u većinu filtera
 - PRIORITET: category i price_range su kritični za queries bez location
+- TRANSPORT_TYPE: KRITIČNO - NIKAD ne stavljaj transport_type:"plane" za reč "leto" (godišnje doba)! Samo za eksplicitno spomenut avionski prevoz!
 
 ODGOVORI SAMO JSON:
 """
