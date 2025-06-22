@@ -1,0 +1,135 @@
+{
+  "session_id": "845b0513-58e7-4074-ae35-f18cd7180319",
+  "total_messages": 8,
+  "recent_messages": [
+    {
+      "message_id": "ff04744b-20d5-4ae6-99e8-d04a37aafc25",
+      "session_id": "845b0513-58e7-4074-ae35-f18cd7180319",
+      "role": "assistant",
+      "content": "Nemam tu informaciju. U dostupnim dokumentima se navodi putovanje u Španiju i Italiju od 28. aprila do 4. maja 2025. godine. Ako imate neka druga pitanja ili tražite specifične datume, slobodno pitajte!",
+      "timestamp": "2025-06-22T10:50:59.957382",
+      "entities_extracted": {
+        "transport_type": {
+          "entity_type": "transport_type",
+          "entity_value": "plane",
+          "confidence": 0.9,
+          "first_mentioned": "2025-06-22T10:50:54.987612",
+          "last_mentioned": "2025-06-22T10:50:54.987612",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "letnji",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T10:50:56.403144",
+          "last_mentioned": "2025-06-22T10:50:56.403144",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "04Cenovnik i program putovanja AVIO-BUS (kliknuti za prikaz).pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "message_id": "b708ae46-1677-4702-abea-509c505e471f",
+      "session_id": "845b0513-58e7-4074-ae35-f18cd7180319",
+      "role": "user",
+      "content": "Kakve atrakcije mogu da vidim u Milanu?",
+      "timestamp": "2025-06-22T10:51:17.814102",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "461480a2-7805-40fb-9f0c-e4297e501aaf",
+      "session_id": "845b0513-58e7-4074-ae35-f18cd7180319",
+      "role": "assistant",
+      "content": "U Milanu možete uživati u raznim atrakcijama. Neki od najistaknutijih su:\n\n1. **Duomo** - Ovo je jedna od najspektakularnijih crkvi na svetu i simbol Milana. Njena arhitektura i detalji su zaista impresivni.\n   \n2. **La Scala** - Poznata opera koja je domaćin mnogim slavnim izvođačima i operama. \n\n3. **Milansko vojvodstvo** - Uživajte u pričama o nekadašnjoj slavi ovog moćnog vojvodstva.\n\nOsim ovih atrakcija, možete se prošetati gradom i uživati u njegovim prelepim ulicama i ambijentima. (Informacije su preuzete iz dokumenta \"013Cenovnik i program putovanja u PDF-u\").",
+      "timestamp": "2025-06-22T10:51:32.254394",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Milan, Italija",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T10:51:24.164731",
+          "last_mentioned": "2025-06-22T10:51:24.164731",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [],
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T10:51:24.164731",
+          "last_mentioned": "2025-06-22T10:51:24.164731",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "013Cenovnik i program putovanja u PDF-u (kliknuti za prikaz).pdf",
+        "013Cenovnik i program putovanja u PDF-u (kliknuti za prikaz).pdf",
+        "013Cenovnik i program putovanja u PDF-u (kliknuti za prikaz).pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {
+    "destination": {
+      "entity_type": "destination",
+      "entity_value": {
+        "entity_type": "destination",
+        "entity_value": "Rim, Italija",
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T10:49:50.118190",
+        "last_mentioned": "2025-06-22T10:49:50.118190",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T10:50:03.909236",
+      "last_mentioned": "2025-06-22T10:50:29.866150",
+      "frequency": 2,
+      "source_messages": [
+        "2c919b6a-30ad-42f7-9c27-0e2957048c29",
+        "01c4aaee-fcdb-4900-aaf0-e3f13424bdd7"
+      ]
+    },
+    "amenities": {
+      "entity_type": "amenities",
+      "entity_value": {
+        "entity_type": "amenities",
+        "entity_value": [],
+        "confidence": 0.8,
+        "first_mentioned": "2025-06-22T10:49:50.118190",
+        "last_mentioned": "2025-06-22T10:49:50.118190",
+        "frequency": 1,
+        "source_messages": []
+      },
+      "confidence": 0.8,
+      "first_mentioned": "2025-06-22T10:50:03.909236",
+      "last_mentioned": "2025-06-22T10:50:29.866150",
+      "frequency": 2,
+      "source_messages": [
+        "2c919b6a-30ad-42f7-9c27-0e2957048c29",
+        "01c4aaee-fcdb-4900-aaf0-e3f13424bdd7"
+      ]
+    }
+  },
+  "active_entities": {
+    "destination": "Milan, Italija",
+    "amenities": [],
+    "transport_type": "plane",
+    "travel_month": "letnji"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T10:51:32.254394",
+  "context_switch_detected": false
+}

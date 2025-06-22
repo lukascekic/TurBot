@@ -1,0 +1,65 @@
+{
+  "session_id": "f69d78f1-e73a-49bd-a538-518b189d2cff",
+  "total_messages": 4,
+  "recent_messages": [
+    {
+      "message_id": "28910788-0dec-4011-bdd3-6543a1eb75d8",
+      "session_id": "f69d78f1-e73a-49bd-a538-518b189d2cff",
+      "role": "assistant",
+      "content": "Putovanje u Amsterdam je planirano od 30. aprila do 4. maja 2025. godine. U okviru ove ponude, nudi se direktan let i 4 noćenja. Ova specijalna ponuda dolazi od agencije Dream Land. \n\nAko imate dodatnih pitanja ili želite više informacija, slobodno pitajte! (Izvor: Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf)",
+      "timestamp": "2025-06-22T10:51:53.719078",
+      "entities_extracted": {
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Amsterdam",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T10:51:47.561018",
+          "last_mentioned": "2025-06-22T10:51:47.561018",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "message_id": "6ba083b6-503a-45af-a971-1da725bf2659",
+      "session_id": "f69d78f1-e73a-49bd-a538-518b189d2cff",
+      "role": "user",
+      "content": "Koja je cena?",
+      "timestamp": "2025-06-22T10:52:03.000999",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "8b9556ea-d42f-443e-be24-8b681e814f13",
+      "session_id": "f69d78f1-e73a-49bd-a538-518b189d2cff",
+      "role": "assistant",
+      "content": "Cena aranžmana za putovanje u Amsterdam od 30. aprila do 4. maja 2025. godine iznosi 849 € po osobi. Ova cena uključuje:\n\n- Avio kartu na relaciji Beograd – Amsterdam – Beograd sa kompanijom KLM\n- Čekirani prtljag do 23 kg + ručni prtljag\n- Aerodromske takse (98,7 €)\n- Smeštaj u hotelu 3* (Hotel XO Blue Square) na bazi 4 noćenja sa doručkom u standardnim 1/2 sobama\n- Transfere na relacijama aerodrom–hotel-aerodrom u Amsterdamu\n- Panoramsko i pešačko razgledanje grada sa vodičem na srpskom jeziku\n- Troškove organizacije putovanja\n- Usluge licenciranog vodiča na destinaciji\n\nDoplata za jednokrevetnu sobu iznosi 50% od ukupne cene aranžmana. Deca od 0 do 2 godine u pratnji dve punoplatežne osobe plaćaju 120 € (nemaju sedište u avionu, nemaju ležaj u hotelu).\n\nFakultativni izleti su dodatno naplaćeni: \n- Mala holandska tura (1. maja) po ceni od 90 € po osobi\n- Velika holandska tura (3. maja) po ceni od 120 € po osobi\n\nOve informacije su preuzete iz dokumenta \"Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf\".",
+      "timestamp": "2025-06-22T10:52:21.821796",
+      "entities_extracted": {},
+      "sources_used": [
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "destination": "Amsterdam"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T10:52:21.821796",
+  "context_switch_detected": false
+}

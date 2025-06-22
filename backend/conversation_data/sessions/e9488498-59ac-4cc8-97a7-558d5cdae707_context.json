@@ -1,0 +1,97 @@
+{
+  "session_id": "e9488498-59ac-4cc8-97a7-558d5cdae707",
+  "total_messages": 4,
+  "recent_messages": [
+    {
+      "message_id": "be636549-2c79-466d-b5af-b8fddb3e3212",
+      "session_id": "e9488498-59ac-4cc8-97a7-558d5cdae707",
+      "role": "assistant",
+      "content": "Da, postoji putovanje u Rim u maju 2025. godine. Ovo putovanje traje 5 dana i uključuje garantovane polaske. Rim je poznat kao Večni grad i nudi bogato istorijsko i umetničko nasleđe. \n\nHotel u kojem se boravi je u rangu 3+*, odlično pozicioniran, sa 96 soba, restoranom, barom, liftom i WiFi-jem. Autobuska stanica se nalazi na 300 metara od hotela, dok je metro stanica Cornelia udaljena oko 10 minuta hoda. Svaka soba ima tuš/WC, fen, klimu, SAT TV i telefon. \n\nDoručak je kontinentalni, švedski sto. Ako vas zanimaju dodatne informacije o cijenama ili detaljima putovanja, slobodno pitajte! (Izvor: Rim_Avio_Uskrs_i_Prvi_Maj_4_nocenja_cenovnik_1401vvt.pdf)",
+      "timestamp": "2025-06-22T10:41:37.966713",
+      "entities_extracted": {
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "maj",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T10:41:28.594579",
+          "last_mentioned": "2025-06-22T10:41:28.594579",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [],
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T10:41:29.554521",
+          "last_mentioned": "2025-06-22T10:41:29.554521",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Rim_Avio_Prvi_Maj_3_nocenja_cenovnik_1401vvt.pdf",
+        "Rim_Avio_Uskrs_i_Prvi_Maj_4_nocenja_cenovnik_1401vvt.pdf",
+        "Rim_Avio_Uskrs_i_Prvi_Maj_4_nocenja_cenovnik_1401vvt.pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "message_id": "49a5f579-97b0-4d8e-8e9d-e67a6b5aa5a0",
+      "session_id": "e9488498-59ac-4cc8-97a7-558d5cdae707",
+      "role": "user",
+      "content": "Koliko kosta odlazak u Spaniju?",
+      "timestamp": "2025-06-22T10:41:47.747581",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "9d2c6a2f-9e50-4758-91d9-1a98f73f2e43",
+      "session_id": "e9488498-59ac-4cc8-97a7-558d5cdae707",
+      "role": "assistant",
+      "content": "Odlazak u Španiju, prema aranžmanu koji se nudi, traje 7 dana i uključuje posetu Barseloni, Milanu i Padovi. Putovanje je planirano od 28. aprila do 4. maja 2025. godine. \n\nCene aranžmana po osobi su sledeće:\n\n1. **Hotel H Top Summer Sun 3* - Calella**: \n   - Cena aranžmana: **399 EUR** (snižena sa 459 EUR)\n\n2. **Hotel H Top Planamar 3* – Malgrat de Mar**: \n   - Cena aranžmana: **429 EUR** (snižena sa 489 EUR)\n\nAranžman obuhvata:\n- Avionsku kartu na relaciji Beograd - Barselona sa uključenim aerodromskim taksama, ručnim prtljagom do 8 kg i čekiranim prtljagom do 23 kg po osobi.\n- Prevoz turističkim autobusom.\n- Smeštaj u hotelima sa 3* ili 4* u regiji Costa Brava na bazi tri polupansiona (doručak i večera).\n- Smeštaj u hotelu sa 3* u okolini Padove na bazi jednog noćenja sa doručkom.\n- Panoramska razgledanja gradova po programu.\n- Usluge turističkog vodiča tokom putovanja.\n\nAranžman ne obuhvata fakultativne izlete, međunarodno zdravstveno osiguranje, gradsku komunalnu taksu i turističku taksu u Kataloniji, kao i ulaznice u muzeje tokom razgledanja.\n\nZa više informacija, možete se obratiti agenciji koja nudi ovaj aranžman. \n\nInformacije su preuzete",
+      "timestamp": "2025-06-22T10:42:06.033927",
+      "entities_extracted": {
+        "amenities": {
+          "entity_type": "amenities",
+          "entity_value": [
+            "spa"
+          ],
+          "confidence": 0.7,
+          "first_mentioned": "2025-06-22T10:41:50.754232",
+          "last_mentioned": "2025-06-22T10:41:50.754232",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "destination": {
+          "entity_type": "destination",
+          "entity_value": "Španija",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T10:41:51.782487",
+          "last_mentioned": "2025-06-22T10:41:51.782487",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "04Cenovnik i program putovanja AVIO-BUS (kliknuti za prikaz).pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "travel_month": "maj",
+    "amenities": [
+      "spa"
+    ],
+    "destination": "Španija"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T10:42:06.033927",
+  "context_switch_detected": false
+}

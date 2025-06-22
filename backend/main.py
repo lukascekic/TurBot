@@ -117,20 +117,14 @@ async def enhanced_chat(chat_message: ChatMessage):
         
         session_id = chat_message.session_id or f"session_{int(datetime.now().timestamp())}"
         
-        print(f"\n🎯 PROCESSING CHAT MESSAGE:")
-        print(f"   User message: '{user_message}'")
-        print(f"   Session ID: {session_id}")
-        print(f"   User type: {chat_message.user_type}")
         
         logger.info(f"🎯 Processing chat message: '{user_message}' [Session: {session_id[:8]}]")
         
         async def enhanced_rag_with_memory_pipeline():
             """Complete Enhanced RAG pipeline with conversation memory"""
             try:
-                print(f"\n🚀 STARTING ENHANCED RAG PIPELINE:")
                 
-                # STEP 0: Save user message to conversation memory
-                print("0️⃣ SAVING USER MESSAGE TO CONVERSATION MEMORY...")
+            
                 await conversation_memory_service.save_message(
                     session_id=session_id,
                     role=MessageRole.USER,
@@ -138,16 +132,14 @@ async def enhanced_chat(chat_message: ChatMessage):
                 )
                 
                 # Step 1: Context-Aware Self-Querying - Parse with conversation context
-                print("1️⃣ CONTEXT-AWARE SELF-QUERYING...")
+                
                 structured_query = await self_querying_service.parse_query_with_context(
                     user_message, session_id
                 )
-                print(f"   Structured query: {structured_query.semantic_query}")
-                print(f"   Extracted filters: {structured_query.filters}")
-                print(f"   Intent: {structured_query.intent}")
+                
                 
                 # Extract entities from current message for context updating
-                print("2️⃣ EXTRACTING ENTITIES FROM MESSAGE...")
+                
                 entity_extraction_result = await named_entity_extractor.extract_entities_from_message(user_message)
                 if entity_extraction_result.entities:
                     # Convert TourismEntity objects to simple dict for active entities
@@ -155,22 +147,19 @@ async def enhanced_chat(chat_message: ChatMessage):
                     for entity_type, entity_obj in entity_extraction_result.entities.items():
                         extracted_entities[entity_type] = entity_obj.entity_value
                     
-                    print(f"   Extracted entities: {extracted_entities}")
+                    
                     
                     # Update active entities in conversation memory
                     await conversation_memory_service.update_active_entities(session_id, extracted_entities)
-                else:
-                    print(f"   No entities extracted from message")
-                
-                # Step 3: Query Expansion - Enhance semantic search
-                print("3️⃣ QUERY EXPANSION...")
+
+                # Step 2: Query expansion
                 expanded_query = await query_expansion_service.expand_query_llm(
                     structured_query.semantic_query
                 )
-                print(f"   Expanded query: {expanded_query}")
+                
                 
                 # Step 4: Enhanced Vector Search with context-aware filters
-                print("4️⃣ ENHANCED VECTOR SEARCH...")
+                
                 search_query = SearchQuery(
                     query=expanded_query,
                     filters=structured_query.filters,
@@ -178,7 +167,7 @@ async def enhanced_chat(chat_message: ChatMessage):
                 )
                 
                 search_results = vector_service.search(search_query)
-                print(f"   Found {len(search_results.results)} search results")
+                
                 
                 # Convert search results to format expected by response generator
                 search_results_dict = []
@@ -189,18 +178,12 @@ async def enhanced_chat(chat_message: ChatMessage):
                         'similarity': result.similarity_score,
                         'document_name': result.metadata.source_file or 'Unknown'
                     })
-                    print(f"      {i+1}. {result.metadata.source_file} (similarity: {result.similarity_score:.2f})")
-                
-                # Step 5: Context-Aware Response Generation
-                print("5️⃣ CONTEXT-AWARE RESPONSE GENERATION...")
+                    
                 
                 # Get conversation context for response generation
                 conversation_context = await conversation_memory_service.build_hybrid_context_for_query(session_id)
                 
-                print(f"   Conversation context to be sent to AI:")
-                print(f"      Recent conversation: {len(conversation_context.get('recent_conversation', []))} messages")
-                print(f"      Active entities: {conversation_context.get('active_entities', {})}")
-                print(f"      Total messages: {conversation_context.get('total_messages', 0)}")
+                
                 
                 # Log conversation context details
                 recent_conv = conversation_context.get('recent_conversation', [])
@@ -217,11 +200,7 @@ async def enhanced_chat(chat_message: ChatMessage):
                     conversation_context=conversation_context  # Add conversation context
                 )
                 
-                print(f"   Generated response length: {len(response_data.response)} characters")
-                print(f"   Response confidence: {response_data.confidence:.2f}")
                 
-                # STEP 6: Save AI response to conversation memory
-                print("6️⃣ SAVING AI RESPONSE TO MEMORY...")
                 await conversation_memory_service.save_message(
                     session_id=session_id,
                     role=MessageRole.ASSISTANT,
@@ -231,7 +210,6 @@ async def enhanced_chat(chat_message: ChatMessage):
                     confidence=response_data.confidence
                 )
                 
-                print(f"✅ ENHANCED RAG WITH MEMORY PIPELINE COMPLETED!")
                 return response_data, conversation_context
                 
             except Exception as e:
@@ -315,16 +293,12 @@ async def enhanced_chat_stream(chat_message: ChatMessage):
         
         session_id = chat_message.session_id or f"session_{int(datetime.now().timestamp())}"
         
-        print(f"\n🎬 ENHANCED RAG STREAMING: '{user_message[:50]}...' [Session: {session_id[:8]}]")
         logger.info(f"🎬 Enhanced RAG streaming: '{user_message}' [Session: {session_id[:8]}]")
-        
+
         async def enhanced_rag_stream_generator():
             """Enhanced RAG pipeline with streaming response and conversation memory"""
             try:
-                print(f"\n🔍 ===== ENHANCED RAG STREAMING DEBUG SESSION =====")
-                print(f"🔍 Session ID: {session_id}")
-                print(f"🔍 User Type: {chat_message.user_type}")
-                print(f"🔍 Timestamp: {datetime.now().strftime('%H:%M:%S')}")
+                start_time = datetime.now()
                 
                 # Helper function to check if query needs detailed content analysis
                 def check_needs_detailed_content(query: str) -> bool:
@@ -334,11 +308,9 @@ async def enhanced_chat_stream(chat_message: ChatMessage):
                         'program', 'itinerar', 'šta je uključeno', 'detaljno',
                         'više informacija', 'specifično', 'dodatno', 'extra',
                         'cene', 'cenovnik', 'košta', 'price', 'koliko',
-                        # Dodatne ključne reči za cene
                         'cena', 'cenu', 'cene', 'troškovi', 'troškove',
                         'plaćanje', 'plaćanja', 'novac', 'budget', 'budžet',
                         'koliko košta', 'koliko je', 'koliko je cena',
-                        # Dodatne za detalje
                         'detaljnije', 'precizno', 'tačno', 'konkretno',
                         'više detalja', 'više informacija', 'šta sve',
                         'koja je cena', 'koja cena', 'koje su cene'
@@ -349,172 +321,94 @@ async def enhanced_chat_stream(chat_message: ChatMessage):
                     needs_detailed = len(found_keywords) > 0
                     
                     return needs_detailed
-                
-                # STEP 0: Save user message to conversation memory
-                print(f"\n🔍 STEP 0 - CONVERSATION MEMORY:")
+
+                # Step 0: Save user message to conversation memory
                 await conversation_memory_service.save_message(
                     session_id=session_id,
                     role=MessageRole.USER,
                     content=user_message
                 )
-                print(f"   ✅ User message saved to conversation memory")
-                
-                # Step 1: Context-Aware Self-Querying - Parse with conversation context
-                print(f"\n🔍 STEP 1 - SELF-QUERYING:")
-                print(f"   📝 Original Query: '{user_message}'")
+
+                # Step 1: Context-aware self-querying
                 structured_query = await self_querying_service.parse_query_with_context(
                     user_message, session_id
                 )
-                print(f"   🎯 Semantic Query: '{structured_query.semantic_query}'")
-                print(f"   🔧 Extracted Filters: {structured_query.filters}")
-                print(f"   💭 Detected Intent: {structured_query.intent}")
-                print(f"   📊 Filter Count: {len(structured_query.filters)}")
-                
-                # Extract entities from current message for context updating
-                print(f"\n🔍 STEP 1.5 - ENTITY EXTRACTION:")
+
+                # Step 1.5: Extract entities from the message
                 entity_extraction_result = await named_entity_extractor.extract_entities_from_message(user_message)
                 if entity_extraction_result.entities:
                     extracted_entities = {}
                     for entity_type, entity_obj in entity_extraction_result.entities.items():
                         extracted_entities[entity_type] = entity_obj.entity_value
-                    print(f"   🏷️  Extracted Entities: {extracted_entities}")
                     await conversation_memory_service.update_active_entities(session_id, extracted_entities)
-                    print(f"   ✅ Entities updated in conversation memory")
-                else:
-                    print(f"   ⚠️  No entities extracted from message")
-                
-                # Step 2: Query Expansion - Enhance semantic search
-                print(f"\n🔍 STEP 2 - QUERY EXPANSION:")
-                print(f"   📝 Input Query: '{structured_query.semantic_query}'")
+
+                # Step 2: Query expansion
                 expanded_query = await query_expansion_service.expand_query_llm(
                     structured_query.semantic_query
                 )
-                print(f"   🚀 Expanded Query: '{expanded_query}'")
-                print(f"   📏 Expansion Ratio: {len(expanded_query) / len(structured_query.semantic_query):.2f}x")
-                
-                # Step 3: Enhanced Vector Search with context-aware filters
-                print(f"\n🔍 STEP 3 - VECTOR SEARCH:")
+
+                # Step 3: Vector search with filters
                 search_query = SearchQuery(
                     query=expanded_query,
                     filters=structured_query.filters,
                     limit=5
                 )
-                print(f"   🔍 Search Query: '{search_query.query}'")
-                print(f"   🔧 Applied Filters: {search_query.filters}")
-                print(f"   📊 Result Limit: {search_query.limit}")
-                
                 search_results = vector_service.search(search_query)
-                print(f"   📋 Search Results: {len(search_results.results)} documents found")
                 
-                # Debug individual search results
-                for i, result in enumerate(search_results.results[:3]):
-                    print(f"   📄 Result {i+1}:")
-                    print(f"      📁 Source: {result.metadata.source_file}")
-                    print(f"      🎯 Similarity: {result.similarity_score:.3f}")
-                    print(f"      📝 Content Preview: {result.text[:100]}...")
-                    print(f"      🏷️  Metadata: {dict(result.metadata)}")
-                
+                # Handle no results with fallback strategies
                 if len(search_results.results) == 0:
-                    print(f"   ⚠️  WARNING: No search results found!")
-                    print(f"   🔍 Possible causes:")
-                    print(f"      - Filters too restrictive: {structured_query.filters}")
-                    print(f"      - Query expansion ineffective: '{expanded_query}'")
-                    print(f"      - No relevant documents in database")
-                    print(f"      - Similarity threshold too high")
-                
-                # Step 4: Prepare context for streaming response
-                print(f"\n🔍 STEP 4 - CONTEXT PREPARATION:")
-                context_content = ""
-                sources = []
-                
-                # Check if we have search results
-                if len(search_results.results) == 0:
-                    print(f"   ⚠️  No search results - implementing fallback strategy")
-                    
-                    # FALLBACK STRATEGY 1: Try search without filters
-                    print(f"   🔄 FALLBACK 1: Trying search without filters...")
+                    # Fallback 1: Try without filters
                     fallback_search_query = SearchQuery(
                         query=expanded_query,
-                        filters={},  # Remove all filters
+                        filters={},
                         limit=5
                     )
                     fallback_results = vector_service.search(fallback_search_query)
-                    print(f"   📋 Fallback Results: {len(fallback_results.results)} documents found")
                     
                     if len(fallback_results.results) > 0:
                         search_results = fallback_results
-                        print(f"   ✅ Fallback search successful, using {len(search_results.results)} results")
                     else:
-                        # FALLBACK STRATEGY 2: Try basic semantic search with original query
-                        print(f"   🔄 FALLBACK 2: Trying basic semantic search...")
+                        # Fallback 2: Try with original query
                         basic_search_query = SearchQuery(
-                            query=structured_query.semantic_query,  # Use original query
+                            query=structured_query.semantic_query,
                             filters={},
                             limit=5
                         )
                         basic_results = vector_service.search(basic_search_query)
-                        print(f"   📋 Basic Search Results: {len(basic_results.results)} documents found")
                         
                         if len(basic_results.results) > 0:
                             search_results = basic_results
-                            print(f"   ✅ Basic search successful, using {len(search_results.results)} results")
-                        else:
-                            print(f"   ❌ All fallback strategies failed - no relevant documents found")
+
+                # Step 4: Prepare context content for AI
+                context_content = ""
+                sources = []
                 
-                # Prepare context from available results
-                for i, result in enumerate(search_results.results[:3]):  # Top 3 results
+                for i, result in enumerate(search_results.results[:3]):
                     context_content += f"\n## Source: {result.metadata.source_file}\n{result.text[:400]}...\n"
                     sources.append(result.metadata.source_file)
-                    print(f"   📄 Added to context: {result.metadata.source_file} ({len(result.text[:400])} chars)")
-                
-                print(f"   📊 Final Context Stats:")
-                print(f"      📝 Context Length: {len(context_content)} characters")
-                print(f"      📁 Sources Count: {len(sources)}")
-                print(f"      📋 Sources: {sources}")
-                
-                # Get conversation context
-                print(f"\n🔍 STEP 4.5 - CONVERSATION CONTEXT:")
+
+                # Step 4.5: Get conversation context for AI prompt
                 conversation_context = await conversation_memory_service.build_hybrid_context_for_query(session_id)
                 recent_conv = conversation_context.get('recent_conversation', [])
                 active_entities = conversation_context.get('active_entities', {})
-                print(f"   💬 Recent Conversation: {len(recent_conv)} messages")
-                print(f"   🏷️  Active Entities: {active_entities}")
-                
-                # Step 5: Create enhanced system prompt with anti-hallucination instructions
-                print(f"\n🔍 STEP 5 - SYSTEM PROMPT CREATION:")
-                
-                # Check if we need detailed content for this query
+
+                # Step 5: Create enhanced system prompt
                 needs_detailed = check_needs_detailed_content(user_message)
-                print(f"   🔍 DETAILED CONTENT CHECK:")
-                print(f"      Query: '{user_message}'")
-                print(f"      Needs detailed: {needs_detailed}")
-                
-                # Determine if we have sufficient context
                 has_context = len(context_content.strip()) > 0
-                print(f"   📋 Has Context: {has_context}")
                 
-                # If needs detailed content and we have results, use FULL content
                 if needs_detailed and has_context:
-                    print(f"   🔍 USING DETAILED CONTENT STRATEGY...")
-                    
-                    # Rebuild context with FULL content (not limited to 400 chars)
+                    # Detailed mode with full document content
                     detailed_context = ""
-                    for i, result in enumerate(search_results.results[:3], 1):  # Top 3 for detailed
-                        content = result.text  # FULL CONTENT!
+                    for i, result in enumerate(search_results.results[:3], 1):
+                        content = result.text
                         metadata = result.metadata.model_dump()
                         source_file = metadata.get('source_file', f'Document {i}')
                         similarity = result.similarity_score
-                        
-                        print(f"      Document {i}: {source_file}")
-                        print(f"         Content length: {len(content)} characters (FULL)")
-                        print(f"         Similarity: {similarity:.2f}")
                         
                         detailed_context += f"\n--- DOKUMENT {i}: {source_file} (Relevantnost: {similarity:.1%}) ---\n"
                         detailed_context += f"KOMPLETNI SADRŽAJ:\n{content}\n"
                         detailed_context += f"METADATA: {metadata}\n"
                         detailed_context += "-" * 80 + "\n"
-                    
-                    print(f"      Total detailed context: {len(detailed_context)} characters")
                     
                     system_prompt = f"""Ti si TurBot, profesionalni turistički agent sa pristupom KOMPLETNIM informacijama o aranžmanima.
 
@@ -536,10 +430,8 @@ INSTRUKCIJE:
 
 STIL: Profesionalan, informativan, sa svim detaljima iz dokumenata"""
                     
-                    print(f"   💰 DETAILED CONTENT MODE: ~{len(system_prompt) // 4} estimated tokens")
-                    
                 elif has_context:
-                    # Standard mode with limited content
+                    # Standard mode
                     system_prompt = f"""Ti si TurBot, AI asistent za turističke agencije. Odgovori na srpskom jeziku koristeći dostupne informacije.
 
 DOSTUPNI SADRŽAJ:
@@ -551,14 +443,13 @@ INSTRUKCIJE:
 - Ako nemaš tačne informacije u dostupnim dokumentima, jasno reci da nemaš podatke
 - Fokusiraj se na korisne detalje (cene, datumi, lokacije)
 - Budi kratak i precizan (maksimalno 3-4 pasusa)
-- Izbegavaj dugačke strukture i sekcije
 
 KRITIČNO - PROTIV HALUCINACIJE:
 - NIKAD ne izmišljaj destinacije, cene, datume ili hotele
 - Ako informacija nije u dostupnim dokumentima, reci "Nemam tu informaciju"
 - Uvek navedi odakle su informacije (nazivi dokumenata)"""
                 else:
-                    # No context available - use no-data prompt
+                    # No context mode
                     system_prompt = f"""Ti si TurBot, AI asistent za turističke agencije. 
 
 SITUACIJA: Trenutno nemam dostupne dokumente koji odgovaraju na korisničko pitanje.
@@ -574,30 +465,19 @@ INSTRUKCIJE:
 KRITIČNO:
 - NIKAD ne izmišljaj destinacije, cene, datume ili hotele
 - Budi transparentan o ograničenjima"""
-                
-                print(f"   📏 System Prompt Length: {len(system_prompt)} characters")
-                print(f"   🛡️  Anti-Hallucination: {'✅ Enabled' if has_context else '✅ No-Data Mode'}")
 
                 # Add conversation context if available
-                recent_conv = conversation_context.get('recent_conversation', [])
                 if recent_conv:
                     context_text = "\n\nKONTEKST RAZGOVORA:\n"
-                    for msg in recent_conv[-2:]:  # Last 2 messages
+                    for msg in recent_conv[-2:]:
                         context_text += f"{msg['role']}: {msg['content'][:100]}...\n"
                     system_prompt += context_text
 
-                # Step 6: OpenAI streaming call with Enhanced RAG context
-                print(f"\n🔍 STEP 6 - OPENAI STREAMING:")
+                # Step 6: Stream response from OpenAI
                 messages = [
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_message}
                 ]
-                print(f"   📨 Messages to OpenAI:")
-                print(f"      🤖 System Prompt: {len(system_prompt)} chars")
-                print(f"      👤 User Message: '{user_message}'")
-                print(f"   ⚙️  Model: gpt-4o-mini")
-                print(f"   🌡️  Temperature: 0.1")
-                print(f"   📏 Max Tokens: 400")
                 
                 response = await client.chat.completions.create(
                     model="gpt-4o-mini",
@@ -606,12 +486,10 @@ KRITIČNO:
                     temperature=0.1,
                     max_tokens=400
                 )
-                
-                # Step 7: Stream chunks to frontend
-                print(f"\n🔍 STEP 7 - STREAMING TO FRONTEND:")
+
+                # Step 7: Stream response to frontend
                 full_response = ""
                 chunk_count = 0
-                start_time = datetime.now()
                 
                 async for chunk in response:
                     if chunk.choices[0].delta.content:
@@ -619,7 +497,6 @@ KRITIČNO:
                         full_response += content
                         chunk_count += 1
                         
-                        # Send content chunk
                         data = {
                             "type": "content",
                             "content": content,
@@ -627,40 +504,22 @@ KRITIČNO:
                         }
                         yield f"data: {json.dumps(data)}\n\n"
                         
-                        # Small delay for natural typing feel
                         await asyncio.sleep(0.02)
-                
-                streaming_time = (datetime.now() - start_time).total_seconds()
-                print(f"   ⏱️  Streaming completed in {streaming_time:.2f} seconds")
-                print(f"   📊 Streaming Stats:")
-                print(f"      📝 Response Length: {len(full_response)} characters")
-                print(f"      📦 Total Chunks: {chunk_count}")
-                print(f"      ⚡ Avg Chunk Size: {len(full_response) / chunk_count:.1f} chars" if chunk_count > 0 else "      ⚡ Avg Chunk Size: 0 chars")
-                print(f"      🚀 Streaming Speed: {len(full_response) / streaming_time:.1f} chars/sec" if streaming_time > 0 else "      🚀 Streaming Speed: N/A")
-                
-                # Step 8: Generate suggested questions based on structured query intent
-                print(f"\n🔍 STEP 8 - SUGGESTED QUESTIONS GENERATION:")
+
+                # Step 8: Generate suggested questions
                 suggested_questions = []
                 intent = structured_query.intent.lower() if structured_query.intent else ""
-                print(f"   💭 Detected Intent: '{intent}'")
                 
                 if "hotel" in intent or "accommodation" in intent:
                     suggested_questions = ["Koliko košta?", "Ima li spa centar?", "Kada je dostupno?"]
-                    print(f"   🏨 Hotel-related suggestions generated")
                 elif "price" in intent or "cost" in intent:
                     suggested_questions = ["Šta je uključeno?", "Ima li popusta?", "Kako se plaća?"]
-                    print(f"   💰 Price-related suggestions generated")
                 elif "tour" in intent or "travel" in intent:
                     suggested_questions = ["Koliko traje?", "Šta je uključeno?", "Kada su termini?"]
-                    print(f"   🎯 Tour-related suggestions generated")
                 else:
                     suggested_questions = ["Recite mi više", "Koliko košta?", "Ima li alternativa?"]
-                    print(f"   🔄 Default suggestions generated")
-                
-                print(f"   📋 Generated Suggestions: {suggested_questions}")
-                
-                # Step 9: Calculate confidence based on search results and filters
-                print(f"\n🔍 STEP 9 - CONFIDENCE CALCULATION:")
+
+                # Step 9: Calculate confidence
                 confidence = 0.90
                 confidence_factors = []
                 
@@ -668,19 +527,15 @@ KRITIČNO:
                     confidence = 0.20
                     confidence_factors.append("No search results (-70%)")
                 elif len(structured_query.filters) > 0:
-                    confidence = 0.95  # Higher confidence when filters are applied
+                    confidence = 0.95
                     confidence_factors.append(f"Filters applied (+5%): {structured_query.filters}")
                 elif len(search_results.results) < 3:
                     confidence = 0.70
                     confidence_factors.append(f"Few results (-20%): {len(search_results.results)} results")
                 else:
                     confidence_factors.append(f"Good results: {len(search_results.results)} results")
-                
-                print(f"   🎯 Final Confidence: {confidence:.2f}")
-                print(f"   📊 Confidence Factors: {confidence_factors}")
-                
-                # Step 10: Send final metadata with enhanced information
-                print(f"\n🔍 STEP 10 - FINAL METADATA:")
+
+                # Step 10: Send final metadata
                 final_data = {
                     "type": "complete",
                     "sources": [{"document_name": source, "similarity": 0.90} for source in sources[:5]],
@@ -688,21 +543,14 @@ KRITIČNO:
                     "confidence": confidence,
                     "total_chunks": chunk_count,
                     "response_length": len(full_response),
-                    "enhanced_rag": True,  # Flag to indicate this is Enhanced RAG
+                    "enhanced_rag": True,
                     "filters_applied": len(structured_query.filters),
                     "entities_extracted": len(entity_extraction_result.entities) if entity_extraction_result.entities else 0
                 }
-                print(f"   📋 Metadata Summary:")
-                print(f"      📁 Sources: {len(final_data['sources'])} documents")
-                print(f"      💡 Suggestions: {len(final_data['suggestions'])} questions")
-                print(f"      🎯 Confidence: {final_data['confidence']:.2f}")
-                print(f"      🔧 Filters Applied: {final_data['filters_applied']}")
-                print(f"      🏷️  Entities Extracted: {final_data['entities_extracted']}")
                 
                 yield f"data: {json.dumps(final_data)}\n\n"
                 
                 # Step 11: Save AI response to conversation memory
-                print(f"\n🔍 STEP 11 - SAVE TO CONVERSATION MEMORY:")
                 await conversation_memory_service.save_message(
                     session_id=session_id,
                     role=MessageRole.ASSISTANT,
@@ -711,37 +559,8 @@ KRITIČNO:
                     sources=sources,
                     confidence=confidence
                 )
-                print(f"   ✅ AI response saved to conversation memory")
-                print(f"   📊 Saved Data:")
-                print(f"      📝 Response: {len(full_response)} characters")
-                print(f"      📁 Sources: {sources}")
-                print(f"      🎯 Confidence: {confidence:.2f}")
-                
-                total_time = (datetime.now() - start_time).total_seconds()
-                print(f"\n🎉 ===== ENHANCED RAG STREAMING SESSION COMPLETED =====")
-                print(f"   ⏱️  Total Processing Time: {total_time:.2f} seconds")
-                print(f"   📝 Final Response: {len(full_response)} characters")
-                print(f"   📦 Total Chunks: {chunk_count}")
-                print(f"   📁 Sources Used: {len(sources)}")
-                print(f"   🎯 Final Confidence: {confidence:.2f}")
-                print(f"   🔧 Filters Applied: {len(structured_query.filters)}")
-                print(f"   🏷️  Entities Extracted: {len(entity_extraction_result.entities) if entity_extraction_result.entities else 0}")
-                print(f"   ✅ Session: {session_id}")
-                print(f"🔍 ==================================================")
-                
+
             except Exception as e:
-                print(f"\n❌ ===== ENHANCED RAG STREAMING ERROR =====")
-                print(f"❌ Error Type: {type(e).__name__}")
-                print(f"❌ Error Message: {str(e)}")
-                print(f"❌ Session ID: {session_id}")
-                print(f"❌ User Query: '{user_message}'")
-                print(f"❌ Timestamp: {datetime.now().strftime('%H:%M:%S')}")
-                
-                # Try to provide more context about where the error occurred
-                import traceback
-                print(f"❌ Full Traceback:")
-                traceback.print_exc()
-                
                 error_data = {
                     "type": "error",
                     "error": str(e),
@@ -750,8 +569,6 @@ KRITIČNO:
                     "fallback_message": "Izvinjavam se, došlo je do greške pri obradi vašeg upita. Molim pokušajte ponovo sa drugačijim pitanjem."
                 }
                 yield f"data: {json.dumps(error_data)}\n\n"
-                print(f"❌ Error response sent to frontend")
-                print(f"❌ ============================================")
         
         return StreamingResponse(
             enhanced_rag_stream_generator(),
