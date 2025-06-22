@@ -1,0 +1,70 @@
+{
+  "session_id": "9058f64c-dfed-447a-8f67-8b43f8ea1b3c",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "38c96c82-c86e-4ae0-9441-cbddbb4c3060",
+      "session_id": "9058f64c-dfed-447a-8f67-8b43f8ea1b3c",
+      "role": "user",
+      "content": "Jel ima neko putovanje za leto?",
+      "timestamp": "2025-06-22T08:43:41.434918",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "e8904043-c1d9-4d00-8b45-bae4e6ef1a84",
+      "session_id": "9058f64c-dfed-447a-8f67-8b43f8ea1b3c",
+      "role": "assistant",
+      "content": "Nemam tu informaciju. Dostupni dokumenti se fokusiraju na putovanja za Prvi maj 2025. godine, kao što su tura u Portugalu (Lisabon i Porto) i putovanje u Amsterdam, kao i putovanje u Bari i Pulju. Ako vas zanimaju ta putovanja, mogu vam pružiti više informacija.",
+      "timestamp": "2025-06-22T08:43:51.280406",
+      "entities_extracted": {
+        "travel_season": {
+          "entity_type": "travel_season",
+          "entity_value": "leto",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:43:45.424531",
+          "last_mentioned": "2025-06-22T08:43:45.424531",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "transport_type": {
+          "entity_type": "transport_type",
+          "entity_value": "plane",
+          "confidence": 0.9,
+          "first_mentioned": "2025-06-22T08:43:45.424938",
+          "last_mentioned": "2025-06-22T08:43:45.424938",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "leto",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:43:46.692362",
+          "last_mentioned": "2025-06-22T08:43:46.692362",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Portugalska_tura_Lisabon_i_Porto_29.04.-05.05.2025._Prvi_maj_-_cenovnik_100425.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Bari_i_Pulja_Prvi_maj_2025_avionom_cenovnik_2801odn.pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "travel_season": "leto",
+    "transport_type": "plane",
+    "travel_month": "leto"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T08:43:51.280406",
+  "context_switch_detected": false
+}

@@ -1,0 +1,70 @@
+{
+  "session_id": "2d5cd5f1-e64f-43b0-8d8e-0c6a7d008124",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "66827f27-24f3-4b15-9f88-b9b98802bed8",
+      "session_id": "2d5cd5f1-e64f-43b0-8d8e-0c6a7d008124",
+      "role": "user",
+      "content": "Jel ima nesto za leto?",
+      "timestamp": "2025-06-22T08:46:09.998698",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "82165283-be1a-43d4-a808-029a2bcc6b5f",
+      "session_id": "2d5cd5f1-e64f-43b0-8d8e-0c6a7d008124",
+      "role": "assistant",
+      "content": "Nemam tu informaciju. Dostupni dokumenti se odnose na putovanja u proleće 2025. godine, konkretno za Amsterdam od 30. aprila do 4. maja i za Portugal (Lisabon i Porto) od 29. aprila do 5. maja. Ako vas zanimaju ta putovanja, slobodno pitajte!",
+      "timestamp": "2025-06-22T08:46:17.417165",
+      "entities_extracted": {
+        "travel_season": {
+          "entity_type": "travel_season",
+          "entity_value": "leto",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:46:12.222612",
+          "last_mentioned": "2025-06-22T08:46:12.222612",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "transport_type": {
+          "entity_type": "transport_type",
+          "entity_value": "plane",
+          "confidence": 0.9,
+          "first_mentioned": "2025-06-22T08:46:12.222649",
+          "last_mentioned": "2025-06-22T08:46:12.222649",
+          "frequency": 1,
+          "source_messages": []
+        },
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "leto",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:46:13.132141",
+          "last_mentioned": "2025-06-22T08:46:13.132141",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_INDIVIDUALNO_2.pdf",
+        "Portugalska_tura_Lisabon_i_Porto_29.04.-05.05.2025._Prvi_maj_-_cenovnik_100425.pdf",
+        "Amsterdam_PRVI_MAJ_2025_Direktan_let_30.04.-04.05.2025._Cenovnik_1504.pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "travel_season": "leto",
+    "transport_type": "plane",
+    "travel_month": "leto"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T08:46:17.417165",
+  "context_switch_detected": false
+}

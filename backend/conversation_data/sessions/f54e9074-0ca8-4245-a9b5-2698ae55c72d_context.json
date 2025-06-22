@@ -1,0 +1,50 @@
+{
+  "session_id": "f54e9074-0ca8-4245-a9b5-2698ae55c72d",
+  "total_messages": 2,
+  "recent_messages": [
+    {
+      "message_id": "62f4916a-1886-494a-8703-fb53f147873c",
+      "session_id": "f54e9074-0ca8-4245-a9b5-2698ae55c72d",
+      "role": "user",
+      "content": "Jel ima neko putovanje u Maju?",
+      "timestamp": "2025-06-22T08:44:21.440617",
+      "entities_extracted": {},
+      "sources_used": [],
+      "confidence": null,
+      "metadata": {}
+    },
+    {
+      "message_id": "21371963-0a27-4e6e-b92e-68b5c567ac3b",
+      "session_id": "f54e9074-0ca8-4245-a9b5-2698ae55c72d",
+      "role": "assistant",
+      "content": "Da, imamo nekoliko putovanja u maju. Na primer, postoji aranžman za putovanje u Lisabon i Porto od 29. aprila do 5. maja 2025. godine. \n\nTakođe, postoji i putovanje u Bari i Pulju za Prvi maj 2025. godine. Za više informacija o cijenama i detaljima, potrebno je da se konsultujete sa cenovnicima koji su dostupni. \n\nAko vas zanimaju specifične informacije o cijenama ili hotelima, slobodno pitajte! (Informacije su iz dokumenata \"Portugalska_tura_Lisabon_i_Porto_29.04.-05.05.2025._Prvi_maj_-_cenovnik_100425.pdf\" i \"Bari_i_Pulja_Prvi_maj_2025_avionom_cenovnik_2801odn.pdf\").",
+      "timestamp": "2025-06-22T08:44:33.229484",
+      "entities_extracted": {
+        "travel_month": {
+          "entity_type": "travel_month",
+          "entity_value": "maj",
+          "confidence": 0.8,
+          "first_mentioned": "2025-06-22T08:44:23.879509",
+          "last_mentioned": "2025-06-22T08:44:23.879509",
+          "frequency": 1,
+          "source_messages": []
+        }
+      },
+      "sources_used": [
+        "Bari_i_Pulja_Prvi_maj_2025_avionom_cenovnik_2801odn.pdf",
+        "Portugalska_tura_Lisabon_i_Porto_29.04.-05.05.2025._Prvi_maj_-_cenovnik_100425.pdf",
+        "product_be_unique_ROMANTICNA_FRANCUSKA_5.pdf"
+      ],
+      "confidence": 0.95,
+      "metadata": {}
+    }
+  ],
+  "historical_entities": {},
+  "active_entities": {
+    "travel_month": "maj"
+  },
+  "conversation_summary": "",
+  "user_preferences": {},
+  "last_updated": "2025-06-22T08:44:33.229484",
+  "context_switch_detected": false
+}

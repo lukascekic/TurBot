@@ -752,3 +752,171 @@ Quick Tools: Common queries, statistics, settings
 *Poslednja izmena: Jun 21, 2025 - Chat 7*
 *Status: KOMPLETNO IMPLEMENTIRAN ✅ + PRODUCTION READY 🚀 + DEMO PREPARED 🎯*
 *Next: Final Testing + Demo Presentation + Hackathon Submission* 
+
+## 📝 Chat 8 - Enhanced RAG Streaming Implementation & Critical Issues (U TOKU)
+
+### **🎉 ENHANCED RAG STREAMING KOMPLETNO IMPLEMENTIRAN**
+
+#### **Kombinovani Pristup - Best of Both Worlds ✅**
+- **Novi endpoint:** `/chat/stream` - Enhanced RAG + Real-time streaming
+- **Kompletni pipeline:** Context-aware self-querying → Query expansion → Entity extraction → Vector search → Streaming response
+- **Kraći prompt:** Prirodan, konverzacijski ton umesto dugačkih struktura
+- **Frontend integracija:** `chatStreamEnhanced()` metoda za oba interfejsa
+
+#### **Tehnička Implementacija ✅**
+- **Backend:** Dodao `/chat/stream` endpoint sa kompletnim Enhanced RAG pipeline-om
+- **Response Generator:** Promenio system prompt da bude kratak i prirodan (400 tokens umesto 800)
+- **Frontend API:** Nova `chatStreamEnhanced()` metoda koja poziva Enhanced RAG streaming
+- **UI Update:** Oba interfejsa (user + agent) koriste Enhanced RAG streaming
+
+#### **Očekivani Rezultati:**
+- ✅ **Isti kvalitet** odgovora na oba interfejsa
+- ✅ **Real-time streaming** UX
+- ✅ **Kratki, prirodni** odgovori umesto dugačkih struktura
+- ✅ **Enhanced RAG** preciznost sa conversation memory
+
+### **🚨 KRITIČNI PROBLEMI IDENTIFIKOVANI**
+
+#### **Problem 1: Halucinacija i Nedoslednost**
+```
+Chat Log 1: "Jel ima neko putovanje za leto?"
+Response: "Grčka ili Crna Goru... Hersonisosa ili Budve... 300-600 evra"
+Issue: ❌ NEMA SOURCES! Model halucinira podatke koji nisu u bazi
+```
+
+#### **Problem 2: Neprepoznavanje Postojećih Podataka**
+```
+Chat Log 2: "Jel ima neko putovanje u Maju"
+Response: "Nažalost, nemam konkretne informacije o putovanjima u maju"
+Issue: ❌ POSTOJI Amsterdam + Rim u maju u bazi, ali model ne prepoznaje
+```
+
+#### **ROOT CAUSE ANALIZA - Potrebna:**
+1. **Vector Search Problem:** Da li search vraća relevantne rezultate?
+2. **Query Processing Problem:** Da li se query-jevi pravilno parsiraju?
+3. **Filter Application Problem:** Da li se filteri pravilno primenjuju?
+4. **Prompt Engineering Problem:** Da li prompt dovodi do halucinacije?
+5. **Data Availability Problem:** Da li su podaci dostupni u vector database?
+
+### **🔍 PREDLOG DETALJNOG DEBUG SISTEMA**
+
+#### **Debug Logging Strategy:**
+1. **Query Processing Debug:**
+   - Original user query
+   - Self-querying structured output
+   - Query expansion results
+   - Applied filters
+
+2. **Vector Search Debug:**
+   - Search query sent to ChromaDB
+   - Raw search results with similarity scores
+   - Filtered results
+   - Number of results returned
+
+3. **Context Preparation Debug:**
+   - Context content prepared for LLM
+   - Sources identified
+   - Content length and quality
+
+4. **Response Generation Debug:**
+   - System prompt sent to OpenAI
+   - LLM response received
+   - Source attribution logic
+   - Suggested questions generation
+
+5. **Conversation Memory Debug:**
+   - Session context retrieved
+   - Active entities
+   - Conversation history used
+
+#### **Mogući Uzroci:**
+
+##### **Scenario 1: Vector Search Failure**
+- **Problem:** Search ne vraća relevantne rezultate za "leto" ili "maj"
+- **Uzrok:** Semantička neusklađenost između query-ja i document content
+- **Rešenje:** Poboljšati query expansion za seasonal terms
+
+##### **Scenario 2: Filter Over-Restriction**
+- **Problem:** Filteri su previše restriktivni i eliminišu validne rezultate
+- **Uzrok:** Self-querying kreira pogrešne ili previše striktne filtere
+- **Rešenje:** Relaxovati filter logic ili dodati fallback search
+
+##### **Scenario 3: Prompt Engineering Issue**
+- **Problem:** Kraći prompt dovodi do halucinacije kada nema rezultata
+- **Uzrok:** Model "izmišlja" odgovore umesto da kaže da nema podataka
+- **Rešenje:** Dodati eksplicitne instrukcije protiv halucinacije
+
+##### **Scenario 4: Data Availability**
+- **Problem:** Podaci nisu pravilno indeksirani ili dostupni
+- **Uzrok:** PDF processing ili metadata extraction problem
+- **Rešenje:** Verifikovati database content i metadata
+
+##### **Scenario 5: Context Window Overflow**
+- **Problem:** Previše context-a dovodi do degradacije performansi
+- **Uzrok:** Conversation memory + search results + system prompt > token limit
+- **Rešenje:** Optimizovati context management
+
+### **🎯 PREDLOG REŠENJA**
+
+#### **Faza 1: Implementacija Debug Sistema (30 min)**
+- Dodati comprehensive logging u Enhanced RAG streaming endpoint
+- Kreirati debug endpoint koji vraća detaljne informacije o svakom koraku
+- Implementirati structured logging sa timestamp-ovima
+
+#### **Faza 2: Dijagnostika (30 min)**
+- Testirati problematične query-jeve sa debug logging-om
+- Identifikovati tačan korak gde se gubi informacija
+- Verifikovati database content za seasonal terms
+
+#### **Faza 3: Targeted Fixes (60 min)**
+- Implementirati specifične fixes na osnovu debug rezultata
+- Dodati fallback mechanisms za edge cases
+- Poboljšati prompt engineering za anti-halucinaciju
+
+#### **Faza 4: Validation (30 min)**
+- Re-testirati problematične scenarije
+- Verifikovati da source attribution radi
+- Potvrditi da se postojeći podaci prepoznaju
+
+### **🔧 KONKRETNI KORACI**
+
+#### **Step 1: Enhanced Debug Logging**
+```python
+# Dodati u /chat/stream endpoint:
+print(f"🔍 STEP 1 - ORIGINAL QUERY: '{user_message}'")
+print(f"🔍 STEP 2 - STRUCTURED QUERY: {structured_query}")
+print(f"🔍 STEP 3 - EXPANDED QUERY: '{expanded_query}'")
+print(f"🔍 STEP 4 - SEARCH RESULTS: {len(search_results.results)} results")
+print(f"🔍 STEP 5 - CONTEXT CONTENT: {len(context_content)} chars")
+print(f"🔍 STEP 6 - SOURCES IDENTIFIED: {sources}")
+```
+
+#### **Step 2: Database Verification**
+- Kreirati test script koji direktno query-je ChromaDB
+- Verifikovati da "Amsterdam" i "Rim" postoje sa "maj" metadata
+- Testirati različite search term kombinacije
+
+#### **Step 3: Anti-Hallucination Prompt**
+```python
+# Dodati u system prompt:
+"VAŽNO: Ako nemaš relevantne informacije iz dostupnih dokumenata,
+jasno reci da nemaš podatke. NIKAD ne izmišljaj cene, destinacije ili datume."
+```
+
+#### **Step 4: Fallback Search Strategy**
+- Ako structured search ne vrati rezultate, pokušaj basic semantic search
+- Ako seasonal search ne radi, pokušaj location-only search
+- Implementirati multi-stage search strategy
+
+### **🎯 PRIORITET AKCIJA**
+
+1. **HITNO:** Implementirati debug logging sistem
+2. **KRITIČNO:** Identifikovati uzrok halucinacije u Chat Log 1
+3. **VAŽNO:** Rešiti neprepoznavanje maja u Chat Log 2
+4. **BONUS:** Optimizovati source attribution display
+
+---
+
+*Poslednja izmena: Jun 22, 2025 - Chat 8*
+*Status: Enhanced RAG Streaming IMPLEMENTIRAN ✅ + KRITIČNI PROBLEMI IDENTIFIKOVANI 🚨*
+*Next: Debug System Implementation + Problem Resolution* 
